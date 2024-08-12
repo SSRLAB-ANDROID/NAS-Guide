@@ -1,26 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
             name="viewModel"
-            type="by.ssrlab.common_ui.common.vm.AMainVM"/>
+            type="by.ssrlab.common_ui.common.vm.AMainVM" />
 
-        <import type="by.ssrlab.common_ui.common.util.BindingAdapters"/>
+        <import type="by.ssrlab.common_ui.common.util.BindingAdapters" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="@color/white"
-
-        tools:ignore="ContentDescription"
-        tools:context="by.ssrlab.ui.MainActivity"
+        android:id="@+id/main_activity"
 
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/main_activity">
+
+        android:background="@color/white"
+        tools:context="by.ssrlab.ui.MainActivity"
+        tools:ignore="ContentDescription">
 
         <ImageView
             android:id="@+id/activity_header"
@@ -29,118 +28,129 @@
 
             android:scaleType="fitXY"
 
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
+            app:layout_constraintTop_toTopOf="parent" />
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/toolbar_height"
 
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageButton
                 android:id="@+id/toolbar_lang"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                android:src="@drawable/toolbar_main_ic_lang"
+                android:layout_marginVertical="@dimen/toolbar_margin"
+                android:layout_marginEnd="@dimen/toolbar_margin"
                 android:background="@drawable/ripple_rounded_toolbar_main"
-                app:tint="@color/toolbar_main_ic_selector"
 
                 android:onClick="@{viewModel.languageAction}"
 
-                android:visibility="gone"
                 android:padding="@dimen/toolbar_button_padding"
+                android:src="@drawable/toolbar_main_ic_lang"
 
-                android:layout_marginVertical="@dimen/toolbar_margin"
-                android:layout_marginEnd="@dimen/toolbar_margin"
-
-                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/toolbar_main_ic_selector" />
 
             <ImageButton
                 android:id="@+id/toolbar_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                android:src="@drawable/toolbar_main_ic_date"
+                android:layout_marginVertical="@dimen/toolbar_margin"
+                android:layout_marginEnd="@dimen/toolbar_margin"
                 android:background="@drawable/ripple_rounded_toolbar_main"
-                app:tint="@color/toolbar_main_ic_selector"
 
                 android:onClick="@{viewModel.chooseDateAction}"
 
-                android:visibility="gone"
                 android:padding="@dimen/toolbar_button_padding"
+                android:src="@drawable/toolbar_main_ic_date"
 
-                android:layout_marginVertical="@dimen/toolbar_margin"
-                android:layout_marginEnd="@dimen/toolbar_margin"
-
-                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/toolbar_lang"/>
+
+                app:layout_constraintEnd_toStartOf="@id/toolbar_lang"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/toolbar_main_ic_selector" />
 
             <ImageButton
                 android:id="@+id/toolbar_search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                android:src="@drawable/toolbar_main_ic_search"
+                android:layout_marginVertical="@dimen/toolbar_margin"
+                android:layout_marginEnd="@dimen/toolbar_margin"
                 android:background="@drawable/ripple_rounded_toolbar_main"
-                app:tint="@color/toolbar_main_ic_selector"
 
                 android:onClick="@{viewModel.searchAction}"
 
-                android:visibility="gone"
                 android:padding="@dimen/toolbar_button_padding"
+                android:src="@drawable/toolbar_main_ic_search"
 
-                android:layout_marginVertical="@dimen/toolbar_margin"
-                android:layout_marginEnd="@dimen/toolbar_margin"
-
-                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/toolbar_date"/>
 
-<!--            <TextView-->
-<!--                android:id="@+id/toolbar_title_additional"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-
-<!--                android:textStyle="bold"-->
-<!--                android:textSize="@dimen/activity_dates_title_additional"-->
-<!--                android:textColor="@color/primary_text"-->
-
-<!--                android:visibility="gone"-->
-
-<!--                app:layout_constraintStart_toEndOf="@id/toolbar_back"-->
-<!--                app:layout_constraintEnd_toStartOf="@id/toolbar_date"-->
-<!--                app:layout_constraintTop_toTopOf="parent"-->
-<!--                app:layout_constraintBottom_toBottomOf="parent"/>-->
+                app:layout_constraintEnd_toStartOf="@id/toolbar_date"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/toolbar_main_ic_selector" />
 
             <ImageButton
                 android:id="@+id/toolbar_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                android:src="@drawable/toolbar_main_ic_back"
+                android:layout_marginVertical="@dimen/toolbar_margin"
+                android:layout_marginStart="@dimen/toolbar_margin"
                 android:background="@drawable/ripple_rounded_toolbar_main"
-                app:tint="@color/toolbar_main_ic_selector"
 
                 android:onClick="@{viewModel.backAction}"
 
-                android:visibility="gone"
                 android:padding="@dimen/toolbar_button_padding"
+                android:src="@drawable/toolbar_main_ic_back"
 
-                android:layout_marginVertical="@dimen/toolbar_margin"
-                android:layout_marginStart="@dimen/toolbar_margin"
-
-                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
+
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/toolbar_main_ic_selector" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/dates_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintBottom_toTopOf="@+id/dates_now_holder"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:id="@+id/dates_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="@string/date"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/activity_dates_title_additional"
+                android:textStyle="bold"
+                android:visibility="gone"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -153,10 +163,10 @@
 
             android:visibility="gone"
 
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
             app:layout_constraintBottom_toBottomOf="@id/activity_header"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
 
             <TextView
                 android:id="@+id/dates_now_title"
@@ -168,37 +178,37 @@
                 android:textSize="@dimen/activity_dates_title"
 
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/dates_now_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
+                android:layout_marginTop="@dimen/common_margin_small"
                 android:text="@{viewModel.currentDate}"
-                android:textSize="@dimen/activity_dates_chosen"
                 android:textColor="@color/primary_text"
+                android:textSize="@dimen/activity_dates_chosen"
+
                 android:textStyle="bold"
 
-                android:layout_marginTop="@dimen/common_margin_small"
-
-                app:layout_constraintTop_toBottomOf="@id/dates_now_title"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/dates_now_title" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-        
+
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/activity_main_fragment_host"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-
             android:name="androidx.navigation.fragment.NavHostFragment"
-            app:navGraph="@navigation/nav_graph"
+            android:layout_width="match_parent"
 
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:navGraph="@navigation/nav_graph" />
 
         <View
             android:id="@+id/activity_bottom_blur"
@@ -207,15 +217,15 @@
 
             android:background="@color/white_50transparent"
 
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent" />
 
         <include
             android:id="@+id/toolbar_search_header"
-            android:layout_height="wrap_content"
+            layout="@layout/search_common"
             android:layout_width="match_parent"
-            layout="@layout/search_common"/>
+            android:layout_height="wrap_content" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

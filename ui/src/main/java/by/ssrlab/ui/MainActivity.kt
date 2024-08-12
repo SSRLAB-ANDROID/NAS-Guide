@@ -192,6 +192,7 @@ class MainActivity : BaseActivity() {
                     ConstraintSet.BOTTOM
                 )
                 constraintSet.applyTo(constraintLayout)
+                binding.datesTitle.visibility = View.VISIBLE
             }
 
             MainActivityUiState.Other -> {
@@ -202,6 +203,7 @@ class MainActivity : BaseActivity() {
                     ConstraintSet.BOTTOM
                 )
                 constraintSet.applyTo(constraintLayout)
+                binding.datesTitle.visibility = View.GONE
             }
         }
     }

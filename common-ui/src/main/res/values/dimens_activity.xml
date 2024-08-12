@@ -5,7 +5,7 @@
     <dimen name="activity_header_corners">16dp</dimen>
     <dimen name="activity_bottom_line">20dp</dimen>
 
-    <dimen name="activity_dates_title_additional">19sp</dimen>
+    <dimen name="activity_dates_title_additional">25sp</dimen>
     <dimen name="activity_dates_title">15sp</dimen>
     <dimen name="activity_dates_chosen">22sp</dimen>
 

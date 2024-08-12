@@ -30,7 +30,7 @@ class SectionAdapter(
 
     override fun onBindViewHolder(holder: DevelopmentsHolder, position: Int) {
         holder.binding.apply {
-            val positionStr = "$position."
+            val positionStr = "${position+1}."
             rvSectionNumber.text = positionStr
             rvSectionTitle.text = entitiesList[position].name
             rvSectionPng.load(entitiesList[position].description?.logo) {
