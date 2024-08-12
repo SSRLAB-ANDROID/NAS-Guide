@@ -5,23 +5,33 @@ import androidx.lifecycle.MutableLiveData
 import by.ssrlab.common_ui.common.ui.base.vm.BaseFragmentVM
 import by.ssrlab.data.data.settings.remote.PersonLocale
 import by.ssrlab.domain.repository.network.PersonsRepository
+import by.ssrlab.ui.states.PersonsState
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 
-class FPersonsVM(personsRepository: PersonsRepository): BaseFragmentVM<PersonLocale>(personsRepository) {
+class FPersonsVM(personsRepository: PersonsRepository) :
+    BaseFragmentVM<PersonLocale>(personsRepository) {
 
-    private val _personsData = MutableLiveData<List<PersonLocale>>(listOf())
+    private val _state = MutableStateFlow(PersonsState())
+    val personState: StateFlow<PersonsState> get() = _state
+
+    private val _personsData = MutableLiveData<List<PersonLocale>>()
     val personsData: LiveData<List<PersonLocale>> get() = _personsData
 
-    private val _title = MutableLiveData("")
-    val title: LiveData<String>
-        get() = _title
-
     fun setTitle(value: String) {
-        _title.value = value
+        _state.update { currentState ->
+            currentState.copy(title = value)
+        }
     }
 
     init {
-        getData {
-            _personsData.value = it
+
+        getData { personList ->
+            _state.update { currentState ->
+                currentState.copy(personList = personList.toMutableList())
+            }
+            _personsData.value = personState.value.personList?.toList()
         }
     }
 }

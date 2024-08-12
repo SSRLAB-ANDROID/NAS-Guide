@@ -9,6 +9,7 @@ import by.ssrlab.common_ui.common.ui.base.BaseActivity
 import by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.ActivityMainMarginParams
 import by.ssrlab.common_ui.common.vm.AExhibitVM
 import by.ssrlab.common_ui.databinding.ActivityExhibitBinding
+import by.ssrlab.data.util.ExhibitObject
 import coil.load
 import coil.transform.RoundedCornersTransformation
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -42,6 +43,15 @@ class ExhibitActivity : BaseActivity() {
         observeLayoutChange()
     }
 
+    private fun getPlaceId(exhibitObject: ExhibitObject): String {
+        return when (exhibitObject) {
+            ExhibitObject.Development -> TODO()
+            ExhibitObject.Organization -> TODO()
+            ExhibitObject.Person -> TODO()
+            ExhibitObject.Place -> TODO()
+        }
+    }
+
     private fun setupButtons() {
         setVolumeAction()
         setBackAction()
@@ -49,7 +59,7 @@ class ExhibitActivity : BaseActivity() {
 
     private fun setVolumeAction() {
         binding.toolbarVolume.setOnClickListener {
-            createIsntRealizedDialog()
+            //TODO
         }
     }
 
@@ -68,7 +78,8 @@ class ExhibitActivity : BaseActivity() {
     }
 
     private fun observeLayoutChange() {
-        binding.root.viewTreeObserver.addOnGlobalLayoutListener(object: ViewTreeObserver.OnGlobalLayoutListener {
+        binding.root.viewTreeObserver.addOnGlobalLayoutListener(object :
+            ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 binding.root.viewTreeObserver.removeOnGlobalLayoutListener(this)
 

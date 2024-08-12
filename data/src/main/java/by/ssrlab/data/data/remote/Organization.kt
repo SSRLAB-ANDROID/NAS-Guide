@@ -27,4 +27,6 @@ data class Organization(
 
     @SerializedName("images")
     override val image: Image
-): DescriptionData
+): DescriptionData {
+    companion object
+}

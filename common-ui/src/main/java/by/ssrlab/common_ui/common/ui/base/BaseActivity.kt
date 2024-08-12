@@ -42,6 +42,10 @@ open class BaseActivity: AppCompatActivity(), KoinComponent {
         createDateDialog(this, onDateChanged)
     }
 
+    fun getLocale(): Locale {
+        return resources.configuration.locales.get(0)
+    }
+
     companion object {
         const val PARCELABLE_DATA = "parcelable_data"
 //        const val MAPBOX_VIEW_POINT = "mapbox_view_point"

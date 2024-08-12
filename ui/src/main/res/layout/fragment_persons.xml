@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:text="@{viewModel.title}"
+            android:text="@{viewModel.personState.title}"
             android:textSize="@dimen/rv_page_title"
             android:textColor="@color/folders_header"
             android:textStyle="bold"

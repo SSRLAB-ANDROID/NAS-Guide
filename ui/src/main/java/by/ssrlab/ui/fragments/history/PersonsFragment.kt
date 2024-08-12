@@ -17,7 +17,7 @@ import by.ssrlab.ui.rv.GridAdapter
 import by.ssrlab.ui.vm.FPersonsVM
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class PersonsFragment: BaseFragment() {
+class PersonsFragment : BaseFragment() {
 
     private lateinit var binding: FragmentPersonsBinding
     private lateinit var adapter: GridAdapter
@@ -56,7 +56,7 @@ class PersonsFragment: BaseFragment() {
     }
 
     override fun initAdapter() {
-        adapter = GridAdapter(fragmentViewModel.personsData.value!!) {
+        adapter = GridAdapter(fragmentViewModel.personState.value.personList?.toList()!!) {
             navigateNext(it)
         }
 
@@ -67,7 +67,8 @@ class PersonsFragment: BaseFragment() {
     }
 
     override fun initBinding(container: ViewGroup?): View {
-        binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_persons, container, false)
+        binding =
+            DataBindingUtil.inflate(layoutInflater, R.layout.fragment_persons, container, false)
         return binding.root
     }
 

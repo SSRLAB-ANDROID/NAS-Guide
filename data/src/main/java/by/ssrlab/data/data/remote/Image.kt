@@ -9,4 +9,6 @@ data class Image(
 
     @SerializedName("1")
     val address: String
-): Parcelable
+): Parcelable {
+    companion object
+}

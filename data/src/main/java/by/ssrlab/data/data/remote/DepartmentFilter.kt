@@ -12,4 +12,6 @@ data class DepartmentFilter(
 
     @SerializedName("key_name")
     val keyName: String
-): Parcelable
+): Parcelable {
+    companion object
+}
