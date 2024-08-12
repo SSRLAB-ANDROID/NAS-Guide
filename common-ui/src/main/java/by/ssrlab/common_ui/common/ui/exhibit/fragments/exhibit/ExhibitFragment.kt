@@ -1,16 +1,19 @@
 package by.ssrlab.common_ui.common.ui.exhibit.fragments.exhibit
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import by.ssrlab.common_ui.R
 import by.ssrlab.common_ui.common.ui.base.BaseActivity
 import by.ssrlab.common_ui.common.ui.exhibit.ExhibitActivity
 import by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.FragmentSettingsManager
-import by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.MediaPlayerController
+import by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.MediaPlayer.handlePlayerState
+import by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.MediaPlayer.isPlaying
+import by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.MediaPlayer.pauseAudio
+import by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.PlayerStatus
 import by.ssrlab.common_ui.common.vm.AExhibitVM
 import by.ssrlab.common_ui.databinding.FragmentExhibitBinding
 import by.ssrlab.data.data.common.RepositoryData
@@ -29,20 +32,13 @@ class ExhibitFragment : Fragment() {
 
     private lateinit var binding: FragmentExhibitBinding
     private val activityViewModel: AExhibitVM by activityViewModel()
-    private val fragmentSettingsManager: FragmentSettingsManager by lazy {
-        FragmentSettingsManager(
-            binding = binding,
-            exhibitActivity = requireActivity() as ExhibitActivity
-        )
-    }
-
+    private lateinit var exhibitActivity: ExhibitActivity
     private lateinit var data: RepositoryData
+    private lateinit var fragmentSettingsManager: FragmentSettingsManager
 
-    private lateinit var mediaPlayerController: MediaPlayerController
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        mediaPlayerController = context as MediaPlayerController
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        exhibitActivity = requiredActivity() as ExhibitActivity
     }
 
     override fun onCreateView(
@@ -52,9 +48,12 @@ class ExhibitFragment : Fragment() {
     ): View {
         binding = FragmentExhibitBinding.inflate(layoutInflater, container, false)
 
-        lifecycleScope.launch {
-            mediaPlayerController.initMediaPlayer()
+        fragmentSettingsManager = FragmentSettingsManager(
+            binding = binding,
+            exhibitActivity = exhibitActivity
+        )
 
+        lifecycleScope.launch {
             val audio = withContext(Dispatchers.IO) {
                 activityViewModel.exhibitState.value.repositoryData?.audio
             }
@@ -73,9 +72,27 @@ class ExhibitFragment : Fragment() {
         disableButtons()
     }
 
+    override fun onStop() {
+        super.onStop()
+
+        pauseAudio()
+    }
+
     private fun disableButtons() {
         binding.apply {
-            exhibitPlayRipple.setOnClickListener { (requireActivity() as BaseActivity).createIsntRealizedDialog() }
+            exhibitPlayRipple.setOnClickListener {
+                when {
+                    isPlaying() -> {
+                        handlePlayerState(PlayerStatus.Paused, exhibitActivity, binding)
+                        updatePlayPauseButton(binding, isPlaying = false)
+                    }
+
+                    else -> {
+                        handlePlayerState(PlayerStatus.Playing, exhibitActivity, binding)
+                        updatePlayPauseButton(binding, isPlaying = true)
+                    }
+                }
+            }
             exhibitPreviousRipple.setOnClickListener { (requireActivity() as BaseActivity).createIsntRealizedDialog() }
             exhibitNextRipple.setOnClickListener { (requireActivity() as BaseActivity).createIsntRealizedDialog() }
             exhibitContactsRipple.setOnClickListener { (requireActivity() as BaseActivity).createIsntRealizedDialog() }
@@ -86,6 +103,12 @@ class ExhibitFragment : Fragment() {
         }
     }
 
+    private fun updatePlayPauseButton(binding: FragmentExhibitBinding, isPlaying: Boolean) {
+        binding.exhibitPlayRipple.setImageResource(
+            if (isPlaying) R.drawable.ic_pause else R.drawable.ic_play
+        )
+    }
+
     private fun observeOnParcelableData() {
         activityViewModel.repositoryData.observe(viewLifecycleOwner) {
             if (it != null) {
@@ -94,15 +117,9 @@ class ExhibitFragment : Fragment() {
             }
 
             when (it) {
-                is DevelopmentLocale -> {
-                    setParametersVisibility(ExhibitObject.Development)
-
-                }
+                is DevelopmentLocale -> setParametersVisibility(ExhibitObject.Development)
                 is OrganizationLocale -> setParametersVisibility(ExhibitObject.Organization)
-                is PersonLocale -> {
-                    setParametersVisibility(ExhibitObject.Person)
-
-                }
+                is PersonLocale -> setParametersVisibility(ExhibitObject.Person)
                 is PlaceLocale -> setParametersVisibility(ExhibitObject.Place)
                 null -> TODO()
             }
@@ -147,10 +164,4 @@ class ExhibitFragment : Fragment() {
                     (data as DevelopmentLocale).description.departmentFilter.keyName
         }
     }
-
-//    override fun onStop() {
-//        super.onStop()
-//
-//        MediaPlayer.pauseAudio(binding)
-//    }
 }

@@ -14,8 +14,6 @@ class FragmentSettingsManager(
 ) {
     private val scope = CoroutineScope(Dispatchers.Main)
 
-//    val audioName = MediaPlayer.setDataSource(activityViewModel.exhibitState.value.repositoryData!!.audio!!)
-
     fun initMediaPlayerWithString(url: String) {
         MediaPlayer.initializeMediaPlayerWithString(exhibitActivity, binding, url) {
             binding.apply {
