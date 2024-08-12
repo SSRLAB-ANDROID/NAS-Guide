@@ -38,7 +38,7 @@ class ExhibitFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        exhibitActivity = requiredActivity() as ExhibitActivity
+        exhibitActivity = requireActivity() as ExhibitActivity
     }
 
     override fun onCreateView(
