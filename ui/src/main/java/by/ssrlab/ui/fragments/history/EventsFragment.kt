@@ -11,15 +11,15 @@ import by.ssrlab.data.util.MainActivityUiState
 import by.ssrlab.data.util.ToolbarStateByDates
 import by.ssrlab.domain.models.ToolbarControlObject
 import by.ssrlab.ui.MainActivity
-import by.ssrlab.ui.databinding.FragmentDatesBinding
-import by.ssrlab.ui.rv.DatesAdapter
+import by.ssrlab.ui.databinding.FragmentEventsBinding
+import by.ssrlab.ui.rv.EventsAdapter
 import by.ssrlab.ui.vm.FDatesVM
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class DatesFragment : BaseFragment() {
+class EventsFragment : BaseFragment() {
 
-    private lateinit var binding: FragmentDatesBinding
-    private lateinit var adapter: DatesAdapter
+    private lateinit var binding: FragmentEventsBinding
+    private lateinit var adapter: EventsAdapter
 
     override val toolbarControlObject = ToolbarControlObject(
         isBack = true,
@@ -34,7 +34,7 @@ class DatesFragment : BaseFragment() {
         super.onStart()
 
         (requireActivity() as MainActivity).apply {
-            changeLayoutState(MainActivityUiState.DateFragment)
+            changeLayoutState(MainActivityUiState.EventFragment)
             setupToolbarByDates(ToolbarStateByDates.OnCreate)
         }
     }
@@ -43,7 +43,7 @@ class DatesFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         activityVM.apply {
-            setHeaderImg(by.ssrlab.common_ui.R.drawable.header_dates)
+            setHeaderImg(by.ssrlab.common_ui.R.drawable.header_events)
             setButtonAction(ButtonAction.BackAction, ::onBackPressed)
         }
 
@@ -78,18 +78,19 @@ class DatesFragment : BaseFragment() {
     }
 
     override fun initAdapter() {
-        adapter = DatesAdapter(
+        adapter = EventsAdapter(
             fragmentViewModel.datesData.value!!,
-            requireContext().resources.getString(by.ssrlab.common_ui.R.string.on_this_day))
+            requireContext().resources.getString(by.ssrlab.common_ui.R.string.on_this_day)
+        )
 
         binding.apply {
-            datesRv.layoutManager = LinearLayoutManager(requireContext())
-            datesRv.adapter = adapter
+            eventsRv.layoutManager = LinearLayoutManager(requireContext())
+            eventsRv.adapter = adapter
         }
     }
 
     override fun initBinding(container: ViewGroup?): View {
-        binding = FragmentDatesBinding.inflate(layoutInflater, container, false)
+        binding = FragmentEventsBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 

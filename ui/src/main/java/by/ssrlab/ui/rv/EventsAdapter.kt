@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
-import by.ssrlab.common_ui.databinding.RvDatesItemBinding
-import by.ssrlab.common_ui.databinding.RvDatesTitleBinding
+import by.ssrlab.common_ui.databinding.RvEventsItemBinding
+import by.ssrlab.common_ui.databinding.RvEventsTitleBinding
 import by.ssrlab.data.data.settings.remote.EventLocale
 import by.ssrlab.domain.utils.fromHtml
 import coil.load
@@ -15,41 +15,41 @@ import coil.transform.RoundedCornersTransformation
 private const val ITEM_TITLE = 0
 private const val ITEM_DATE = 1
 
-class DatesAdapter(
+class EventsAdapter(
     private var entitiesList: List<EventLocale>,
     private val title: String,
-) : RecyclerView.Adapter<DatesAdapter.DatesHolder>() {
+) : RecyclerView.Adapter<EventsAdapter.EventsHolder>() {
 
-    inner class DatesHolder(val binding: ViewBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class EventsHolder(val binding: ViewBinding) : RecyclerView.ViewHolder(binding.root)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DatesHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventsHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding =
-            if (viewType == ITEM_TITLE) RvDatesTitleBinding.inflate(inflater, parent, false)
-            else RvDatesItemBinding.inflate(inflater, parent, false)
+            if (viewType == ITEM_TITLE) RvEventsTitleBinding.inflate(inflater, parent, false)
+            else RvEventsItemBinding.inflate(inflater, parent, false)
 
-        return DatesHolder(binding)
+        return EventsHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: DatesHolder, position: Int) {
+    override fun onBindViewHolder(holder: EventsHolder, position: Int) {
         holder.binding.apply {
             when (this@apply) {
-                is RvDatesTitleBinding -> {
+                is RvEventsTitleBinding -> {
                     this.rvDatesTitle.text = title
                 }
 
-                is RvDatesItemBinding -> {
-                    this.rvDatesDate.text = entitiesList[position - 1].event.keyName
-                    this.rvDatesBody.text = entitiesList[position - 1].about.fromHtml()
+                is RvEventsItemBinding -> {
+                    this.rvEventsDate.text = entitiesList[position - 1].event.keyName
+                    this.rvEventsBody.text = entitiesList[position - 1].about.fromHtml()
 
-                    this.rvDatesPng.load(entitiesList[position - 1]) {
+                    this.rvEventsPng.load(entitiesList[position - 1]) {
                         crossfade(true)
                         crossfade(500)
                         placeholder(by.ssrlab.common_ui.R.drawable.coil_placeholder)
                         transformations(RoundedCornersTransformation(8f))
                     }
 
-                    this.rvDatesRipple.setOnClickListener {
+                    this.rvEventsRipple.setOnClickListener {
                         //TODO
                     }
                 }

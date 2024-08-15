@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
 
-    <solid android:color="@color/dates_background"/>
+    <solid android:color="@color/events_background"/>
     <corners android:radius="@dimen/dates_corners"/>
 
 </shape>

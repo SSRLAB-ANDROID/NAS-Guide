@@ -52,6 +52,7 @@
     <string name="on_this_day">On this day</string>
     <string name="today">Today</string>
     <string name="date">Date</string>
+    <string name="events">Events</string>
     <string name="choose_date">Choose date</string>
 
 </resources>
