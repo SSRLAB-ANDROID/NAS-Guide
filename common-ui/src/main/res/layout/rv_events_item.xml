@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
-        android:background="@drawable/background_rv_dates"
+        android:background="@drawable/background_rv_events"
         android:elevation="@dimen/dates_elevation"
 
         android:layout_marginVertical="@dimen/dates_margin_under"
@@ -26,11 +26,11 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <ImageView
-            android:id="@+id/rv_dates_png"
+            android:id="@+id/rv_events_png"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
 
-            android:background="@drawable/background_rv_dates_png"
+            android:background="@drawable/background_rv_events_png"
 
             android:layout_marginTop="@dimen/dates_margin_v"
             android:layout_marginHorizontal="@dimen/dates_margin_h"
@@ -40,11 +40,11 @@
             app:layout_constraintEnd_toEndOf="parent"/>
 
         <TextView
-            android:id="@+id/rv_dates_date"
+            android:id="@+id/rv_events_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:textColor="@color/dates_title"
+            android:textColor="@color/events_title"
             android:textStyle="bold"
             android:textSize="@dimen/dates_date"
 
@@ -53,16 +53,16 @@
             android:layout_marginTop="@dimen/dates_margin_under"
             android:layout_marginHorizontal="@dimen/dates_margin_h"
 
-            app:layout_constraintTop_toBottomOf="@id/rv_dates_png"
+            app:layout_constraintTop_toBottomOf="@id/rv_events_png"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
         <TextView
-            android:id="@+id/rv_dates_body"
+            android:id="@+id/rv_events_body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:textColor="@color/dates_body"
+            android:textColor="@color/events_body"
             android:textSize="@dimen/dates_body"
 
             android:gravity="start"
@@ -71,17 +71,17 @@
             android:layout_marginBottom="@dimen/dates_margin_v"
             android:layout_marginHorizontal="@dimen/dates_margin_h"
 
-            app:layout_constraintTop_toBottomOf="@id/rv_dates_date"
+            app:layout_constraintTop_toBottomOf="@id/rv_events_date"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
         <ImageButton
-            android:id="@+id/rv_dates_ripple"
+            android:id="@+id/rv_events_ripple"
             android:layout_width="0dp"
             android:layout_height="0dp"
 
-            android:background="@drawable/ripple_dates"
+            android:background="@drawable/ripple_events"
 
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"

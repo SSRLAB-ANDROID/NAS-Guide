@@ -13,7 +13,7 @@
 
         android:textSize="@dimen/dates_title"
         android:textStyle="bold"
-        android:textColor="@color/dates_title"
+        android:textColor="@color/events_title"
 
         android:gravity="start"
 

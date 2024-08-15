@@ -73,7 +73,7 @@
                 android:onClick="@{viewModel.chooseDateAction}"
 
                 android:padding="@dimen/toolbar_button_padding"
-                android:src="@drawable/toolbar_main_ic_date"
+                android:src="@drawable/toolbar_main_ic_event"
 
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -141,7 +141,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                android:text="@string/date"
+                android:text="@string/events"
                 android:textColor="@color/primary_text"
                 android:textSize="@dimen/activity_dates_title_additional"
                 android:textStyle="bold"

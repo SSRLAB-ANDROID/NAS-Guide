@@ -26,7 +26,7 @@ class FHistoryVM(private val uiDataProvider: UiDataProvider): ViewModel() {
     }
 
     fun getData() = uiDataProvider.getHistoryFolders(
-        R.id.action_historyFragment_to_datesFragment,
+        R.id.action_historyFragment_to_eventsFragment,
         R.id.action_historyFragment_to_personsFragment,
         R.id.action_historyFragment_to_placesFragment
     )

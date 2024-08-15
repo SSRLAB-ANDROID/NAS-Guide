@@ -43,6 +43,7 @@
     <string name="on_this_day">В этот день</string>
     <string name="today">Сегодня</string>
     <string name="date">Дата</string>
+    <string name="events">События</string>
     <string name="choose_date">Выберите дату</string>
 
 </resources>

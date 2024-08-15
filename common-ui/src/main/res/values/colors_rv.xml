@@ -14,9 +14,9 @@
     <color name="rv_grid_background">#F3F3F7</color>
     <color name="ripple_grid">#66A6A6A6</color>
 
-    <color name="dates_title">#000B16</color>
-    <color name="dates_body">#4F4F4F</color>
-    <color name="dates_background">#F3F3F7</color>
-    <color name="dates_ripple">#66A6A6A6</color>
+    <color name="events_title">#000B16</color>
+    <color name="events_body">#4F4F4F</color>
+    <color name="events_background">#F3F3F7</color>
+    <color name="events_ripple">#66A6A6A6</color>
 
 </resources>
