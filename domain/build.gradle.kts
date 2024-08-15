@@ -42,4 +42,6 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.kotlin.stdlib)
+    implementation (libs.androidx.security.crypto)
+    implementation (libs.androidx.annotation)
 }

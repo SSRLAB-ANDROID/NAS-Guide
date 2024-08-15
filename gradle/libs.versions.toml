@@ -1,5 +1,6 @@
 [versions]
 agp = "8.4.2"
+annotation = "1.1.0"
 coil = "2.6.0"
 databindingRuntime = "8.5.1"
 
@@ -29,6 +30,7 @@ navigationKtx = "2.7.7"
 recyclerView = "1.3.2"
 
 room = "2.6.1"
+securityCrypto = "1.1.0-alpha03"
 symbolProcessingApi = "2.0.0-1.0.23"
 roomCommon = "2.6.1"
 
@@ -36,11 +38,14 @@ roomCommon = "2.6.1"
 map = "10.16.1"
 mapNavigation = "2.17.1"
 playServicesLocation = "21.3.0"
+securityCryptoKtx = "1.0.0"
 
 [libraries]
+androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "annotation" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-databinding-runtime = { module = "androidx.databinding:databinding-runtime", version.ref = "databindingRuntime" }
 androidx-fragment-testing = { module = "androidx.fragment:fragment-testing", version.ref = "fragmentTesting" }
+androidx-security-crypto = { module = "androidx.security:security-crypto", version.ref = "securityCrypto" }
 coil = { module = "io.coil-kt:coil", version.ref = "coil" }
 
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -85,6 +90,7 @@ androidx-room-common = { group = "androidx.room", name = "room-common", version.
 map-navigation = { module = "com.mapbox.navigation:android", version.ref = "mapNavigation" }
 map = { module = "com.mapbox.maps:android", version.ref = "map" }
 play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
+androidx-security-crypto-ktx = { group = "androidx.security", name = "security-crypto-ktx", version.ref = "securityCryptoKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
