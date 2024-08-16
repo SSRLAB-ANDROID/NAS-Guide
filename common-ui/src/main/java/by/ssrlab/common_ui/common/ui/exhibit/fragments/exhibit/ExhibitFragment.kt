@@ -55,7 +55,7 @@ class ExhibitFragment : Fragment() {
 
         lifecycleScope.launch {
             val audio = withContext(Dispatchers.IO) {
-                activityViewModel.exhibitState.value.repositoryData?.audio
+                activityViewModel.repositoryData.value?.audio
             }
 
             if (audio != null) {
