@@ -5,6 +5,7 @@ import android.view.ViewTreeObserver
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
 import androidx.constraintlayout.widget.ConstraintLayout
+import by.ssrlab.common_ui.R
 import by.ssrlab.common_ui.common.ui.base.BaseActivity
 import by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.ActivityMainMarginParams
 import by.ssrlab.common_ui.common.vm.AExhibitVM
@@ -39,7 +40,7 @@ class ExhibitActivity : BaseActivity() {
             if (repositoryData.value != null) observeHeader()
         }
 
-        setupButtons()
+        setUpButtons()
         observeLayoutChange()
     }
 
@@ -52,14 +53,20 @@ class ExhibitActivity : BaseActivity() {
         }
     }
 
-    private fun setupButtons() {
-        setVolumeAction()
+    private fun setUpButtons() {
+        setUpVolumeButton()
         setBackAction()
     }
 
-    private fun setVolumeAction() {
-        binding.toolbarVolume.setOnClickListener {
-            //TODO
+    private fun setUpVolumeButton() {
+        if (!activityViewModel.isVolumeOn.value!!) binding.toolbarVolume.setImageResource(R.drawable.toolbar_exhibit_ic_volume_off)
+        else binding.toolbarVolume.setImageResource(R.drawable.toolbar_exhibit_ic_volume)
+
+        activityViewModel.isVolumeOn.observe(this) {
+            if (!activityViewModel.isVolumeOn.value!!) binding.toolbarVolume.setImageResource(
+                R.drawable.toolbar_exhibit_ic_volume_off
+            )
+            else binding.toolbarVolume.setImageResource(R.drawable.toolbar_exhibit_ic_volume)
         }
     }
 

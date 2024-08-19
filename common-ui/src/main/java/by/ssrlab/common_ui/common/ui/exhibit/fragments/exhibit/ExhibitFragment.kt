@@ -15,6 +15,7 @@ import by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.MediaPlayer.isPlayi
 import by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.MediaPlayer.pauseAudio
 import by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.PlayerStatus
 import by.ssrlab.common_ui.common.vm.AExhibitVM
+import by.ssrlab.common_ui.databinding.ActivityExhibitBinding
 import by.ssrlab.common_ui.databinding.FragmentExhibitBinding
 import by.ssrlab.data.data.common.RepositoryData
 import by.ssrlab.data.data.settings.remote.DevelopmentLocale
@@ -31,6 +32,7 @@ import org.koin.androidx.viewmodel.ext.android.activityViewModel
 class ExhibitFragment : Fragment() {
 
     private lateinit var binding: FragmentExhibitBinding
+    private lateinit var activityBinding: ActivityExhibitBinding
     private val activityViewModel: AExhibitVM by activityViewModel()
     private lateinit var exhibitActivity: ExhibitActivity
     private lateinit var data: RepositoryData
@@ -39,6 +41,7 @@ class ExhibitFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         exhibitActivity = requireActivity() as ExhibitActivity
+        activityBinding = ActivityExhibitBinding.inflate(layoutInflater)
     }
 
     override fun onCreateView(
