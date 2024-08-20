@@ -1,5 +1,6 @@
 package by.ssrlab.common_ui.common.ui.exhibit.fragments.exhibit
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -38,10 +39,16 @@ class ExhibitFragment : Fragment() {
     private lateinit var data: RepositoryData
     private lateinit var fragmentSettingsManager: FragmentSettingsManager
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        activityBinding = ActivityExhibitBinding.inflate(layoutInflater)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        exhibitActivity = requireActivity() as ExhibitActivity
-        activityBinding = ActivityExhibitBinding.inflate(layoutInflater)
+
+        exhibitActivity = context as ExhibitActivity
     }
 
     override fun onCreateView(
