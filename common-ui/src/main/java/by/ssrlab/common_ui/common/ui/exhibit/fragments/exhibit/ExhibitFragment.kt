@@ -1,6 +1,5 @@
 package by.ssrlab.common_ui.common.ui.exhibit.fragments.exhibit
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +15,6 @@ import by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.MediaPlayer.isPlayi
 import by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.MediaPlayer.pauseAudio
 import by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.PlayerStatus
 import by.ssrlab.common_ui.common.vm.AExhibitVM
-import by.ssrlab.common_ui.databinding.ActivityExhibitBinding
 import by.ssrlab.common_ui.databinding.FragmentExhibitBinding
 import by.ssrlab.data.data.common.RepositoryData
 import by.ssrlab.data.data.settings.remote.DevelopmentLocale
@@ -33,22 +31,15 @@ import org.koin.androidx.viewmodel.ext.android.activityViewModel
 class ExhibitFragment : Fragment() {
 
     private lateinit var binding: FragmentExhibitBinding
-    private lateinit var activityBinding: ActivityExhibitBinding
     private val activityViewModel: AExhibitVM by activityViewModel()
     private lateinit var exhibitActivity: ExhibitActivity
     private lateinit var data: RepositoryData
     private lateinit var fragmentSettingsManager: FragmentSettingsManager
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        activityBinding = ActivityExhibitBinding.inflate(layoutInflater)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        exhibitActivity = context as ExhibitActivity
+        exhibitActivity = requireActivity() as ExhibitActivity
     }
 
     override fun onCreateView(
