@@ -8,10 +8,12 @@
 
         <activity
             android:name=".common.ui.map.MapActivity"
+            android:screenOrientation="portrait"
             android:exported="false"/>
 
         <activity
             android:name=".common.ui.exhibit.ExhibitActivity"
+            android:screenOrientation="portrait"
             android:exported="false"/>
 
     </application>
