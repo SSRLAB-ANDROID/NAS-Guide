@@ -6,6 +6,7 @@
         <activity
             android:name=".StartActivity"
             android:theme="@style/Theme.NASGuide"
+            android:screenOrientation="portrait"
             android:exported="true">
 
             <intent-filter>
@@ -18,6 +19,7 @@
         <activity
             android:name=".MainActivity"
             android:theme="@style/Theme.NASGuide"
+            android:screenOrientation="portrait"
             android:exported="true"/>
 
     </application>
