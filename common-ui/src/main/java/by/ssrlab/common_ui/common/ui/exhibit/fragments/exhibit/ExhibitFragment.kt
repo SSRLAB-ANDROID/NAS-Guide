@@ -38,6 +38,7 @@ class ExhibitFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         exhibitActivity = requireActivity() as ExhibitActivity
     }
 
@@ -55,7 +56,7 @@ class ExhibitFragment : Fragment() {
 
         lifecycleScope.launch {
             val audio = withContext(Dispatchers.IO) {
-                activityViewModel.exhibitState.value.repositoryData?.audio
+                activityViewModel.repositoryData.value?.audio
             }
 
             if (audio != null) {

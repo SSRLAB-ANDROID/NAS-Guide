@@ -32,7 +32,7 @@
     <string name="dialog_isnt_realized">Прабачце, функцыянал пакуль што недаступны</string>
 
     //Exhibit
-    <string name="exhibit_developer">Распрацоўшчык</string>
+    <string name="exhibit_developer">Распрацоўшчык:</string>
     <string name="exhibit_map">Паглядзець на карце</string>
     <string name="exhibit_research">Галіны даследвання</string>
     <string name="exhibit_laboratories">Лабараторыі</string>

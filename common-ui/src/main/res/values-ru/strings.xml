@@ -32,9 +32,9 @@
     <string name="dialog_isnt_realized">Извините, этот функционал пока не реализован</string>
 
     //Exhibit
-    <string name="exhibit_developer">Разработчик</string>
+    <string name="exhibit_developer">Разработчик:</string>
     <string name="exhibit_map">Посмотреть на карте</string>
-    <string name="exhibit_research">Отрасли ислледования</string>
+    <string name="exhibit_research">Области исcледования</string>
     <string name="exhibit_laboratories">Лаборатории</string>
     <string name="exhibit_achievements">Достижения</string>
     <string name="exhibit_contacts">Контакты</string>
