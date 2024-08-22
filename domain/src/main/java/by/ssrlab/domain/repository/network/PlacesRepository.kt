@@ -8,8 +8,6 @@ import retrofit2.Call
 
 class PlacesRepository(private val api: PlacesApi): BaseRepository<PlaceLocale> {
 
-//    override suspend fun get(language: Int) = api.get(language)
-
     override suspend fun get(language: Int): Resource<Call<List<PlaceLocale>>> {
         return try {
             val response = api.get(language)

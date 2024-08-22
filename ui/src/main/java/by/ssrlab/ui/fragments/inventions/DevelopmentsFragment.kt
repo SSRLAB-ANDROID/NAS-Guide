@@ -65,11 +65,9 @@ class DevelopmentsFragment: BaseFragment() {
                 is Resource.Loading -> {
                     adapter.showLoading()
                 }
-
                 is Resource.Success -> {
                     adapter.updateData(resource.data)
                 }
-
                 is Resource.Error -> {
                     adapter.showError(resource.message)
                 }
@@ -87,16 +85,13 @@ class DevelopmentsFragment: BaseFragment() {
                 val data = resource.data
                 adapter.updateData(data)
             }
-
             is Resource.Error -> {
                 adapter.showError(resource.message)
             }
-
             is Resource.Loading -> {
                 adapter.showLoading()
             }
-
-            null -> TODO()
+            null -> {}
         }
 
         binding.apply {

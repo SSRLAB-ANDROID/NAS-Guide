@@ -6,11 +6,6 @@ import by.ssrlab.domain.repository.network.base.BaseRepository
 import by.ssrlab.domain.utils.Resource
 import retrofit2.Call
 
-//class DevelopmentsRepository(private val api: DevelopmentsApi): BaseRepository<DevelopmentLocale> {
-//
-//    override fun get(language: Int) = api.get(language)
-//}
-
 class DevelopmentsRepository(private val api: DevelopmentsApi) : BaseRepository<DevelopmentLocale> {
 
     override suspend fun get(language: Int): Resource<Call<List<DevelopmentLocale>>> {

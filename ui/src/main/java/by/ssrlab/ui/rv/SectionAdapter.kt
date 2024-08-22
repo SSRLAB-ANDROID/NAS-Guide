@@ -85,8 +85,7 @@ class SectionAdapter(
 //                holder.binding.apply { errorTextView.text = errorMessage } to specific the error
             }
 
-            is LoadingHolder -> {   // auto    }
-            }
+            is LoadingHolder -> {   /*auto*/   }
         }
     }
 
