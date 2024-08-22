@@ -6,6 +6,7 @@ import by.ssrlab.data.data.common.RepositoryData
 import by.ssrlab.domain.models.SharedPreferencesUtil
 import by.ssrlab.domain.repository.network.base.BaseRepository
 import by.ssrlab.domain.utils.transformLanguageToInt
+import by.ssrlab.domain.utils.unwrap
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -25,15 +26,41 @@ open class BaseFragmentVM<T : RepositoryData>(private val baseRepository: BaseRe
 
     fun getData(onSuccess: (List<T>) -> Unit) {
         networkScope.launch {
-            baseRepository.get(sharedPreferences.getLanguage()!!.transformLanguageToInt()).enqueue(object : Callback<List<T>> {
-                override fun onResponse(p0: Call<List<T>>, p1: Response<List<T>>) {
-                    uiScope.launch { onSuccess(p1.body() ?: listOf()) }
-                }
+            baseRepository.get(sharedPreferences.getLanguage()!!.transformLanguageToInt()).unwrap()
+                ?.enqueue(object : Callback<List<T>> {
+                    override fun onResponse(p0: Call<List<T>>, p1: Response<List<T>>) {
+                        uiScope.launch { onSuccess(p1.body() ?: listOf()) }
+                    }
 
-                override fun onFailure(p0: Call<List<T>>, p1: Throwable) {
-                    Log.e(REQUEST_ERROR_LOG, p1.message.toString())
-                }
-            })
+                    override fun onFailure(p0: Call<List<T>>, p1: Throwable) {
+                        Log.e(REQUEST_ERROR_LOG, p1.message.toString())
+                    }
+                })
+        }
+    }
+
+    fun getResourceData(
+        onSuccess: (List<T>) -> Unit,
+        onError: (String) -> Unit,
+        onLoading: (() -> Unit)? = null
+    ) {
+        onLoading?.invoke()
+        networkScope.launch {
+            baseRepository.get(sharedPreferences.getLanguage()!!.transformLanguageToInt()).unwrap()
+                ?.enqueue(object : Callback<List<T>> {
+                    override fun onResponse(p0: Call<List<T>>, p1: Response<List<T>>) {
+                        if (p1.isSuccessful) {
+                            uiScope.launch { onSuccess(p1.body() ?: listOf()) }
+                        } else {
+                            uiScope.launch { onError("Failed with code: ${p1.code()}") }
+                        }
+                    }
+
+                    override fun onFailure(p0: Call<List<T>>, p1: Throwable) {
+                        Log.e(REQUEST_ERROR_LOG, p1.message.toString())
+                        onError(p1.message ?: "An unknown error occurred")
+                    }
+                })
         }
     }
 
