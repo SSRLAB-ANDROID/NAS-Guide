@@ -3,6 +3,7 @@ package by.ssrlab.common_ui.common.ui.exhibit
 import android.content.IntentFilter
 import android.os.Bundle
 import android.view.ViewTreeObserver
+import android.widget.Toast
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -52,7 +53,10 @@ class ExhibitActivity : BaseActivity() {
     override fun onResume() {
         super.onResume()
 
-        registerReceiver(audioManager.volumeChangeReceiver, IntentFilter("android.media.VOLUME_CHANGED_ACTION"))
+        registerReceiver(
+            audioManager.volumeChangeReceiver,
+            IntentFilter("android.media.VOLUME_CHANGED_ACTION")
+        )
     }
 
     override fun onPause() {
@@ -81,17 +85,22 @@ class ExhibitActivity : BaseActivity() {
 
         activityViewModel.isVolumeOn.observe(this) {
             if (!activityViewModel.isVolumeOn.value!!) binding.toolbarVolume.setImageResource(
-                R.drawable.toolbar_exhibit_ic_volume_off)
+                R.drawable.toolbar_exhibit_ic_volume_off
+            )
             else binding.toolbarVolume.setImageResource(R.drawable.toolbar_exhibit_ic_volume)
         }
 
         binding.toolbarVolume.setOnClickListener {
-            if (activityViewModel.isVolumeOn.value!!) audioManager.controlVolume(0, this)
-            else audioManager.controlVolume(7, this)
+            if (activityViewModel.isVolumeOn.value!!) {
+                audioManager.controlVolume(0, this)
+                Toast.makeText(this, getString(R.string.volume_off), Toast.LENGTH_SHORT).show()
+            } else audioManager.controlVolume(7, this)
         }
     }
 
-    private fun setUpVolumeStateListener(){ audioManager.setUpVolumeStateListener(activityViewModel, this) }
+    private fun setUpVolumeStateListener() {
+        audioManager.setUpVolumeStateListener(activityViewModel, this)
+    }
 
     private fun setBackAction() {
         binding.toolbarBack.setOnClickListener {
