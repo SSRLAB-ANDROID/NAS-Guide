@@ -1,7 +1,10 @@
 package by.ssrlab.common_ui.common.ui.exhibit.fragments.utils
 
+import android.annotation.SuppressLint
 import android.media.MediaPlayer
 import android.net.Uri
+import android.os.Handler
+import android.os.Looper
 import android.widget.Toast
 import androidx.core.net.toUri
 import by.ssrlab.common_ui.common.ui.base.BaseActivity
@@ -19,6 +22,10 @@ object MediaPlayer {
 
     private val job = Job()
     private val scope = CoroutineScope(Dispatchers.IO + job)
+    private val scopeUI = CoroutineScope(Dispatchers.Main)
+
+    private val handler = Handler(Looper.getMainLooper())
+    private lateinit var updateProgressTask: Runnable
 
     fun initializeMediaPlayerWithString(
         activity: BaseActivity,
@@ -28,6 +35,15 @@ object MediaPlayer {
     ) {
         mediaPlayer = MediaPlayer()
 
+        updateProgressTask = object : Runnable {
+            override fun run() {
+                if (mediaPlayer?.isPlaying == true) {
+                    updateProgress(binding = binding, activity = activity)
+                    handler.postDelayed(this, 100)
+                }
+            }
+        }
+
         try {
             setDataSource(activity, url.toUri())
             mediaPlayer?.setOnPreparedListener {
@@ -36,7 +52,7 @@ object MediaPlayer {
                     exhibitCurrentTime.text =
                         seekBarFuns.convertToTimerMode(mediaPlayer!!.currentPosition)
                 }
-                listenProgress(binding)
+                listenProgress(binding = binding, activity = activity as ExhibitActivity)
                 onSuccess()
             }
         } catch (e: Exception) {
@@ -46,15 +62,21 @@ object MediaPlayer {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     fun handlePlayerState(
         state: PlayerStatus,
         activity: ExhibitActivity,
         binding: FragmentExhibitBinding
     ) {
+        val fragmentSettingsManager = FragmentSettingsManager(binding, activity)
+
         when (state) {
             is PlayerStatus.Playing -> {
+                fragmentSettingsManager.makeProgressVisible()
+
                 try {
                     mediaPlayer?.start()
+                    startUpdatingProgress()
                 } catch (e: Exception) {
                     Toast.makeText(activity, e.message, Toast.LENGTH_SHORT).show()
                 }
@@ -62,6 +84,7 @@ object MediaPlayer {
 
             is PlayerStatus.Paused -> {
                 mediaPlayer?.pause()
+
                 scope.launch {
                     activity.runOnUiThread {
                         binding.apply {
@@ -76,52 +99,28 @@ object MediaPlayer {
             }
 
             is PlayerStatus.Seeking -> {
+                updateProgress(binding = binding, activity = activity)
             }
 
             is PlayerStatus.Ended -> {
                 mediaPlayer?.seekTo(0)
-                scope.launch {
-                    activity.runOnUiThread {
-                        binding.apply {
-                            exhibitEndTime.text = "0:00"
-                            exhibitCurrentTime.text =
-                                seekBarFuns.convertToTimerMode(mediaPlayer!!.currentPosition)
-                        }
-                    }
-                }
+//                scope.launch {
+//                    activity.runOnUiThread {
+//                        binding.apply {
+//                            exhibitEndTime.text = "0:00"
+//                            exhibitCurrentTime.text =
+//                                seekBarFuns.convertToTimerMode(mediaPlayer!!.currentPosition)
+//                        }
+//                    }
+//                }
+//                stopUpdatingProgress()
+                fragmentSettingsManager.makeProgressInvisible()
+                PlayerStatus.Paused
             }
         }
     }
 
-    private fun mediaPlayerIsNull(
-        audio: String,
-        binding: FragmentExhibitBinding,
-        exhibitActivity: ExhibitActivity
-    ) {
-        val fragmentSettingsManager = FragmentSettingsManager(
-            binding = binding,
-            exhibitActivity = exhibitActivity
-        )
-        fragmentSettingsManager.initMediaPlayerWithString(audio)
-    }
-
-//    fun isPlaying(
-//        audio: String,
-//        binding: FragmentExhibitBinding,
-//        exhibitActivity: ExhibitActivity
-//    ): Boolean {
-//
-//        Log.d("isPlaying", "isPlaying")
-//
-//        if (mediaPlayer == null) Log.d("isPlaying", "mediaPlayerIsNull") //mediaPlayerIsNull(audio, binding, exhibitActivity)
-//
-//        Log.d("isPlaying", "isPlaying")
-//        return mediaPlayer?.isPlaying ?: false
-//    }
-
-    fun isPlaying(): Boolean {
-        return mediaPlayer?.isPlaying ?: false
-    }
+    fun isPlaying() = mediaPlayer?.isPlaying ?: false
 
     fun playAudio(
         activity: ExhibitActivity,
@@ -132,19 +131,27 @@ object MediaPlayer {
             when (playerStatus) {
                 PlayerStatus.Paused -> {
                     mediaPlayer?.pause()
+                    handlePlayerState(PlayerStatus.Paused, activity, binding)
                 }
 
                 PlayerStatus.Playing -> {
                     try {
                         mediaPlayer?.start()
                         handlePlayerState(PlayerStatus.Playing, activity, binding)
+                        mediaPlayer?.setOnSeekCompleteListener {
+                            updateProgress(binding = binding, activity = activity)
+                        }
                     } catch (e: Exception) {
                         Toast.makeText(activity, e.message, Toast.LENGTH_SHORT).show()
                     }
                 }
 
-                else -> {
-                    Toast.makeText(activity, "Not implemented yet", Toast.LENGTH_SHORT).show()
+                PlayerStatus.Seeking -> {
+                    handlePlayerState(PlayerStatus.Seeking, activity, binding)
+                }
+
+                PlayerStatus.Ended -> {
+                    handlePlayerState(PlayerStatus.Ended, activity, binding)
                 }
             }
         }
@@ -171,15 +178,48 @@ object MediaPlayer {
         }
     }
 
-    private fun listenProgress(binding: FragmentExhibitBinding) {
-        binding.exhibitProgress.setOnSeekBarChangeListener(
-            seekBarFuns.createSeekBarProgressListener { progress ->
-                mediaPlayer?.seekTo(progress)
-                scope.launch {
-                    binding.exhibitCurrentTime.text =
-                        seekBarFuns.convertToTimerMode(mediaPlayer!!.currentPosition)
+    private fun listenProgress(
+        binding: FragmentExhibitBinding,
+        activity: ExhibitActivity
+    ) {
+        binding.exhibitProgress.max = mediaPlayer?.duration ?: 0
+
+        scopeUI.launch(Dispatchers.Main) {
+            binding.exhibitProgress.setOnSeekBarChangeListener(
+                seekBarFuns.createSeekBarProgressListener { progress ->
+                    mediaPlayer?.seekTo(progress)
+                    updateProgress(binding = binding, activity = activity)
                 }
+            )
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun updateProgress(
+        binding: FragmentExhibitBinding,
+        activity: BaseActivity
+    ) {
+        scopeUI.launch(Dispatchers.Main) {
+            val currentPosition = mediaPlayer!!.currentPosition
+            val duration = mediaPlayer!!.duration
+
+            if (currentPosition < duration) {
+                binding.exhibitCurrentTime.text = seekBarFuns.convertToTimerMode(currentPosition)
+            } else {
+                binding.exhibitProgress.progress = binding.exhibitProgress.max
+                binding.exhibitCurrentTime.text = seekBarFuns.convertToTimerMode(duration)
+                stopUpdatingProgress()
+                handlePlayerState(PlayerStatus.Ended, activity as ExhibitActivity, binding)
             }
-        )
+            binding.exhibitProgress.progress = currentPosition
+        }
+    }
+
+    private fun startUpdatingProgress() {
+        handler.post(updateProgressTask)
+    }
+
+    private fun stopUpdatingProgress() {
+        handler.removeCallbacks(updateProgressTask)
     }
 }
