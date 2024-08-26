@@ -79,4 +79,8 @@ class FragmentSettingsManager(
             }
         }
     }
+
+    fun destroyPlayer(){
+        MediaPlayer.destroyPlayer()
+    }
 }

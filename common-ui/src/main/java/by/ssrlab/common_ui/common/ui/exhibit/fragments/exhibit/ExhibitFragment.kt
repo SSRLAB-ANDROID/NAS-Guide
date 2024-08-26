@@ -75,6 +75,12 @@ class ExhibitFragment : Fragment() {
         pauseAudio()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        fragmentSettingsManager.destroyPlayer()
+    }
+
     private fun disableButtons() {
         binding.apply {
             exhibitPreviousRipple.setOnClickListener { (requireActivity() as BaseActivity).createIsntRealizedDialog() }

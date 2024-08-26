@@ -104,16 +104,7 @@ object MediaPlayer {
 
             is PlayerStatus.Ended -> {
                 mediaPlayer?.seekTo(0)
-//                scope.launch {
-//                    activity.runOnUiThread {
-//                        binding.apply {
-//                            exhibitEndTime.text = "0:00"
-//                            exhibitCurrentTime.text =
-//                                seekBarFuns.convertToTimerMode(mediaPlayer!!.currentPosition)
-//                        }
-//                    }
-//                }
-//                stopUpdatingProgress()
+                stopUpdatingProgress()
                 fragmentSettingsManager.makeProgressInvisible()
                 PlayerStatus.Paused
             }
@@ -221,5 +212,10 @@ object MediaPlayer {
 
     private fun stopUpdatingProgress() {
         handler.removeCallbacks(updateProgressTask)
+    }
+
+    fun destroyPlayer() {
+        mediaPlayer?.release()
+        mediaPlayer = null
     }
 }
