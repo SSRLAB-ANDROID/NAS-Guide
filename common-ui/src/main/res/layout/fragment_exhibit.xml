@@ -63,7 +63,7 @@
                         android:textColor="@color/exhibit_text_secondary"
                         android:textSize="@dimen/exhibit_text_timer"
 
-                        android:layout_marginStart="10dp"
+                        android:layout_marginStart="@dimen/exhibit_button_margin_h_3"
 
                         app:layout_constraintTop_toBottomOf="@id/exhibit_progress"
                         app:layout_constraintStart_toStartOf="@id/exhibit_progress"/>
@@ -76,7 +76,7 @@
                         android:textColor="@color/exhibit_text_secondary"
                         android:textSize="@dimen/exhibit_text_timer"
 
-                        android:layout_marginEnd="10dp"
+                        android:layout_marginEnd="@dimen/exhibit_button_margin_h_3"
 
                         app:layout_constraintTop_toBottomOf="@id/exhibit_progress"
                         app:layout_constraintEnd_toEndOf="@id/exhibit_progress"/>
