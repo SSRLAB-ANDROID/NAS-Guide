@@ -3,8 +3,6 @@ package by.ssrlab.common_ui.common.ui.exhibit.fragments.utils
 import android.annotation.SuppressLint
 import android.media.MediaPlayer
 import android.net.Uri
-import android.os.Handler
-import android.os.Looper
 import android.widget.Toast
 import androidx.core.net.toUri
 import by.ssrlab.common_ui.common.ui.base.BaseActivity
@@ -13,6 +11,9 @@ import by.ssrlab.common_ui.databinding.FragmentExhibitBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 object MediaPlayer {
@@ -22,10 +23,8 @@ object MediaPlayer {
 
     private val job = Job()
     private val scope = CoroutineScope(Dispatchers.IO + job)
-    private val scopeUI = CoroutineScope(Dispatchers.Main)
-
-    private val handler = Handler(Looper.getMainLooper())
-    private lateinit var updateProgressTask: Runnable
+    private val scopeUI = CoroutineScope(Dispatchers.Main) //same scope for UI
+    private var playerScope: CoroutineScope? = null
 
     fun initializeMediaPlayerWithString(
         activity: BaseActivity,
@@ -34,15 +33,6 @@ object MediaPlayer {
         onSuccess: () -> Unit
     ) {
         mediaPlayer = MediaPlayer()
-
-        updateProgressTask = object : Runnable {
-            override fun run() {
-                if (mediaPlayer?.isPlaying == true) {
-                    updateProgress(binding = binding, activity = activity)
-                    handler.postDelayed(this, 100)
-                }
-            }
-        }
 
         try {
             setDataSource(activity, url.toUri())
@@ -76,7 +66,7 @@ object MediaPlayer {
 
                 try {
                     mediaPlayer?.start()
-                    startUpdatingProgress()
+                    startProgressTracking(binding = binding, activity = activity)
                 } catch (e: Exception) {
                     Toast.makeText(activity, e.message, Toast.LENGTH_SHORT).show()
                 }
@@ -104,7 +94,7 @@ object MediaPlayer {
 
             is PlayerStatus.Ended -> {
                 mediaPlayer?.seekTo(0)
-                stopUpdatingProgress()
+                stopProgressTracking()
                 fragmentSettingsManager.makeProgressInvisible()
                 PlayerStatus.Paused
             }
@@ -199,19 +189,34 @@ object MediaPlayer {
             } else {
                 binding.exhibitProgress.progress = binding.exhibitProgress.max
                 binding.exhibitCurrentTime.text = seekBarFuns.convertToTimerMode(duration)
-                stopUpdatingProgress()
+                stopProgressTracking()
                 handlePlayerState(PlayerStatus.Ended, activity as ExhibitActivity, binding)
             }
             binding.exhibitProgress.progress = currentPosition
         }
     }
 
-    private fun startUpdatingProgress() {
-        handler.post(updateProgressTask)
+    private fun startProgressTracking(binding: FragmentExhibitBinding, activity: ExhibitActivity) {
+        createNewPlayerScope()
+
+        playerScope?.launch {
+            while (isActive) {
+                if (mediaPlayer?.isPlaying == true) {
+                    updateProgress(binding = binding, activity = activity)
+                }
+                delay(100)
+            }
+        }
     }
 
-    private fun stopUpdatingProgress() {
-        handler.removeCallbacks(updateProgressTask)
+    private fun createNewPlayerScope() {
+        playerScope?.cancel()
+        playerScope = CoroutineScope(Dispatchers.Main) //everytime it's new
+    }
+
+    private fun stopProgressTracking() {
+        playerScope?.cancel()
+        playerScope = null
     }
 
     fun destroyPlayer() {
