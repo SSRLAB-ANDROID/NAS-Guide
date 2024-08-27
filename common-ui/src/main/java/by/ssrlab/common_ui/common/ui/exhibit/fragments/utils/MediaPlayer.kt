@@ -94,6 +94,7 @@ object MediaPlayer {
 
             is PlayerStatus.Ended -> {
                 mediaPlayer?.seekTo(0)
+                mediaPlayer?.pause()
                 stopProgressTracking()
                 fragmentSettingsManager.makeProgressInvisible()
                 PlayerStatus.Paused
@@ -165,7 +166,7 @@ object MediaPlayer {
     ) {
         binding.exhibitProgress.max = mediaPlayer?.duration ?: 0
 
-        scopeUI.launch(Dispatchers.Main) {
+        scopeUI.launch {
             binding.exhibitProgress.setOnSeekBarChangeListener(
                 seekBarFuns.createSeekBarProgressListener { progress ->
                     mediaPlayer?.seekTo(progress)
@@ -180,16 +181,15 @@ object MediaPlayer {
         binding: FragmentExhibitBinding,
         activity: BaseActivity
     ) {
-        scopeUI.launch(Dispatchers.Main) {
-            val currentPosition = mediaPlayer!!.currentPosition
-            val duration = mediaPlayer!!.duration
+        scopeUI.launch {
+            val currentPosition = mediaPlayer?.currentPosition ?: 0
+            val duration = mediaPlayer?.duration ?: 0
 
-            if (currentPosition < duration) {
+            if (currentPosition < duration - 500) {
                 binding.exhibitCurrentTime.text = seekBarFuns.convertToTimerMode(currentPosition)
             } else {
-                binding.exhibitProgress.progress = binding.exhibitProgress.max
+                binding.exhibitProgress.progress = mediaPlayer!!.duration
                 binding.exhibitCurrentTime.text = seekBarFuns.convertToTimerMode(duration)
-                stopProgressTracking()
                 handlePlayerState(PlayerStatus.Ended, activity as ExhibitActivity, binding)
             }
             binding.exhibitProgress.progress = currentPosition
