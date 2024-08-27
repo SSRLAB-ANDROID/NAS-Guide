@@ -54,5 +54,6 @@
     <string name="date">Date</string>
     <string name="events">Events</string>
     <string name="choose_date">Choose date</string>
+    <string name="volume_off">Volume off</string>
 
 </resources>
