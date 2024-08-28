@@ -113,6 +113,42 @@
             app:popEnterAnim="@anim/nav_pen"
             app:popExitAnim="@anim/nav_pex"/>
 
+        <action
+            android:id="@+id/action_orgFragment_to_researchFragment"
+            app:destination="@id/researchFragment"
+
+            app:enterAnim="@anim/nav_en"
+            app:exitAnim="@anim/nav_ex"
+            app:popEnterAnim="@anim/nav_pen"
+            app:popExitAnim="@anim/nav_pex"/>
+
+        <action
+            android:id="@+id/action_orgFragment_to_labsFragment"
+            app:destination="@id/labsFragment"
+
+            app:enterAnim="@anim/nav_en"
+            app:exitAnim="@anim/nav_ex"
+            app:popEnterAnim="@anim/nav_pen"
+            app:popExitAnim="@anim/nav_pex"/>
+
+        <action
+            android:id="@+id/action_orgFragment_to_achievementsFragment"
+            app:destination="@id/achievementsFragment"
+
+            app:enterAnim="@anim/nav_en"
+            app:exitAnim="@anim/nav_ex"
+            app:popEnterAnim="@anim/nav_pen"
+            app:popExitAnim="@anim/nav_pex"/>
+
+        <action
+            android:id="@+id/action_orgFragment_to_contactsFragment"
+            app:destination="@id/contactsFragment"
+
+            app:enterAnim="@anim/nav_en"
+            app:exitAnim="@anim/nav_ex"
+            app:popEnterAnim="@anim/nav_pen"
+            app:popExitAnim="@anim/nav_pex"/>
+
     </fragment>
 
     <fragment
