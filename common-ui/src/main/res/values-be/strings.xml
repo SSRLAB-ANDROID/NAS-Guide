@@ -2,7 +2,7 @@
 <resources>
 
     //Main
-    <string name="logo_title">Аўдыягід па НАН Беларусі</string>
+    <string name="logo_title">Аўдыягід па Нацыянальнай акадэміі навук Беларусі</string>
 
     <string name="page_main_title">Нацыянальная Акадэмія Навук Беларусі</string>
     <string name="page_history_title">Гісторыя</string>

@@ -2,7 +2,7 @@
 <resources>
 
     //Main
-    <string name="logo_title">Аудиогид по НАН Беларуси</string>
+    <string name="logo_title">Аудиогид по Национальной академии наук Беларуси</string>
 
     <string name="page_main_title">Национальная Академия Наук Беларуси</string>
     <string name="page_history_title">История</string>
