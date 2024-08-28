@@ -2,7 +2,7 @@
 <resources>
 
     <string name="folder_history">История</string>
-    <string name="folder_organizations">Организации НАН</string>
+    <string name="folder_organizations">Организации</string>
     <string name="folder_inventions">Разработки</string>
 
     <string name="folder_events">События</string>
