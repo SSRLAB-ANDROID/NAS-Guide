@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.ssrlab.common_ui.common.ui.base.BaseActivity
 import by.ssrlab.common_ui.common.ui.base.BaseFragment
+import by.ssrlab.common_ui.common.vm.OrgSubsSharedVM
 import by.ssrlab.data.data.common.RepositoryData
 import by.ssrlab.data.util.ButtonAction
 import by.ssrlab.domain.models.ToolbarControlObject
@@ -24,6 +26,8 @@ class OrgsFragment: BaseFragment() {
 
     private lateinit var binding: FragmentOrgsBinding
     private lateinit var adapter: SectionAdapter
+    private val orgSubsViewModel: OrgSubsSharedVM by viewModels()
+    override val fragmentViewModel: FOrgsVM by viewModel()
 
     override val toolbarControlObject = ToolbarControlObject(
         isBack = true,
@@ -31,8 +35,6 @@ class OrgsFragment: BaseFragment() {
         isSearch = true,
         isDates = false
     )
-
-    override val fragmentViewModel: FOrgsVM by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -53,7 +55,7 @@ class OrgsFragment: BaseFragment() {
         }
 
         initAdapter()
-        observeOnDataChanged()
+        loadData()
         disableButtons()
     }
 
@@ -71,19 +73,29 @@ class OrgsFragment: BaseFragment() {
                 }
                 is Resource.Success -> {
                     adapter.updateData(resource.data)
-                }
+
+                    orgSubsViewModel.setOrgList(resource.data)
+                 }
                 is Resource.Error -> {
                     adapter.showError(resource.message)
                 }
             }
         })
     }
-
     override fun initAdapter() {
         adapter = SectionAdapter(emptyList()) {
             navigateNext(it)
         }
 
+        binding.apply {
+            orgsRv.adapter = adapter
+            orgsRv.layoutManager = LinearLayoutManager(requireContext())
+        }
+
+        observeOnDataChanged()
+    }
+
+    private fun loadData() {
         when (val resource = fragmentViewModel.orgsData.value) {
             is Resource.Success -> {
                 val data = resource.data
@@ -96,11 +108,6 @@ class OrgsFragment: BaseFragment() {
                 adapter.showLoading()
             }
             null -> {}
-        }
-
-        binding.apply {
-            orgsRv.adapter = adapter
-            orgsRv.layoutManager = LinearLayoutManager(requireContext())
         }
     }
 
