@@ -60,7 +60,9 @@ open class BaseActivity: AppCompatActivity(), KoinComponent {
             val list = ArrayList(listOf(repositoryData.description!!))
 
             val intent = Intent(this, MapActivity::class.java)
+            intent.putExtra(CAMERA_ACTION, true)
             intent.putExtra(MAPBOX_VIEW_POINT_LIST, setMapParcelableData(list))
+
             startActivity(intent)
         }
     }
@@ -81,5 +83,6 @@ open class BaseActivity: AppCompatActivity(), KoinComponent {
         //        const val MAPBOX_VIEW_POINT = "mapbox_view_point"
         const val MAPBOX_VIEW_POINT_LIST = "mapbox_view_point_list"
         const val MAPBOX_LOCATION_RECHECK_TIME = 2000L
+        const val CAMERA_ACTION = "camera_action"
     }
 }

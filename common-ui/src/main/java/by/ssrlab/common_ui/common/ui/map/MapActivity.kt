@@ -111,9 +111,16 @@ class MapActivity : BaseActivity() {
             }
         }
 
-        setMapboxOptions()
-        setupButtons()
+        if (intent.hasExtra(CAMERA_ACTION) && intent.hasExtra(MAPBOX_VIEW_POINT_LIST)) {
+            for (i in intent.getParcelableArrayListExtra<DescriptionData>(MAPBOX_VIEW_POINT_LIST)!!) {
+                setLocationForSinglePoint(i)
+            }
+        } else {
+            setLocationAction()
+        }
 
+        setMapboxOptions()
+        setBackAction()
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this@MapActivity)
     }
 
@@ -123,9 +130,22 @@ class MapActivity : BaseActivity() {
         //TODO make camera translation from the single selected point
     }
 
-    private fun setupButtons() {
-        setLocationAction()
-        setBackAction()
+    private fun setLocationForSinglePoint(location: DescriptionData) {
+        scope.launch {
+            withContext(Dispatchers.Main) {
+                setupMapbox()
+            }
+
+            binding.mapPosition.apply {
+                withContext(Dispatchers.Main) {
+                        mapView?.camera?.flyTo(
+                            cameraOptions {
+                                center(Point.fromLngLat(location.lon!!, location.lat!!))
+                            }
+                        )
+                }
+            }
+        }
     }
 
     private fun setLocationAction() {
@@ -137,14 +157,19 @@ class MapActivity : BaseActivity() {
                 }
 
                 binding.mapPosition.apply {
-                    withContext(Dispatchers.Main){
+                    withContext(Dispatchers.Main) {
                         setImageResource(R.drawable.ic_location)
                         setOnClickListener {
                             //Current location check and then center camera on user
                             fusedLocationClient.lastLocation.addOnSuccessListener { location ->
                                 mapView?.camera?.flyTo(
                                     cameraOptions {
-                                        center(Point.fromLngLat(location.longitude, location.latitude))
+                                        center(
+                                            Point.fromLngLat(
+                                                location.longitude,
+                                                location.latitude
+                                            )
+                                        )
                                     }
                                 )
                             }
@@ -179,9 +204,18 @@ class MapActivity : BaseActivity() {
             pulsingColor = ContextCompat.getColor(this@MapActivity, R.color.map_red)
 
             locationPuck = LocationPuck2D(
-                topImage = AppCompatResources.getDrawable(this@MapActivity, R.drawable.ic_location_point),
-                bearingImage = AppCompatResources.getDrawable(this@MapActivity, R.drawable.ic_location_point),
-                shadowImage = AppCompatResources.getDrawable(this@MapActivity, R.drawable.ic_location_point),
+                topImage = AppCompatResources.getDrawable(
+                    this@MapActivity,
+                    R.drawable.ic_location_point
+                ),
+                bearingImage = AppCompatResources.getDrawable(
+                    this@MapActivity,
+                    R.drawable.ic_location_point
+                ),
+                shadowImage = AppCompatResources.getDrawable(
+                    this@MapActivity,
+                    R.drawable.ic_location_point
+                ),
 
                 //This setting defines how lines and other will be interpolated on map scrolling
                 scaleExpression = interpolate {
@@ -230,19 +264,48 @@ class MapActivity : BaseActivity() {
 
         var currentPoint = Point.fromLngLat(0.0, 0.0)
         fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-            if (location != null) currentPoint = Point.fromLngLat(location.longitude, location.latitude)
+            if (location != null) currentPoint =
+                Point.fromLngLat(location.longitude, location.latitude)
 
-            MapDialog(this@MapActivity, pointObject, viewAnnotation, annotationArray, currentPoint, mapboxNavigation, 0)
+            MapDialog(
+                this@MapActivity,
+                pointObject,
+                viewAnnotation,
+                annotationArray,
+                currentPoint,
+                mapboxNavigation,
+                0
+            )
                 .show(supportFragmentManager, pointObject.keyName)
 
-            viewAnnotation.findViewById<ConstraintLayout>(R.id.view_map_parent).background = ContextCompat.getDrawable(this@MapActivity, R.drawable.background_map_point_active)
-            viewAnnotation.findViewById<TextView>(R.id.view_map_text).setTextColor(ContextCompat.getColor(this@MapActivity, R.color.map_point_text_active))
+            viewAnnotation.findViewById<ConstraintLayout>(R.id.view_map_parent).background =
+                ContextCompat.getDrawable(this@MapActivity, R.drawable.background_map_point_active)
+            viewAnnotation.findViewById<TextView>(R.id.view_map_text).setTextColor(
+                ContextCompat.getColor(
+                    this@MapActivity,
+                    R.color.map_point_text_active
+                )
+            )
         }.addOnFailureListener {
-            MapDialog(this@MapActivity, pointObject, viewAnnotation, annotationArray, currentPoint, mapboxNavigation, 1)
+            MapDialog(
+                this@MapActivity,
+                pointObject,
+                viewAnnotation,
+                annotationArray,
+                currentPoint,
+                mapboxNavigation,
+                1
+            )
                 .show(supportFragmentManager, pointObject.keyName)
 
-            viewAnnotation.findViewById<ConstraintLayout>(R.id.view_map_parent).background = ContextCompat.getDrawable(this@MapActivity, R.drawable.background_map_point_active)
-            viewAnnotation.findViewById<TextView>(R.id.view_map_text).setTextColor(ContextCompat.getColor(this@MapActivity, R.color.map_point_text_active))
+            viewAnnotation.findViewById<ConstraintLayout>(R.id.view_map_parent).background =
+                ContextCompat.getDrawable(this@MapActivity, R.drawable.background_map_point_active)
+            viewAnnotation.findViewById<TextView>(R.id.view_map_text).setTextColor(
+                ContextCompat.getColor(
+                    this@MapActivity,
+                    R.color.map_point_text_active
+                )
+            )
         }
     }
 
@@ -267,35 +330,128 @@ class MapActivity : BaseActivity() {
         routeLineResources = RouteLineResources.Builder()
             .routeLineColorResources(
                 RouteLineColorResources.Builder()
-                    .routeDefaultColor(ContextCompat.getColor(this@MapActivity, R.color.map_red_secondary))
-                    .routeCasingColor(ContextCompat.getColor(this@MapActivity, R.color.map_red_secondary))
-                    .routeClosureColor(ContextCompat.getColor(this@MapActivity, R.color.map_red_secondary))
-                    .routeHeavyCongestionColor(ContextCompat.getColor(this@MapActivity, R.color.map_red_secondary))
-                    .routeLowCongestionColor(ContextCompat.getColor(this@MapActivity, R.color.map_red_secondary))
-                    .routeModerateCongestionColor(ContextCompat.getColor(this@MapActivity, R.color.map_red_secondary))
-                    .routeSevereCongestionColor(ContextCompat.getColor(this@MapActivity, R.color.map_red_secondary))
-                    .routeUnknownCongestionColor(ContextCompat.getColor(this@MapActivity, R.color.map_red_secondary))
-                    .routeDefaultColor(ContextCompat.getColor(this@MapActivity, R.color.map_red_secondary))
-                    .alternativeRouteCasingColor(ContextCompat.getColor(this@MapActivity, R.color.map_red_secondary))
-                    .alternativeRouteClosureColor(ContextCompat.getColor(this@MapActivity, R.color.map_red_secondary))
-                    .alternativeRouteHeavyCongestionColor(ContextCompat.getColor(this@MapActivity, R.color.map_red_secondary))
-                    .alternativeRouteLowCongestionColor(ContextCompat.getColor(this@MapActivity, R.color.map_red_secondary))
-                    .alternativeRouteModerateCongestionColor(ContextCompat.getColor(this@MapActivity, R.color.map_red_secondary))
-                    .alternativeRouteRestrictedRoadColor(ContextCompat.getColor(this@MapActivity, R.color.map_red_secondary))
-                    .alternativeRouteSevereCongestionColor(ContextCompat.getColor(this@MapActivity, R.color.map_red_secondary))
-                    .alternativeRouteUnknownCongestionColor(ContextCompat.getColor(this@MapActivity, R.color.map_red_secondary))
-                    .alternativeRouteDefaultColor(ContextCompat.getColor(this@MapActivity, R.color.map_red_secondary))
-                    .build())
-            .routeLineScaleExpression(buildScaleExpression(
-                listOf(
-                    RouteLineScaleValue(3f, 2f, 1f),
-                    RouteLineScaleValue(5f, 3f, 1f),
-                    RouteLineScaleValue(6f, 4f, 1f),
-                    RouteLineScaleValue(7f, 5f, 1f),
-                    RouteLineScaleValue(8f, 6f, 1f),
-                    RouteLineScaleValue(9f, 7f, 1f)
+                    .routeDefaultColor(
+                        ContextCompat.getColor(
+                            this@MapActivity,
+                            R.color.map_red_secondary
+                        )
+                    )
+                    .routeCasingColor(
+                        ContextCompat.getColor(
+                            this@MapActivity,
+                            R.color.map_red_secondary
+                        )
+                    )
+                    .routeClosureColor(
+                        ContextCompat.getColor(
+                            this@MapActivity,
+                            R.color.map_red_secondary
+                        )
+                    )
+                    .routeHeavyCongestionColor(
+                        ContextCompat.getColor(
+                            this@MapActivity,
+                            R.color.map_red_secondary
+                        )
+                    )
+                    .routeLowCongestionColor(
+                        ContextCompat.getColor(
+                            this@MapActivity,
+                            R.color.map_red_secondary
+                        )
+                    )
+                    .routeModerateCongestionColor(
+                        ContextCompat.getColor(
+                            this@MapActivity,
+                            R.color.map_red_secondary
+                        )
+                    )
+                    .routeSevereCongestionColor(
+                        ContextCompat.getColor(
+                            this@MapActivity,
+                            R.color.map_red_secondary
+                        )
+                    )
+                    .routeUnknownCongestionColor(
+                        ContextCompat.getColor(
+                            this@MapActivity,
+                            R.color.map_red_secondary
+                        )
+                    )
+                    .routeDefaultColor(
+                        ContextCompat.getColor(
+                            this@MapActivity,
+                            R.color.map_red_secondary
+                        )
+                    )
+                    .alternativeRouteCasingColor(
+                        ContextCompat.getColor(
+                            this@MapActivity,
+                            R.color.map_red_secondary
+                        )
+                    )
+                    .alternativeRouteClosureColor(
+                        ContextCompat.getColor(
+                            this@MapActivity,
+                            R.color.map_red_secondary
+                        )
+                    )
+                    .alternativeRouteHeavyCongestionColor(
+                        ContextCompat.getColor(
+                            this@MapActivity,
+                            R.color.map_red_secondary
+                        )
+                    )
+                    .alternativeRouteLowCongestionColor(
+                        ContextCompat.getColor(
+                            this@MapActivity,
+                            R.color.map_red_secondary
+                        )
+                    )
+                    .alternativeRouteModerateCongestionColor(
+                        ContextCompat.getColor(
+                            this@MapActivity,
+                            R.color.map_red_secondary
+                        )
+                    )
+                    .alternativeRouteRestrictedRoadColor(
+                        ContextCompat.getColor(
+                            this@MapActivity,
+                            R.color.map_red_secondary
+                        )
+                    )
+                    .alternativeRouteSevereCongestionColor(
+                        ContextCompat.getColor(
+                            this@MapActivity,
+                            R.color.map_red_secondary
+                        )
+                    )
+                    .alternativeRouteUnknownCongestionColor(
+                        ContextCompat.getColor(
+                            this@MapActivity,
+                            R.color.map_red_secondary
+                        )
+                    )
+                    .alternativeRouteDefaultColor(
+                        ContextCompat.getColor(
+                            this@MapActivity,
+                            R.color.map_red_secondary
+                        )
+                    )
+                    .build()
+            )
+            .routeLineScaleExpression(
+                buildScaleExpression(
+                    listOf(
+                        RouteLineScaleValue(3f, 2f, 1f),
+                        RouteLineScaleValue(5f, 3f, 1f),
+                        RouteLineScaleValue(6f, 4f, 1f),
+                        RouteLineScaleValue(7f, 5f, 1f),
+                        RouteLineScaleValue(8f, 6f, 1f),
+                        RouteLineScaleValue(9f, 7f, 1f)
+                    )
                 )
-            ))
+            )
             .build()
     }
 
@@ -328,8 +484,12 @@ class MapActivity : BaseActivity() {
     private fun requestLocationPermission() {
         ActivityCompat.requestPermissions(
             this@MapActivity,
-            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
-            PackageManager.PERMISSION_GRANTED)
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ),
+            PackageManager.PERMISSION_GRANTED
+        )
     }
 
     private fun checkPermission() = ContextCompat.checkSelfPermission(
@@ -338,7 +498,10 @@ class MapActivity : BaseActivity() {
     ) == PackageManager.PERMISSION_GRANTED
 
     private fun requestPermission() {
-        val permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION)
-        ActivityCompat.requestPermissions(this@MapActivity, permissions,0)
+        val permissions = arrayOf(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        )
+        ActivityCompat.requestPermissions(this@MapActivity, permissions, 0)
     }
 }
