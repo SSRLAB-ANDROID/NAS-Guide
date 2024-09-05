@@ -115,12 +115,10 @@ class MapActivity : BaseActivity() {
             for (i in intent.getParcelableArrayListExtra<DescriptionData>(MAPBOX_VIEW_POINT_LIST)!!) {
                 setLocationForSinglePoint(i)
             }
-        } else {
-            setLocationAction()
         }
 
         setMapboxOptions()
-        setBackAction()
+        setupButtons()
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this@MapActivity)
     }
 
@@ -128,6 +126,10 @@ class MapActivity : BaseActivity() {
         super.onStart()
 
         //TODO make camera translation from the single selected point
+    }
+    private fun setupButtons() {
+        setLocationAction()
+        setBackAction()
     }
 
     private fun setLocationForSinglePoint(location: DescriptionData) {
