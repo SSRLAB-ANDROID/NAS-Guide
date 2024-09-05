@@ -120,11 +120,18 @@ class ExhibitFragment : Fragment() {
                 ExhibitObject.Organization -> {
                     exhibitAdditionalBlock.visibility = View.VISIBLE
                     exhibitButtonMap.visibility = View.VISIBLE
+                    exhibitMapRipple.setOnClickListener {
+                        exhibitActivity.moveToMapFromExhibit(data)
+                    }
+
                 }
 
                 ExhibitObject.Person -> {}
                 ExhibitObject.Place -> {
                     exhibitButtonMap.visibility = View.VISIBLE
+                    exhibitMapRipple.setOnClickListener {
+                        exhibitActivity.moveToMapFromExhibit(data)
+                    }
                 }
             }
 
