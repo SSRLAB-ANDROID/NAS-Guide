@@ -117,6 +117,7 @@ class MapActivity : BaseActivity() {
             }
         }
 
+        requestLocationPermission()
         setMapboxOptions()
         setupButtons()
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this@MapActivity)
