@@ -12,7 +12,8 @@ class OrgSubsAdapter(
     private val navigateAction: (List<String>) -> Unit
 ) : RecyclerView.Adapter<OrgSubsAdapter.SubsViewHolder>() {
 
-    var dataType: OrgSubs = OrgSubs.Achievements
+    private var dataType: OrgSubs = OrgSubs.Achievements
+    private var currentPosition: Int = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubsViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -21,11 +22,12 @@ class OrgSubsAdapter(
     }
 
     override fun onBindViewHolder(holder: SubsViewHolder, position: Int) {
+        setPosition(position)
         val item = subs[position]
         val data: List<String> = when (dataType) {
             OrgSubs.Achievements -> item.achievements
             OrgSubs.Contacts -> listOf(item.contacts)
-            OrgSubs.ResearchAreas -> item.researchAreas
+            OrgSubs.ResearchAreas -> item.researchAreas?.filterNotNull() ?: listOf()
             OrgSubs.Laboratories -> TODO()
             OrgSubs.Departments -> listOf(item.description.departmentFilter.keyName)
         }
@@ -36,6 +38,10 @@ class OrgSubsAdapter(
     }
 
     override fun getItemCount(): Int = subs.size
+
+    private fun setPosition(position: Int) {
+        currentPosition = position
+    }
 
     fun navigateOrgSubs() {
         navigateAction(subs[0].achievements)

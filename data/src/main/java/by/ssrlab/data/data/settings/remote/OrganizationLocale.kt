@@ -35,5 +35,5 @@ data class OrganizationLocale(
     val achievements: List<String>,
 
     @SerializedName("research_areas")
-    val researchAreas: List<String>
+    val researchAreas: List<String?>?
 ): RepositoryData, Parcelable
