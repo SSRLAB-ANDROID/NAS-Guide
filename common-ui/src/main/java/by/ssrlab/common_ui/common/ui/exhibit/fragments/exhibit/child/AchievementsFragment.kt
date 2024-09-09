@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.ssrlab.common_ui.common.ui.base.BaseFragment
 import by.ssrlab.common_ui.common.ui.exhibit.fragments.exhibit.utils.OrgSubsAdapter
@@ -11,12 +12,13 @@ import by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.DividerItemDecorati
 import by.ssrlab.common_ui.common.vm.OrgSubsSharedVM
 import by.ssrlab.common_ui.databinding.FragmentAchievementsBinding
 import by.ssrlab.data.data.settings.remote.OrganizationLocale
+import by.ssrlab.data.util.ButtonAction
 import by.ssrlab.domain.models.ToolbarControlObject
 
-class AchievementsFragment: BaseFragment() {
+class AchievementsFragment : BaseFragment() {
 
     private lateinit var binding: FragmentAchievementsBinding
-    override val fragmentViewModel: OrgSubsSharedVM by viewModels({requireParentFragment()})
+    override val fragmentViewModel: OrgSubsSharedVM by viewModels({ requireParentFragment() })
 
     override val toolbarControlObject = ToolbarControlObject(
         isBack = false,
@@ -30,13 +32,18 @@ class AchievementsFragment: BaseFragment() {
 
         fragmentViewModel.orgList.observe(viewLifecycleOwner) { data ->
             initRecyclerView(data ?: emptyList())
+
+            fragmentViewModel.setTitle(requireContext().resources.getString(by.ssrlab.common_ui.R.string.exhibit_achievements))
+            activityVM.apply {
+                setButtonAction(ButtonAction.BackAction, ::onBackPressed)
+            }
         }
     }
 
     private fun initRecyclerView(achievements: List<OrganizationLocale>) {
         binding.achievementsRv.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = OrgSubsAdapter(achievements){
+            adapter = OrgSubsAdapter(achievements) {
                 navigateNext(itemDecorationCount)
             }
             addItemDecoration(DividerItemDecoration(context))
@@ -47,5 +54,9 @@ class AchievementsFragment: BaseFragment() {
 
         binding = FragmentAchievementsBinding.inflate(layoutInflater, container, false)
         return binding.root
+    }
+
+    override fun onBackPressed() {
+        findNavController().popBackStack()
     }
 }

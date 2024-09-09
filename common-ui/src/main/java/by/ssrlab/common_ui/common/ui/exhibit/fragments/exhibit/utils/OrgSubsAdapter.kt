@@ -12,7 +12,7 @@ class OrgSubsAdapter(
     private val navigateAction: (List<String>) -> Unit
 ) : RecyclerView.Adapter<OrgSubsAdapter.SubsViewHolder>() {
 
-    private var dataType: OrgSubs = OrgSubs.Achievements
+    var dataType: OrgSubs = OrgSubs.Achievements
     private var currentPosition: Int = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubsViewHolder {
@@ -44,7 +44,13 @@ class OrgSubsAdapter(
     }
 
     fun navigateOrgSubs() {
-        navigateAction(subs[0].achievements)
+        when (dataType) {
+            OrgSubs.Achievements -> navigateAction(subs[currentPosition].achievements)
+            OrgSubs.Contacts -> TODO()
+            OrgSubs.ResearchAreas -> navigateAction(subs[currentPosition].researchAreas?.filterNotNull() ?: listOf())
+            OrgSubs.Laboratories -> TODO()
+            OrgSubs.Departments -> TODO()
+        }
     }
 
     class SubsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

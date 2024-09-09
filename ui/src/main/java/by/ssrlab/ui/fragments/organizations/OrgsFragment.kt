@@ -100,6 +100,7 @@ class OrgsFragment: BaseFragment() {
             is Resource.Success -> {
                 val data = resource.data
                 adapter.updateData(data)
+                orgSubsViewModel.setOrgList(resource.data)
             }
             is Resource.Error -> {
                 adapter.showError(resource.message)

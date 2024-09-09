@@ -4,13 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import by.ssrlab.common_ui.common.ui.base.BaseActivity
 import by.ssrlab.common_ui.common.ui.exhibit.ExhibitActivity
+import by.ssrlab.common_ui.common.ui.exhibit.fragments.exhibit.utils.OrgSubs
+import by.ssrlab.common_ui.common.ui.exhibit.fragments.exhibit.utils.OrgSubsAdapter
 import by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.FragmentSettingsManager
 import by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.MediaPlayer.pauseAudio
 import by.ssrlab.common_ui.common.vm.AExhibitVM
+import by.ssrlab.common_ui.common.vm.OrgSubsSharedVM
 import by.ssrlab.common_ui.databinding.FragmentExhibitBinding
 import by.ssrlab.data.data.common.RepositoryData
 import by.ssrlab.data.data.settings.remote.DevelopmentLocale
@@ -28,9 +33,12 @@ class ExhibitFragment : Fragment() {
 
     private lateinit var binding: FragmentExhibitBinding
     private val activityViewModel: AExhibitVM by activityViewModel()
+    private val orgSubsViewModel: OrgSubsSharedVM by viewModels()
     private lateinit var exhibitActivity: ExhibitActivity
     private lateinit var data: RepositoryData
     private lateinit var fragmentSettingsManager: FragmentSettingsManager
+    private lateinit var orgSubsAdapter: OrgSubsAdapter
+    private var orgList: List<OrganizationLocale> = listOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,6 +75,10 @@ class ExhibitFragment : Fragment() {
 
         observeOnParcelableData()
         disableButtons()
+
+        orgSubsViewModel.orgList.observe(viewLifecycleOwner) { data ->
+            orgList = data
+        }
     }
 
     override fun onStop() {
@@ -87,7 +99,14 @@ class ExhibitFragment : Fragment() {
             exhibitNextRipple.setOnClickListener { (requireActivity() as BaseActivity).createIsntRealizedDialog() }
             exhibitContactsRipple.setOnClickListener { (requireActivity() as BaseActivity).createIsntRealizedDialog() }
             exhibitLabsRipple.setOnClickListener { (requireActivity() as BaseActivity).createIsntRealizedDialog() }
-            exhibitAchievementsRipple.setOnClickListener { (requireActivity() as BaseActivity).createIsntRealizedDialog() }
+            exhibitAchievementsRipple.setOnClickListener {
+                if (orgList.isNotEmpty()) {
+                setDataType(OrgSubs.Achievements)
+                navigateOrgSubs()
+                } else {
+                    Toast.makeText(requireContext(), "No organizations found", Toast.LENGTH_SHORT).show()
+                }
+            }
             exhibitResearchRipple.setOnClickListener { (requireActivity() as BaseActivity).createIsntRealizedDialog() }
             exhibitDeveloperRipple.setOnClickListener { (requireActivity() as BaseActivity).createIsntRealizedDialog() }
         }
@@ -153,6 +172,27 @@ class ExhibitFragment : Fragment() {
             if (exhibitObject is ExhibitObject.Development)
                 exhibitDeveloperTitle.text =
                     (data as DevelopmentLocale).description.departmentFilter.keyName
+            if (exhibitObject is ExhibitObject.Organization) {
+                initOrgSubsAdapter()
+            }
         }
+    }
+
+    private fun initOrgSubsAdapter() {
+        if (orgSubsViewModel.orgList.isInitialized) {
+            orgSubsAdapter =
+                OrgSubsAdapter(orgSubsViewModel.orgList.value!!) {
+                    navigateOrgSubs()
+                }
+            orgSubsAdapter.dataType = OrgSubs.Contacts
+        }
+    }
+
+    private fun setDataType(dataType: OrgSubs) {
+        orgSubsAdapter.dataType = dataType
+    }
+
+    private fun navigateOrgSubs() {
+        orgSubsAdapter.navigateOrgSubs()
     }
 }
