@@ -240,7 +240,7 @@ class MapActivity : BaseActivity() {
     private fun addPoint(pointObject: DescriptionData) {
         //Be careful with !! operator
         val point = Point.fromLngLat(pointObject.lon!!, pointObject.lat!!)
-        val pointNumber = pointObject.pk.toString()
+        val pointNumber = pointObject.keyName.substringBefore(".")
         val viewAnnotation = viewAnnotationManager.addViewAnnotation(
             resId = R.layout.view_map_point,
             options = viewAnnotationOptions { geometry(point) }
