@@ -92,11 +92,19 @@ class SectionAdapter(
     override fun getItemCount() =
         if (isLoading || errorMessage != null) 1 else entitiesList?.let { entitiesList!!.size } ?: 0
 
+
+    private fun sortItemsByNumber(items: List<RepositoryData>?):List<RepositoryData>?{
+        return items?.sortedBy { item ->
+            val numberPart = item.name.substringBefore(".").trim().toIntOrNull() ?: 0
+            numberPart
+        }
+    }
+
     @SuppressLint("NotifyDataSetChanged")
     fun updateData(items: List<RepositoryData>) {
         isLoading = false
         errorMessage = null
-        entitiesList = items
+        entitiesList = sortItemsByNumber(items)
         notifyDataSetChanged()
     }
 
