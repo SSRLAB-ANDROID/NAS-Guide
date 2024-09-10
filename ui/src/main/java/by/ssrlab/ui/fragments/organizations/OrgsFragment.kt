@@ -3,6 +3,7 @@ package by.ssrlab.ui.fragments.organizations
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -20,7 +21,7 @@ import by.ssrlab.ui.rv.SectionAdapter
 import by.ssrlab.ui.vm.FOrgsVM
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class OrgsFragment: BaseFragment() {
+class OrgsFragment : BaseFragment() {
 
     private lateinit var binding: FragmentOrgsBinding
     private lateinit var adapter: SectionAdapter
@@ -55,6 +56,12 @@ class OrgsFragment: BaseFragment() {
         initAdapter()
         observeOnDataChanged()
         disableButtons()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        hideSearchBar()
     }
 
     private fun disableButtons() {
@@ -115,5 +122,19 @@ class OrgsFragment: BaseFragment() {
 
     override fun navigateNext(repositoryData: RepositoryData) {
         (activity as MainActivity).moveToExhibit(repositoryData)
+    }
+
+    private var toolbarSearchView: SearchView? = null
+
+    private fun searchBarInstance(): SearchView {
+        if (toolbarSearchView == null) {
+            toolbarSearchView = requireActivity().findViewById(R.id.toolbar_search_view)
+        }
+        return toolbarSearchView!!
+    }
+
+    override fun hideSearchBar() {
+        val toolbarSearchView = searchBarInstance()
+        toolbarSearchView.visibility = View.GONE
     }
 }

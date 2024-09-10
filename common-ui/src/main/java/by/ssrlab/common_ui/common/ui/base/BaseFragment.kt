@@ -21,7 +21,7 @@ import by.ssrlab.domain.models.ToolbarControlObject
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
-abstract class BaseFragment: Fragment() {
+abstract class BaseFragment : Fragment() {
 
     abstract val fragmentViewModel: ViewModel
     abstract val toolbarControlObject: ToolbarControlObject
@@ -55,6 +55,7 @@ abstract class BaseFragment: Fragment() {
     open fun navigateNext(repositoryData: RepositoryData) {}
     open fun initAdapter() {}
     open fun observeOnDataChanged() {}
+    open fun hideSearchBar(){}
 
     fun initLanguageDialog() {
         createLanguageDialog(requireActivity(), sharedPreferences) {
@@ -69,7 +70,10 @@ abstract class BaseFragment: Fragment() {
         imageView.setImageDrawable(roundedDrawable)
     }
 
-    private fun createRoundedDrawable(resources: android.content.res.Resources, bitmap: Bitmap): RoundedBitmapDrawable {
+    private fun createRoundedDrawable(
+        resources: android.content.res.Resources,
+        bitmap: Bitmap
+    ): RoundedBitmapDrawable {
         val roundedDrawable = RoundedBitmapDrawableFactory.create(resources, bitmap)
         roundedDrawable.cornerRadius = 20f
         return roundedDrawable
