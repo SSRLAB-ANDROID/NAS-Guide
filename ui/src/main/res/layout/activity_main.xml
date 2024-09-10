@@ -103,6 +103,18 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:tint="@color/toolbar_main_ic_selector" />
 
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/toolbar_search_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:iconifiedByDefault="false"
+                android:queryHint="Search ..."
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
             <ImageButton
                 android:id="@+id/toolbar_back"
                 android:layout_width="wrap_content"
