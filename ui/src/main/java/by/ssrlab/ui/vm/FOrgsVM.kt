@@ -10,9 +10,6 @@ import by.ssrlab.domain.utils.Resource
 
 class FOrgsVM(orgsRepository: OrgsRepository): BaseFragmentVM<OrganizationLocale>(orgsRepository) {
 
-    private val _orgsData = MutableLiveData<Resource<List<OrganizationLocale>>>()
-    val orgsData: LiveData<Resource<List<OrganizationLocale>>> get() = _orgsData
-
     private val _title = MutableLiveData("")
     val title: LiveData<String>
         get() = _title
@@ -20,6 +17,10 @@ class FOrgsVM(orgsRepository: OrgsRepository): BaseFragmentVM<OrganizationLocale
     fun setTitle(value: String) {
         _title.value = value
     }
+
+
+    private val _orgsData = MutableLiveData<Resource<List<OrganizationLocale>>>()
+    val orgsData: LiveData<Resource<List<OrganizationLocale>>> get() = _orgsData
 
     fun getDescriptionArray(): ArrayList<DescriptionData> {
         val array = arrayListOf<DescriptionData>()
@@ -50,5 +51,23 @@ class FOrgsVM(orgsRepository: OrgsRepository): BaseFragmentVM<OrganizationLocale
 
     init {
         loadData()
+    }
+
+
+    private val _filteredData = MutableLiveData<List<OrganizationLocale>>()
+    val filteredDataList: LiveData<List<OrganizationLocale>> get() = _filteredData
+
+    private fun setFilteredList(value: List<OrganizationLocale>) {
+        _filteredData.value = value
+    }
+
+    fun filterData(query: String) {
+        val resource = _orgsData.value
+        if (resource is Resource.Success) {
+            val filteredList = resource.data.filter {
+                it.name.contains(query, ignoreCase = true)
+            }
+            setFilteredList(filteredList)
+        }
     }
 }

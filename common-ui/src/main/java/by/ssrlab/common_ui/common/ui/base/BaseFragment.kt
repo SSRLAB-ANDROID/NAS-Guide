@@ -55,6 +55,7 @@ abstract class BaseFragment : Fragment() {
     open fun navigateNext(repositoryData: RepositoryData) {}
     open fun initAdapter() {}
     open fun observeOnDataChanged() {}
+    open fun filterData(query: String) {}
     open fun hideSearchBar(){}
 
     fun initLanguageDialog() {
