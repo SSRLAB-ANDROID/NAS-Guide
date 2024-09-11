@@ -3,6 +3,8 @@ package by.ssrlab.ui.fragments.organizations
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageButton
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -42,6 +44,7 @@ class OrgsFragment : BaseFragment() {
         activityVM.apply {
             setHeaderImg(by.ssrlab.common_ui.R.drawable.header_organizations)
             setButtonAction(ButtonAction.BackAction, ::onBackPressed)
+            setButtonAction(ButtonAction.SearchAction, ::initSearchBar)
         }
 
         binding.apply {
@@ -131,6 +134,43 @@ class OrgsFragment : BaseFragment() {
             toolbarSearchView = requireActivity().findViewById(R.id.toolbar_search_view)
         }
         return toolbarSearchView!!
+    }
+
+    override fun filterData(query: String) {
+        fragmentViewModel.filterData(query)
+    }
+
+    private fun showSearchResults() {
+        fragmentViewModel.filteredDataList.value?.let { adapter.updateData(it) }
+    }
+
+    private fun initSearchBar() {
+        val toolbarSearchView = searchBarInstance()
+
+        toolbarSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                query?.let {
+                    filterData(it)
+                    showSearchResults()
+                    return true
+                }
+                showSearchResults()
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                newText?.let {
+                    filterData(it)
+                    showSearchResults()
+                }
+                return true
+            }
+        })
+        toolbarSearchView.visibility = View.VISIBLE
+        val searchButton: ImageButton = requireActivity().findViewById(R.id.toolbar_search)
+        searchButton.visibility = View.GONE
+        val backButton: ImageButton = requireActivity().findViewById(R.id.toolbar_back)
+        backButton.visibility = View.GONE
     }
 
     override fun hideSearchBar() {
