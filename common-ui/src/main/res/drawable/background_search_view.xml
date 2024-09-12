@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/bottom_sheet_ripple">
+
+    <item android:id="@android:id/mask">
+
+        <shape android:shape="rectangle">
+
+            <solid android:color="#F3F3F7"/>
+            <corners android:radius="@dimen/exhibit_button_primary_corners"/>
+
+        </shape>
+
+        <color android:color="@color/bottom_sheet_ripple"/>
+
+    </item>
+
+    <item>
+
+        <shape android:shape="rectangle">
+
+            <solid android:color="#F3F3F7"/>
+            <corners android:radius="@dimen/exhibit_button_primary_corners"/>
+
+        </shape>
+
+    </item>
+
+</ripple>
