@@ -31,6 +31,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -105,15 +106,36 @@
 
             <androidx.appcompat.widget.SearchView
                 android:id="@+id/toolbar_search_view"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
+                android:layout_marginHorizontal="20dp"
+                android:background="@drawable/background_search_view"
                 android:iconifiedByDefault="false"
                 android:queryHint="Search ..."
-                app:layout_constraintTop_toTopOf="parent"
+                android:text="@color/primary_text"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintEnd_toStartOf="@id/toolbar_search_back"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/toolbar_search_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginVertical="@dimen/toolbar_margin"
+                android:layout_marginEnd="@dimen/toolbar_margin"
+
+                android:onClick="@{viewModel.backAction}"
+
+                android:padding="@dimen/toolbar_button_padding"
+                android:text="@string/dialog_ok"
+
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+
+                app:layout_constraintStart_toEndOf="@id/toolbar_search_view"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
                 android:id="@+id/toolbar_back"
@@ -143,10 +165,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
             app:layout_constraintBottom_toTopOf="@+id/dates_now_holder"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
 
             <TextView
                 android:id="@+id/dates_title"
