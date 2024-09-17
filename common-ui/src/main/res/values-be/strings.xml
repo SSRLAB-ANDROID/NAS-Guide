@@ -46,5 +46,6 @@
     <string name="events">Падзеi</string>
     <string name="choose_date">Абярыце дату</string>
     <string name="volume_off">Гучнасць выключана</string>
+    <string name="tool_back">Адмена</string>
 
 </resources>

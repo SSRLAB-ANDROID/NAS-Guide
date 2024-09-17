@@ -56,4 +56,7 @@
     <string name="choose_date">Choose date</string>
     <string name="volume_off">Volume off</string>
 
+    //String
+    <string name="tool_back">Back</string>
+
 </resources>
