@@ -104,39 +104,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:tint="@color/toolbar_main_ic_selector" />
 
-            <androidx.appcompat.widget.SearchView
-                android:id="@+id/toolbar_search_view"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:background="@drawable/background_search_view"
-                android:iconifiedByDefault="false"
-                android:queryHint="Search ..."
-                android:text="@color/primary_text"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/toolbar_search_back"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/toolbar_search_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:layout_marginVertical="@dimen/toolbar_margin"
-                android:layout_marginEnd="@dimen/toolbar_margin"
-
-                android:onClick="@{viewModel.backAction}"
-
-                android:padding="@dimen/toolbar_button_padding"
-                android:text="@string/dialog_ok"
-
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-
-                app:layout_constraintStart_toEndOf="@id/toolbar_search_view"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <ImageButton
                 android:id="@+id/toolbar_back"
                 android:layout_width="wrap_content"
@@ -157,6 +124,21 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:tint="@color/toolbar_main_ic_selector" />
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/toolbar_search_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_search_view"
+                android:iconifiedByDefault="false"
+                android:queryHint="Search ..."
+                android:text="@color/primary_text"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/toolbar_back"
+                app:layout_constraintEnd_toEndOf="parent"
+                style="@style/WhiteSearchViewStyle" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
