@@ -65,11 +65,6 @@ class OrgsFragment : BaseFragment() {
         super.onDestroyView()
 
         hideSearchBar()
-
-        val toolbarBackButton: Button = requireActivity().findViewById(R.id.toolbar_search_back)
-        toolbarBackButton.visibility = View.GONE
-        val toolbarSearchHolder: View = requireActivity().findViewById(R.id.toolbar_search_holder)
-        toolbarSearchHolder.visibility = View.GONE
     }
 
     private fun disableButtons() {
@@ -174,12 +169,6 @@ class OrgsFragment : BaseFragment() {
         toolbarSearchView.visibility = View.VISIBLE
         val searchButton: ImageButton = requireActivity().findViewById(R.id.toolbar_search)
         searchButton.visibility = View.GONE
-        val backButton: ImageButton = requireActivity().findViewById(R.id.toolbar_back)
-        backButton.visibility = View.GONE
-        val toolbarBackButton: Button = requireActivity().findViewById(R.id.toolbar_search_back)
-        toolbarBackButton.visibility = View.VISIBLE
-        val toolbarSearchHolder: View = requireActivity().findViewById(R.id.toolbar_search_holder)
-        toolbarSearchHolder.visibility = View.VISIBLE
     }
 
     override fun hideSearchBar() {
