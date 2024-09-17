@@ -46,5 +46,6 @@
     <string name="events">События</string>
     <string name="choose_date">Выберите дату</string>
     <string name="volume_off">Звук выключен</string>
+    <string name="tool_back">Отмена</string>
 
 </resources>
