@@ -2,11 +2,15 @@ package by.ssrlab.common_ui.common.ui.exhibit.fragments.exhibit.child
 
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModel
 import by.ssrlab.common_ui.common.ui.base.BaseFragment
+import by.ssrlab.common_ui.common.vm.AExhibitVM
+import by.ssrlab.common_ui.databinding.FragmentContactsBinding
 import by.ssrlab.domain.models.ToolbarControlObject
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
-class ContactsFragment: BaseFragment() {
+class ContactsFragment : BaseFragment() {
+
+    private lateinit var binding: FragmentContactsBinding
 
     override val toolbarControlObject = ToolbarControlObject(
         isBack = false,
@@ -15,10 +19,10 @@ class ContactsFragment: BaseFragment() {
         isDates = false
     )
 
-    override val fragmentViewModel: ViewModel
-        get() = TODO("Not yet implemented")
+    override val fragmentViewModel: AExhibitVM by activityViewModel()
 
     override fun initBinding(container: ViewGroup?): View {
-        TODO("Not yet implemented")
+        binding = FragmentContactsBinding.inflate(layoutInflater, container, false)
+        return binding.root
     }
 }

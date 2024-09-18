@@ -65,9 +65,11 @@ class DevelopmentsFragment: BaseFragment() {
                 is Resource.Loading -> {
                     adapter.showLoading()
                 }
+
                 is Resource.Success -> {
                     adapter.updateData(resource.data)
                 }
+
                 is Resource.Error -> {
                     adapter.showError(resource.message)
                 }
@@ -85,12 +87,15 @@ class DevelopmentsFragment: BaseFragment() {
                 val data = resource.data
                 adapter.updateData(data)
             }
+
             is Resource.Error -> {
                 adapter.showError(resource.message)
             }
+
             is Resource.Loading -> {
                 adapter.showLoading()
             }
+
             null -> {}
         }
 
@@ -101,7 +106,12 @@ class DevelopmentsFragment: BaseFragment() {
     }
 
     override fun initBinding(container: ViewGroup?): View {
-        binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_developments, container, false)
+        binding = DataBindingUtil.inflate(
+            layoutInflater,
+            R.layout.fragment_developments,
+            container,
+            false
+        )
         return binding.root
     }
 
@@ -112,4 +122,27 @@ class DevelopmentsFragment: BaseFragment() {
     override fun navigateNext(repositoryData: RepositoryData) {
         (activity as MainActivity).moveToExhibit(repositoryData)
     }
+
+//    override fun navigateNext(repositoryData: RepositoryData) {
+//        if (repositoryData is DevelopmentLocale) {
+//            val bundle = Bundle().apply {
+//                putParcelable("development_data", repositoryData)
+//            }
+//            findNavController().navigate(by.ssrlab.common_ui.R.id.action_labsFragment_to_departmentsFragment, bundle)
+//        } else{
+//            (activity as MainActivity).moveToExhibit(repositoryData)
+//        }
+//    }
+
+
+//va.lang.IllegalArgumentException: Navigation action/destination by.ssrlab.nasguide:id/
+// action_labsFragment_to_departmentsFragment cannot be found from the current destination 
+// Destination(by.ssrlab.nasguide:id/inventionsFragment) label=InventionsFragment 
+// class=by.ssrlab.ui.fragments.inventions.DevelopmentsFragment
+//  a.lang.IllegalArgumentException: Navigation action/destination
+//  by.ssrlab.nasguide:id/action_exhibitFragment_to_achievementsFragment cannot be found
+//  from the current destination Destination(by.ssrlab.nasguide:id/orgFragment)
+//  label=OrgFragment class=by.ssrlab.ui.fragments.organizations.OrgsFragment
+//
+
 }
