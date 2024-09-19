@@ -1,5 +1,6 @@
 package by.ssrlab.nasguide.di.network
 
+import by.ssrlab.domain.repository.network.CommonSearchRepository
 import by.ssrlab.domain.repository.network.DevelopmentsRepository
 import by.ssrlab.domain.repository.network.EventsRepository
 import by.ssrlab.domain.repository.network.OrgsRepository
@@ -19,4 +20,14 @@ val repositoriesModule = module {
     single(named("network")) { PersonsRepository(get(named("network"))) }
 
     single(named("network")) { PlacesRepository(get(named("network"))) }
+
+    single(named("network")) {
+        CommonSearchRepository(
+            devApi = get(named("network")),
+            eventApi = get(named("network")),
+            orgsApi = get(named("network")),
+            personsApi = get(named("network")),
+            placesApi = get(named("network"))
+        )
+    }
 }
