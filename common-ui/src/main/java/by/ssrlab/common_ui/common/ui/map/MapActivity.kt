@@ -2,10 +2,16 @@ package by.ssrlab.common_ui.common.ui.map
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.LocationManager
 import android.os.Bundle
+import android.provider.Settings
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.content.res.AppCompatResources
@@ -49,6 +55,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.properties.ReadOnlyProperty
 
 
 class MapActivity : BaseActivity() {
@@ -71,28 +78,17 @@ class MapActivity : BaseActivity() {
     private lateinit var routeLineApi: MapboxRouteLineApi
     private lateinit var routesObserver: RoutesObserver
 
-    private val mapboxNavigation: MapboxNavigation by requireMapboxNavigation(
-        onResumedObserver = object : MapboxNavigationObserver {
-            override fun onAttached(mapboxNavigation: MapboxNavigation) {
-                mapboxNavigation.registerRoutesObserver(routesObserver)
-            }
+    private lateinit var mapboxNavigationDelegate: ReadOnlyProperty<Any, MapboxNavigation>
 
-            override fun onDetached(mapboxNavigation: MapboxNavigation) {
-                mapboxNavigation.unregisterRoutesObserver(routesObserver)
-            }
-        }
-    )
+    private val mapboxNavigation: MapboxNavigation
+        get() = mapboxNavigationDelegate.getValue(this, ::mapboxNavigation)
 
-    @Suppress("DEPRECATION")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         enableEdgeToEdge(
-            statusBarStyle = SystemBarStyle.dark(
-                android.graphics.Color.TRANSPARENT
-            ),
-            navigationBarStyle = SystemBarStyle.dark(
-                android.graphics.Color.TRANSPARENT
-            )
+            statusBarStyle = SystemBarStyle.dark(android.graphics.Color.TRANSPARENT),
+            navigationBarStyle = SystemBarStyle.dark(android.graphics.Color.TRANSPARENT)
         )
 
         binding = ActivityMapBinding.inflate(layoutInflater)
@@ -100,10 +96,27 @@ class MapActivity : BaseActivity() {
 
         mapView = binding.map
         viewAnnotationManager = binding.map.viewAnnotationManager
-
-        //62 line through binding.map etc. not through property mapboxMap
         mapView?.scalebar?.enabled = false
         mapboxMap = binding.map.getMapboxMap()
+
+        setBackAction()
+        checkLocationEnabledAndProceed()
+    }
+
+    private fun checkLocationEnabledAndProceed() {
+        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+        val isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+
+        if (isGpsEnabled && isNetworkEnabled) {
+            initMapAndNavigation()
+        } else {
+            showLocationDisabledDialog()
+        }
+    }
+
+    @Suppress("DEPRECATION")
+    private fun initMapAndNavigation() {
         mapboxMap.loadStyleUri(Style.MAPBOX_STREETS).apply {
             for (i in intent.getParcelableArrayListExtra<DescriptionData>(MAPBOX_VIEW_POINT_LIST)!!) {
                 addPoint(i)
@@ -121,16 +134,41 @@ class MapActivity : BaseActivity() {
         setMapboxOptions()
         setupButtons()
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this@MapActivity)
+        mapboxNavigationDelegate = requireMapboxNavigation(
+            onResumedObserver = object : MapboxNavigationObserver {
+                override fun onAttached(mapboxNavigation: MapboxNavigation) {
+                    mapboxNavigation.registerRoutesObserver(routesObserver)
+                }
+
+                override fun onDetached(mapboxNavigation: MapboxNavigation) {
+                    mapboxNavigation.unregisterRoutesObserver(routesObserver)
+                }
+            }
+        )
     }
 
-    override fun onStart() {
-        super.onStart()
+    private fun showLocationDisabledDialog() {
+        val dialog = AlertDialog.Builder(this)
+            .setMessage("To display the map, you must enable geolocation. Want to turn it on?")
+            .setPositiveButton("YES") { _, _ ->
+                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                startActivity(intent)
+                finish()
+                checkLocationEnabledAndProceed()
+            }
+            .setNegativeButton("NO") { dialog, _ ->
+                finish()
+                Toast.makeText(this, "Location needed", Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+            }
+            .setCancelable(false)
+            .create()
 
-        //TODO make camera translation from the single selected point
+        dialog.show()
     }
+
     private fun setupButtons() {
         setLocationAction()
-        setBackAction()
     }
 
     private fun setLocationForSinglePoint(location: DescriptionData) {
@@ -141,11 +179,11 @@ class MapActivity : BaseActivity() {
 
             binding.mapPosition.apply {
                 withContext(Dispatchers.Main) {
-                        mapView?.camera?.flyTo(
-                            cameraOptions {
-                                center(Point.fromLngLat(location.lon!!, location.lat!!))
-                            }
-                        )
+                    mapView?.camera?.flyTo(
+                        cameraOptions {
+                            center(Point.fromLngLat(location.lon!!, location.lat!!))
+                        }
+                    )
                 }
             }
         }
@@ -269,7 +307,6 @@ class MapActivity : BaseActivity() {
         fusedLocationClient.lastLocation.addOnSuccessListener { location ->
             if (location != null) currentPoint =
                 Point.fromLngLat(location.longitude, location.latitude)
-
             MapDialog(
                 this@MapActivity,
                 pointObject,
