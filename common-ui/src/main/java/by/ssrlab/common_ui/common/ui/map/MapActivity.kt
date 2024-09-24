@@ -57,7 +57,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.properties.ReadOnlyProperty
 
-
 class MapActivity : BaseActivity() {
 
     private lateinit var binding: ActivityMapBinding
