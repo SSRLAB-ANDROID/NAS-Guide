@@ -46,5 +46,13 @@
     <string name="events">Падзеi</string>
     <string name="choose_date">Абярыце дату</string>
     <string name="volume_off">Гучнасць выключана</string>
+    <string name="to_display_the_map">Для отображения карты необходим доступ к геолокации. Включить?</string>
+    <string name="to_display_the_map">Д</string>
+    <string name="to_display_the_map">Д</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="no">Н</string>
+    <string name="location_needed">Необходима геолокация</string>
+    <string name="location_needed">Н</string>
 
 </resources>

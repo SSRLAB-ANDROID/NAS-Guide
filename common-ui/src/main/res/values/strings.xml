@@ -55,5 +55,9 @@
     <string name="events">Events</string>
     <string name="choose_date">Choose date</string>
     <string name="volume_off">Volume off</string>
+    <string name="to_display_the_map">To display the map, you must enable geolocation. Want to turn it on?</string>
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
+    <string name="location_needed">Location needed</string>
 
 </resources>
