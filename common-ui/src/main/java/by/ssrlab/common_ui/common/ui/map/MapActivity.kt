@@ -148,16 +148,16 @@ class MapActivity : BaseActivity() {
 
     private fun showLocationDisabledDialog() {
         val dialog = AlertDialog.Builder(this)
-            .setMessage("To display the map, you must enable geolocation. Want to turn it on?")
-            .setPositiveButton("YES") { _, _ ->
+            .setMessage(getString(R.string.to_display_the_map))
+            .setPositiveButton(getString(R.string.yes)) { _, _ ->
                 val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
                 startActivity(intent)
                 finish()
                 checkLocationEnabledAndProceed()
             }
-            .setNegativeButton("NO") { dialog, _ ->
+            .setNegativeButton(getString(R.string.no)) { dialog, _ ->
                 finish()
-                Toast.makeText(this, "Location needed", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.location_needed), Toast.LENGTH_SHORT).show()
                 dialog.dismiss()
             }
             .setCancelable(false)

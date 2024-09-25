@@ -46,5 +46,10 @@
     <string name="events">События</string>
     <string name="choose_date">Выберите дату</string>
     <string name="volume_off">Звук выключен</string>
+    <string name="to_display_the_map">Для адлюстроўкі карткі неабходна падключыць геалакацыю. Падключыць?</string>
+    <string name="yes">Так</string>
+    <string name="yes">Т</string>
+    <string name="no">Не</string>
+    <string name="location_needed">Геалакацыя неабходна</string>
 
 </resources>
