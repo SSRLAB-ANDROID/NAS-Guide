@@ -39,7 +39,7 @@ class EventsAdapter(
                 }
 
                 is RvEventsItemBinding -> {
-                    this.rvEventsDate.text = entitiesList[position - 1].event.keyName
+                    this.rvEventsDate.text = entitiesList[position - 1].name
                     this.rvEventsBody.text = entitiesList[position - 1].about.fromHtml()
 
                     this.rvEventsPng.load(entitiesList[position - 1]) {
