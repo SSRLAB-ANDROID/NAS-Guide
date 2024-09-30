@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+<data>
+    <variable
+        name="viewModel"
+        type="by.ssrlab.ui.vm.FCommonSearchVM" />
+    <import type="by.ssrlab.common_ui.common.util.BindingAdapters" />
+</data>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -11,6 +18,7 @@
         android:background="@color/toolbar_button_secondary"
         android:gravity="center_vertical"
         android:orientation="horizontal"
+        android:visibility="visible"
         android:padding="8dp">
 
         <androidx.appcompat.widget.SearchView
@@ -22,8 +30,10 @@
             android:background="@drawable/search_field_background"
             android:iconifiedByDefault="false"
             android:inputType="text"
-            android:padding="8dp"
-            android:queryHint="Поиск">
+            android:padding="12dp"
+            android:layout_margin="5dp"
+            android:queryHint="Поиск"
+            style="@style/WhiteSearchViewStyle">
 
             <ImageView
                 android:id="@+id/searchIcon"
@@ -65,3 +75,4 @@
         android:paddingTop="8dp"
         android:visibility="gone" />
 </LinearLayout>
+</layout>
