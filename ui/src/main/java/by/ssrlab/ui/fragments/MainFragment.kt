@@ -42,6 +42,7 @@ class MainFragment: BaseFragment() {
 
             setButtonAction(ButtonAction.BackAction, ::onBackPressed)
             setButtonAction(ButtonAction.LanguageAction, ::initLanguageDialog)
+            setButtonAction(ButtonAction.SearchAction, ::initCommonSearch)
         }
 
         binding.apply {
@@ -76,5 +77,9 @@ class MainFragment: BaseFragment() {
 
     override fun navigateNext(address: Int) {
         findNavController().navigate(address)
+    }
+
+    private fun initCommonSearch() {
+        findNavController().navigate(R.id.searchFragment)
     }
 }
