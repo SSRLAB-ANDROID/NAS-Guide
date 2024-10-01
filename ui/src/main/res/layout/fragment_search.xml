@@ -61,7 +61,7 @@
             android:focusable="true"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
-            android:text="@string/cancel_button"
+            android:text="@string/tool_back"
             android:textColor="@color/primary_blue" />
     </LinearLayout>
 

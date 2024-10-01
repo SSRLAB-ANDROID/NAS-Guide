@@ -46,11 +46,13 @@
     <string name="events">Падзеi</string>
     <string name="choose_date">Абярыце дату</string>
     <string name="volume_off">Гучнасць выключана</string>
+
+    //String
     <string name="tool_back">Адмена</string>
-    <string name="search_button">Кнопка поиска</string>
-    <string name="search_button">К</string>
-    <string name="clear_button">Кнопка отчистки</string>
-    <string name="cancel_button">Отмена</string>
-    <string name="query_hint">Поиск</string>
+
+    //Search
+    <string name="search_button">Пошук</string>
+    <string name="clear_button">Ачыстка</string>
+    <string name="query_hint">Пошук</string>
 
 </resources>

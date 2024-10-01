@@ -62,7 +62,6 @@
     //Search
     <string name="search_button">Search Button</string>
     <string name="clear_button">Clear Button</string>
-    <string name="cancel_button">Cancel</string>
     <string name="query_hint">Search</string>
 
 </resources>
