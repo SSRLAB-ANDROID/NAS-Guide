@@ -47,5 +47,11 @@
     <string name="choose_date">Выберите дату</string>
     <string name="volume_off">Звук выключен</string>
     <string name="tool_back">Отмена</string>
+    <string name="search_button">Пошук</string>
+    <string name="clear_button">Адчыстка</string>
+    <string name="cancel_button">Адмена</string>
+    <string name="cancel_button">А</string>
+    <string name="query_hint">Пошук</string>
+    <string name="query_hint">П</string>
 
 </resources>

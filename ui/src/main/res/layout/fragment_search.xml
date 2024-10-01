@@ -32,28 +32,28 @@
             android:inputType="text"
             android:padding="12dp"
             android:layout_margin="5dp"
-            android:queryHint="Поиск"
+            android:queryHint="@string/query_hint"
             style="@style/WhiteSearchViewStyle">
 
             <ImageView
-                android:id="@+id/searchIcon"
+                android:id="@+id/search_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
-                android:contentDescription="Search Button"
+                android:contentDescription="@string/search_button"
                 android:src="@drawable/ic_search" />
 
             <ImageView
-                android:id="@+id/clearIcon"
+                android:id="@+id/clear_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:contentDescription="Close Button"
+                android:contentDescription="@string/clear_button"
                 android:src="@drawable/ic_close" />
         </androidx.appcompat.widget.SearchView>
 
         <TextView
-            android:id="@+id/cancelButton"
+            android:id="@+id/cancel_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -61,12 +61,12 @@
             android:focusable="true"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
-            android:text="Отмена"
+            android:text="@string/cancel_button"
             android:textColor="@color/primary_blue" />
     </LinearLayout>
 
     <ListView
-        android:id="@+id/searchResultsList"
+        android:id="@+id/search_results_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
