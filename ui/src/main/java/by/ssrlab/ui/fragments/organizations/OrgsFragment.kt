@@ -128,6 +128,7 @@ class OrgsFragment : BaseFragment() {
         (activity as MainActivity).moveToExhibit(repositoryData)
     }
 
+    //Search
     private var toolbarSearchView: SearchView? = null
 
     private fun searchBarInstance(): SearchView {

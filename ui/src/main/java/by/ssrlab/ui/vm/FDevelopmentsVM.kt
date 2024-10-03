@@ -6,6 +6,7 @@ import by.ssrlab.common_ui.common.ui.base.vm.BaseFragmentVM
 import by.ssrlab.data.data.settings.remote.DevelopmentLocale
 import by.ssrlab.domain.repository.network.DevelopmentsRepository
 import by.ssrlab.domain.utils.Resource
+import java.util.Locale
 
 class FDevelopmentsVM(developmentsRepository: DevelopmentsRepository) :
     BaseFragmentVM<DevelopmentLocale>(developmentsRepository) {
@@ -37,5 +38,24 @@ class FDevelopmentsVM(developmentsRepository: DevelopmentsRepository) :
 
     init {
         loadData()
+    }
+
+
+    private val _filteredData = MutableLiveData<List<DevelopmentLocale>>()
+    val filteredDataList: LiveData<List<DevelopmentLocale>> get() = _filteredData
+
+    private fun setFilteredList(value: List<DevelopmentLocale>) {
+        _filteredData.value = value
+    }
+
+    fun filterData(query: String) {
+        val queryLowered = query.lowercase(Locale.getDefault())
+        val resource = _inventionsData.value
+        if (resource is Resource.Success) {
+            val filteredList = resource.data.filter {
+                it.name.contains(queryLowered, ignoreCase = true)
+            }
+            setFilteredList(filteredList)
+        }
     }
 }
