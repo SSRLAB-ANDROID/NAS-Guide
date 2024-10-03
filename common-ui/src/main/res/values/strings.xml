@@ -60,4 +60,7 @@
     <string name="no">NO</string>
     <string name="location_needed">Location needed</string>
 
+    //String
+    <string name="tool_back">Back</string>
+
 </resources>
