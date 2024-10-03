@@ -3,7 +3,7 @@
     //Main
     <string name="logo_title">Belarusian National Academy of Sciences Guide</string>
 
-    <string name="page_main_title">National Academy of Science of Belarus</string>
+    <string name="page_main_title">Belarusian National Academy of Sciences Guide</string>
     <string name="page_history_title">History</string>
     <string name="page_places_title">Interesting Places</string>
     <string name="page_persons_title">Persons</string>
@@ -55,6 +55,10 @@
     <string name="events">Events</string>
     <string name="choose_date">Choose date</string>
     <string name="volume_off">Volume off</string>
+    <string name="to_display_the_map">To display the map, you must enable geolocation. Want to turn it on?</string>
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
+    <string name="location_needed">Location needed</string>
 
     //String
     <string name="tool_back">Back</string>

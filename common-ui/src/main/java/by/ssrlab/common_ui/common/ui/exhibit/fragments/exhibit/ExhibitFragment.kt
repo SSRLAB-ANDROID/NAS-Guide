@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import by.ssrlab.common_ui.common.ui.base.BaseActivity
 import by.ssrlab.common_ui.common.ui.exhibit.ExhibitActivity
-import by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.FragmentSettingsManager
-import by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.MediaPlayer.pauseAudio
+import by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.player.FragmentSettingsManager
+import by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.player.MediaPlayer.pauseAudio
 import by.ssrlab.common_ui.common.vm.AExhibitVM
 import by.ssrlab.common_ui.databinding.FragmentExhibitBinding
 import by.ssrlab.data.data.common.RepositoryData
