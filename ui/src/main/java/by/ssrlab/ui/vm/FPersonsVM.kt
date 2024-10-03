@@ -3,10 +3,8 @@ package by.ssrlab.ui.vm
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import by.ssrlab.common_ui.common.ui.base.vm.BaseFragmentVM
-import by.ssrlab.data.data.settings.remote.OrganizationLocale
 import by.ssrlab.data.data.settings.remote.PersonLocale
 import by.ssrlab.domain.repository.network.PersonsRepository
-import by.ssrlab.domain.utils.Resource
 import by.ssrlab.ui.states.PersonsState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
