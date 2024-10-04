@@ -3,14 +3,12 @@ package by.ssrlab.ui.fragments.organizations
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageButton
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import by.ssrlab.common_ui.common.ui.base.BaseActivity
 import by.ssrlab.common_ui.common.ui.base.BaseFragment
 import by.ssrlab.data.data.common.RepositoryData
 import by.ssrlab.data.util.ButtonAction
@@ -59,6 +57,7 @@ class OrgsFragment : BaseFragment() {
         initAdapter()
         observeOnDataChanged()
         disableButtons()
+        addAvailableFilterCategories()
     }
 
     override fun onDestroyView() {
@@ -69,7 +68,7 @@ class OrgsFragment : BaseFragment() {
 
     private fun disableButtons() {
         binding.orgsFilterRipple.setOnClickListener {
-            (requireActivity() as BaseActivity).createIsntRealizedDialog()
+            //TODO nav to filter fragment
         }
     }
 
@@ -79,9 +78,11 @@ class OrgsFragment : BaseFragment() {
                 is Resource.Loading -> {
                     adapter.showLoading()
                 }
+
                 is Resource.Success -> {
                     adapter.updateData(resource.data)
                 }
+
                 is Resource.Error -> {
                     adapter.showError(resource.message)
                 }
@@ -99,12 +100,15 @@ class OrgsFragment : BaseFragment() {
                 val data = resource.data
                 adapter.updateData(data)
             }
+
             is Resource.Error -> {
                 adapter.showError(resource.message)
             }
+
             is Resource.Loading -> {
                 adapter.showLoading()
             }
+
             null -> {}
         }
 
@@ -119,6 +123,8 @@ class OrgsFragment : BaseFragment() {
         return binding.root
     }
 
+
+    //Navigation
     override fun onBackPressed() {
         findNavController().popBackStack()
     }
@@ -127,6 +133,8 @@ class OrgsFragment : BaseFragment() {
         (activity as MainActivity).moveToExhibit(repositoryData)
     }
 
+
+    //Search
     private var toolbarSearchView: SearchView? = null
 
     private fun searchBarInstance(): SearchView {
@@ -175,4 +183,10 @@ class OrgsFragment : BaseFragment() {
         val toolbarSearchView = searchBarInstance()
         toolbarSearchView.visibility = View.GONE
     }
+
+    //Filter
+    private fun addAvailableFilterCategories() {
+        fragmentViewModel.setAvailableFilters()
+    }
+
 }

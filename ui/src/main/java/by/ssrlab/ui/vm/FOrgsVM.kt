@@ -77,8 +77,8 @@ class FOrgsVM(orgsRepository: OrgsRepository) : BaseFragmentVM<OrganizationLocal
     }
 
     //Filter
-    private val _availableFilters = MutableStateFlow<Set<DepartmentFilter>>(emptySet())
-    val availableFilters: StateFlow<Set<DepartmentFilter>> = _availableFilters
+    private val _availableFilters = MutableStateFlow<Map<Set<DepartmentFilter>, Int>>(emptyMap())
+    val availableFilters: StateFlow<Map<Set<DepartmentFilter>, Int>> = _availableFilters
 
     private val _selectedFilters = MutableStateFlow<Set<DepartmentFilter>>(emptySet())
     val selectedFilters: StateFlow<Set<DepartmentFilter>> = _selectedFilters
@@ -93,7 +93,16 @@ class FOrgsVM(orgsRepository: OrgsRepository) : BaseFragmentVM<OrganizationLocal
                 emptySet()
             }
 
-        _availableFilters.value = uniqueDepartmentFilters
+        val departmentFilterCounts: Map<Set<DepartmentFilter>, Int> =
+            if (_orgsData.value is Resource.Success) {
+                (_orgsData.value as Resource.Success<List<OrganizationLocale>>).data
+                    .groupingBy { uniqueDepartmentFilters }
+                    .eachCount()
+            } else {
+                emptyMap()
+            }
+
+        _availableFilters.value = departmentFilterCounts
     }
 
     fun filterDataByChoices(){
