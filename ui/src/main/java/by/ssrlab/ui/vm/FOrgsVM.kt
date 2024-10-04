@@ -105,7 +105,27 @@ class FOrgsVM(orgsRepository: OrgsRepository) : BaseFragmentVM<OrganizationLocal
         _availableFilters.value = departmentFilterCounts
     }
 
-    fun filterDataByChoices(){
+    fun onFilterSelected(filter: DepartmentFilter, isSelected: Boolean) {
+        val currentFilters = _selectedFilters.value.toMutableSet()
+
+        if (isSelected) {
+            currentFilters.add(filter)
+        } else {
+            currentFilters.remove(filter)
+        }
+
+        _selectedFilters.value = currentFilters
+    }
+
+    fun selectAllFilters(selectAll: Boolean) {
+        _selectedFilters.value = if (selectAll) {
+            _availableFilters.value.keys.flatten().toSet()
+        } else {
+            emptySet()
+        }
+    }
+
+    fun applyFilters(){
         val filterDataByChoices =
             if (_orgsData.value is Resource.Success) {
                 val currentSelectedFilters = _selectedFilters.value
@@ -116,5 +136,10 @@ class FOrgsVM(orgsRepository: OrgsRepository) : BaseFragmentVM<OrganizationLocal
             }
 
         setFilteredList(filterDataByChoices)
+    }
+
+    fun resetFilters() {
+        _selectedFilters.value = emptySet()
+        applyFilters()
     }
 }

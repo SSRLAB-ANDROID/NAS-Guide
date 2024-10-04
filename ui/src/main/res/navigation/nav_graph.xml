@@ -148,7 +148,7 @@
 
     <fragment
         android:id="@+id/filterFragment"
-        android:name="by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.FilterFragment"
+        android:name="by.ssrlab.ui.fragments.FilterFragment"
         android:label="FilterFragment"/>
 
 </navigation>
