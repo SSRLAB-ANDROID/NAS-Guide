@@ -48,10 +48,6 @@ class OrgsFragment : BaseFragment() {
         binding.apply {
             viewModel = this@OrgsFragment.fragmentViewModel
             lifecycleOwner = viewLifecycleOwner
-
-            orgsMapRipple.setOnClickListener {
-                (requireActivity() as MainActivity).moveToMap(fragmentViewModel.getDescriptionArray())
-            }
         }
 
         initAdapter()
@@ -67,9 +63,8 @@ class OrgsFragment : BaseFragment() {
     }
 
     private fun disableButtons() {
-        binding.orgsFilterRipple.setOnClickListener {
-            //TODO nav to filter fragment
-        }
+        moveToMap()
+        moveToFilter()
     }
 
     override fun observeOnDataChanged() {
@@ -121,6 +116,13 @@ class OrgsFragment : BaseFragment() {
     override fun initBinding(container: ViewGroup?): View {
         binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_orgs, container, false)
         return binding.root
+    }
+
+    //Map
+    private fun moveToMap(){
+        binding.orgsMapRipple.setOnClickListener {
+            (requireActivity() as MainActivity).moveToMap(fragmentViewModel.getDescriptionArray())
+        }
     }
 
 
@@ -187,6 +189,12 @@ class OrgsFragment : BaseFragment() {
     //Filter
     private fun addAvailableFilterCategories() {
         fragmentViewModel.setAvailableFilters()
+    }
+
+    private fun moveToFilter() {
+        binding.orgsFilterRipple.setOnClickListener {
+            findNavController().navigate(R.id.filterFragment)
+        }
     }
 
 }

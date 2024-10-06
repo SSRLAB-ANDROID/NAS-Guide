@@ -5,11 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.ssrlab.common_ui.common.ui.base.BaseFragment
 import by.ssrlab.domain.models.ToolbarControlObject
+import by.ssrlab.ui.MainActivity
 import by.ssrlab.ui.R
 import by.ssrlab.ui.databinding.FragmentFiltersBinding
 import by.ssrlab.ui.rv.FiltersAdapter
@@ -25,7 +26,7 @@ class FilterFragment : BaseFragment() {
         isDates = false
     )
 
-    override val fragmentViewModel: FOrgsVM by activityViewModels()
+    override lateinit var fragmentViewModel: FOrgsVM
 
     private lateinit var binding: FragmentFiltersBinding
     private lateinit var filtersAdapter: FiltersAdapter
@@ -46,6 +47,7 @@ class FilterFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentFiltersBinding.inflate(inflater, container, false)
+        fragmentViewModel = ViewModelProvider(requireActivity() as MainActivity)[FOrgsVM::class.java]
         binding.viewModel = fragmentViewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
