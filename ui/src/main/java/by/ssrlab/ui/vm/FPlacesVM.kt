@@ -4,9 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import by.ssrlab.common_ui.common.ui.base.vm.BaseFragmentVM
 import by.ssrlab.data.data.common.DescriptionData
+import by.ssrlab.data.data.settings.remote.OrganizationLocale
 import by.ssrlab.data.data.settings.remote.PlaceLocale
 import by.ssrlab.domain.repository.network.PlacesRepository
 import by.ssrlab.domain.utils.Resource
+import java.util.Locale
 
 class FPlacesVM(placesRepository: PlacesRepository): BaseFragmentVM<PlaceLocale>(placesRepository) {
 
@@ -50,5 +52,24 @@ class FPlacesVM(placesRepository: PlacesRepository): BaseFragmentVM<PlaceLocale>
 
     init {
         loadData()
+    }
+
+
+    private val _filteredData = MutableLiveData<List<PlaceLocale>>()
+    val filteredDataList: LiveData<List<PlaceLocale>> get() = _filteredData
+
+    private fun setFilteredList(value: List<PlaceLocale>) {
+        _filteredData.value = value
+    }
+
+    fun filterData(query: String) {
+        val queryLowered = query.lowercase(Locale.getDefault())
+        val resource = _placesData.value
+        if (resource is Resource.Success) {
+            val filteredList = resource.data.filter {
+                it.name.contains(queryLowered, ignoreCase = true)
+            }
+            setFilteredList(filteredList)
+        }
     }
 }

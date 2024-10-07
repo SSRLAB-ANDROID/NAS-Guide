@@ -48,4 +48,12 @@
     <string name="volume_off">Звук выключен</string>
     <string name="tool_back">Отмена</string>
 
+    <string name="tool_back">Отмена</string>
+
+    //Location
+    <string name="to_display_the_map">Для отображения карты необходим доступ к геолокации. Включить?</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="location_needed">Необходима геолокация</string>
+
 </resources>

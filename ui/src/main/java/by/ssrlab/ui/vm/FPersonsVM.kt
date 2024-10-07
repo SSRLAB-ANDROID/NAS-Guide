@@ -9,6 +9,7 @@ import by.ssrlab.ui.states.PersonsState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import java.util.Locale
 
 class FPersonsVM(personsRepository: PersonsRepository) :
     BaseFragmentVM<PersonLocale>(personsRepository) {
@@ -32,6 +33,24 @@ class FPersonsVM(personsRepository: PersonsRepository) :
                 currentState.copy(personList = personList.toMutableList())
             }
             _personsData.value = personState.value.personList?.toList()
+        }
+    }
+
+
+    private val _filteredData = MutableLiveData<List<PersonLocale>>()
+    val filteredDataList: LiveData<List<PersonLocale>> get() = _filteredData
+
+    private fun setFilteredList(value: List<PersonLocale>) {
+        _filteredData.value = value
+    }
+
+    fun filterData(query: String) {
+        val queryLowered = query.lowercase(Locale.getDefault())
+        _personsData.value?.let { data ->
+            val filteredList = data.filter {
+                it.name.contains(queryLowered, ignoreCase = true)
+            }
+            setFilteredList(filteredList)
         }
     }
 }
