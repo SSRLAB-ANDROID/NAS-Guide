@@ -13,10 +13,16 @@ class FDatesVM(eventsRepository: EventsRepository) : BaseFragmentVM<EventLocale>
 
     val datesObservableBoolean = MutableLiveData(false)
 
+    fun updateEvents(events: List<EventLocale>) {
+        _datesData.value = events
+    }
+
     init {
         getData {
-            _datesData.value = it
-            datesObservableBoolean.value = true
+            getData {
+                _datesData.value = it
+                datesObservableBoolean.value = true
+            }
         }
     }
 }
