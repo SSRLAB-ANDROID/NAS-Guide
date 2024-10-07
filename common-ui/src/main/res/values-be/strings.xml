@@ -38,22 +38,26 @@
     <string name="exhibit_laboratories">Лабараторыі</string>
     <string name="exhibit_achievements">Дасягненні</string>
     <string name="exhibit_contacts">Кантакты</string>
+    <string name="volume_off">Гучнасць выключана</string>
+
+    //Map
     <string name="build_route">Пабудаваць маршрут</string>
     <string name="something_went_wrong">Нешта пайшло ня так :(</string>
-    <string name="on_this_day">У гэты дзень</string>
-    <string name="today">Сёння</string>
-    <string name="date">Дата</string>
-    <string name="events">Падзеi</string>
-    <string name="choose_date">Абярыце дату</string>
-    <string name="volume_off">Гучнасць выключана</string>
-    <string name="tool_back">Адмена</string>
-
-    <string name="tool_back">Адмена</string>
 
     //Location
     <string name="to_display_the_map">Для адлюстроўкі карткі неабходна падключыць геалакацыю. Падключыць?</string>
     <string name="yes">Так</string>
     <string name="no">Не</string>
     <string name="location_needed">Геалакацыя неабходна</string>
+
+    //Date
+    <string name="on_this_day">У гэты дзень</string>
+    <string name="today">Сёння</string>
+    <string name="date">Дата</string>
+    <string name="events">Падзеi</string>
+    <string name="choose_date">Абярыце дату</string>
+
+    //String
+    <string name="tool_back">Адмена</string>
 
 </resources>
