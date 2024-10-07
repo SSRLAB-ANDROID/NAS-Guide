@@ -42,11 +42,18 @@
     <string name="exhibit_laboratories">Laboratories</string>
     <string name="exhibit_achievements">Achievements</string>
     <string name="exhibit_contacts">Contacts</string>
+    <string name="volume_off">Volume off</string>
 
     //Map
     <string name="mapbox_access_token" translatable="false" tools:ignore="UnusedResources">pk.eyJ1Ijoidm9ka2FrdW4iLCJhIjoiY2x6YWJpZWVsMGtqbzJqczh1MHlyNzA5aSJ9.MvVmZEcQ39LXnDNKpRWshQ</string>
     <string name="build_route">Build route</string>
     <string name="something_went_wrong">Something went wrong :(</string>
+
+    //Location
+    <string name="to_display_the_map">To display the map, you must enable geolocation. Want to turn it on?</string>
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
+    <string name="location_needed">Location needed</string>
 
     //Date
     <string name="on_this_day">On this day</string>
@@ -54,16 +61,9 @@
     <string name="date">Date</string>
     <string name="events">Events</string>
     <string name="choose_date">Choose date</string>
-    <string name="volume_off">Volume off</string>
-    <string name="to_display_the_map">To display the map, you must enable geolocation. Want to turn it on?</string>
-    <string name="yes">YES</string>
-    <string name="no">NO</string>
-    <string name="location_needed">Location needed</string>
 
     //String
     <string name="tool_back">Back</string>
-
-    //String
-    <string name="tool_back">Back</string>
+    <string name="error_occurred">Error occurred</string>
 
 </resources>

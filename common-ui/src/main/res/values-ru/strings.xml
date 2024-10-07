@@ -38,22 +38,27 @@
     <string name="exhibit_laboratories">Лаборатории</string>
     <string name="exhibit_achievements">Достижения</string>
     <string name="exhibit_contacts">Контакты</string>
+    <string name="volume_off">Звук выключен</string>
+
+    //Map
     <string name="build_route">Построить маршрут</string>
     <string name="something_went_wrong">Что-то пошло не так :(</string>
-    <string name="on_this_day">В этот день</string>
-    <string name="today">Сегодня</string>
-    <string name="date">Дата</string>
-    <string name="events">События</string>
-    <string name="choose_date">Выберите дату</string>
-    <string name="volume_off">Звук выключен</string>
-    <string name="tool_back">Отмена</string>
-
-    <string name="tool_back">Отмена</string>
 
     //Location
     <string name="to_display_the_map">Для отображения карты необходим доступ к геолокации. Включить?</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
     <string name="location_needed">Необходима геолокация</string>
+
+    //Date
+    <string name="on_this_day">В этот день</string>
+    <string name="today">Сегодня</string>
+    <string name="date">Дата</string>
+    <string name="events">События</string>
+    <string name="choose_date">Выберите дату</string>
+
+    //String
+    <string name="tool_back">Отмена</string>
+    <string name="error_occurred">Возникла ошибка</string>
 
 </resources>
