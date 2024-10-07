@@ -64,5 +64,6 @@
 
     //String
     <string name="tool_back">Back</string>
+    <string name="error_occurred">Error occurred</string>
 
 </resources>

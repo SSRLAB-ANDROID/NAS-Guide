@@ -59,5 +59,6 @@
 
     //String
     <string name="tool_back">Отмена</string>
+    <string name="error_occurred">Возникла ошибка</string>
 
 </resources>
