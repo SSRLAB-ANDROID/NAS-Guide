@@ -1,7 +1,8 @@
 package by.ssrlab.data.obj
 
-data class DateObject(
+data class EventObject(
     val date: String,
     val body: String,
     val image: String? = null
 )
+

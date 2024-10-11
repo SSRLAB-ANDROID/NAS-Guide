@@ -184,7 +184,7 @@ class MainActivity : BaseActivity() {
         val constraintSet = ConstraintSet().apply { clone(constraintLayout) }
 
         when (mainActivityUiState) {
-            MainActivityUiState.DateFragment -> {
+            MainActivityUiState.EventFragment -> {
                 constraintSet.connect(
                     binding.activityMainFragmentHost.id,
                     ConstraintSet.TOP,

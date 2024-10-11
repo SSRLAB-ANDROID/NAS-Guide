@@ -1,12 +1,16 @@
 package by.ssrlab.common_ui.common.ui.exhibit
 
+import android.content.IntentFilter
 import android.os.Bundle
 import android.view.ViewTreeObserver
+import android.widget.Toast
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
 import androidx.constraintlayout.widget.ConstraintLayout
+import by.ssrlab.common_ui.R
 import by.ssrlab.common_ui.common.ui.base.BaseActivity
 import by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.ActivityMainMarginParams
+import by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.player.AudioManager
 import by.ssrlab.common_ui.common.vm.AExhibitVM
 import by.ssrlab.common_ui.databinding.ActivityExhibitBinding
 import by.ssrlab.data.util.ExhibitObject
@@ -18,6 +22,7 @@ class ExhibitActivity : BaseActivity() {
 
     private lateinit var binding: ActivityExhibitBinding
     private val activityViewModel: AExhibitVM by viewModel()
+    private lateinit var audioManager: AudioManager
 
     @Suppress("DEPRECATION")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,6 +35,7 @@ class ExhibitActivity : BaseActivity() {
                 android.graphics.Color.TRANSPARENT
             )
         )
+        audioManager = AudioManager(activityViewModel)
 
         binding = ActivityExhibitBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -39,8 +45,24 @@ class ExhibitActivity : BaseActivity() {
             if (repositoryData.value != null) observeHeader()
         }
 
-        setupButtons()
+        setUpButtons()
+        setUpVolumeStateListener()
         observeLayoutChange()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        registerReceiver(
+            audioManager.volumeChangeReceiver,
+            IntentFilter("android.media.VOLUME_CHANGED_ACTION")
+        )
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        unregisterReceiver(audioManager.volumeChangeReceiver)
     }
 
     private fun getPlaceId(exhibitObject: ExhibitObject): String {
@@ -52,15 +74,32 @@ class ExhibitActivity : BaseActivity() {
         }
     }
 
-    private fun setupButtons() {
-        setVolumeAction()
+    private fun setUpButtons() {
+        setUpVolumeButton()
         setBackAction()
     }
 
-    private fun setVolumeAction() {
-        binding.toolbarVolume.setOnClickListener {
-            //TODO
+    private fun setUpVolumeButton() {
+        if (!activityViewModel.isVolumeOn.value!!) binding.toolbarVolume.setImageResource(R.drawable.toolbar_exhibit_ic_volume_off)
+        else binding.toolbarVolume.setImageResource(R.drawable.toolbar_exhibit_ic_volume)
+
+        activityViewModel.isVolumeOn.observe(this) {
+            if (!activityViewModel.isVolumeOn.value!!) binding.toolbarVolume.setImageResource(
+                R.drawable.toolbar_exhibit_ic_volume_off
+            )
+            else binding.toolbarVolume.setImageResource(R.drawable.toolbar_exhibit_ic_volume)
         }
+
+        binding.toolbarVolume.setOnClickListener {
+            if (activityViewModel.isVolumeOn.value!!) {
+                audioManager.controlVolume(0, this)
+                Toast.makeText(this, getString(R.string.volume_off), Toast.LENGTH_SHORT).show()
+            } else audioManager.controlVolume(7, this)
+        }
+    }
+
+    private fun setUpVolumeStateListener() {
+        audioManager.setUpVolumeStateListener(activityViewModel, this)
     }
 
     private fun setBackAction() {
@@ -76,6 +115,7 @@ class ExhibitActivity : BaseActivity() {
             }
         }
     }
+
 
     private fun observeLayoutChange() {
         binding.root.viewTreeObserver.addOnGlobalLayoutListener(object :

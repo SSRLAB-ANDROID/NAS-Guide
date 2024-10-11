@@ -2,10 +2,10 @@
 <resources>
 
     <string name="folder_history">Гісторыя</string>
-    <string name="folder_organizations">Арганізацыі НАН</string>
+    <string name="folder_organizations">Арганізацыі</string>
     <string name="folder_inventions">Распрацоўкі</string>
 
-    <string name="folder_dates">Даты</string>
+    <string name="folder_events">Падзеi</string>
     <string name="folder_persons">Асобы</string>
     <string name="folder_places">Цікавыя мясціны</string>
 

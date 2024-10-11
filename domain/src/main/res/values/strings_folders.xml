@@ -2,10 +2,10 @@
 <resources>
 
     <string name="folder_history">History</string>
-    <string name="folder_organizations">NAS Organizations</string>
+    <string name="folder_organizations">Organizations</string>
     <string name="folder_inventions">Developments</string>
 
-    <string name="folder_dates">Dates</string>
+    <string name="folder_events">Events</string>
     <string name="folder_persons">Persons</string>
     <string name="folder_places">Interesting Places</string>
 

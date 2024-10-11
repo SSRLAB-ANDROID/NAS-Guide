@@ -6,14 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import by.ssrlab.common_ui.R
 import by.ssrlab.common_ui.common.ui.base.BaseActivity
 import by.ssrlab.common_ui.common.ui.exhibit.ExhibitActivity
-import by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.FragmentSettingsManager
-import by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.MediaPlayer.handlePlayerState
-import by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.MediaPlayer.isPlaying
-import by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.MediaPlayer.pauseAudio
-import by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.PlayerStatus
+import by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.player.FragmentSettingsManager
+import by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.player.MediaPlayer.pauseAudio
 import by.ssrlab.common_ui.common.vm.AExhibitVM
 import by.ssrlab.common_ui.databinding.FragmentExhibitBinding
 import by.ssrlab.data.data.common.RepositoryData
@@ -38,6 +34,7 @@ class ExhibitFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         exhibitActivity = requireActivity() as ExhibitActivity
     }
 
@@ -55,7 +52,7 @@ class ExhibitFragment : Fragment() {
 
         lifecycleScope.launch {
             val audio = withContext(Dispatchers.IO) {
-                activityViewModel.exhibitState.value.repositoryData?.audio
+                activityViewModel.repositoryData.value?.audio
             }
 
             if (audio != null) {
@@ -78,21 +75,14 @@ class ExhibitFragment : Fragment() {
         pauseAudio()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        fragmentSettingsManager.destroyPlayer()
+    }
+
     private fun disableButtons() {
         binding.apply {
-            exhibitPlayRipple.setOnClickListener {
-                when {
-                    isPlaying() -> {
-                        handlePlayerState(PlayerStatus.Paused, exhibitActivity, binding)
-                        updatePlayPauseButton(binding, isPlaying = false)
-                    }
-
-                    else -> {
-                        handlePlayerState(PlayerStatus.Playing, exhibitActivity, binding)
-                        updatePlayPauseButton(binding, isPlaying = true)
-                    }
-                }
-            }
             exhibitPreviousRipple.setOnClickListener { (requireActivity() as BaseActivity).createIsntRealizedDialog() }
             exhibitNextRipple.setOnClickListener { (requireActivity() as BaseActivity).createIsntRealizedDialog() }
             exhibitContactsRipple.setOnClickListener { (requireActivity() as BaseActivity).createIsntRealizedDialog() }
@@ -101,12 +91,6 @@ class ExhibitFragment : Fragment() {
             exhibitResearchRipple.setOnClickListener { (requireActivity() as BaseActivity).createIsntRealizedDialog() }
             exhibitDeveloperRipple.setOnClickListener { (requireActivity() as BaseActivity).createIsntRealizedDialog() }
         }
-    }
-
-    private fun updatePlayPauseButton(binding: FragmentExhibitBinding, isPlaying: Boolean) {
-        binding.exhibitPlayRipple.setImageResource(
-            if (isPlaying) R.drawable.ic_pause else R.drawable.ic_play
-        )
     }
 
     private fun observeOnParcelableData() {
@@ -136,11 +120,18 @@ class ExhibitFragment : Fragment() {
                 ExhibitObject.Organization -> {
                     exhibitAdditionalBlock.visibility = View.VISIBLE
                     exhibitButtonMap.visibility = View.VISIBLE
+                    exhibitMapRipple.setOnClickListener {
+                        exhibitActivity.moveToMapFromExhibit(data)
+                    }
+
                 }
 
                 ExhibitObject.Person -> {}
                 ExhibitObject.Place -> {
                     exhibitButtonMap.visibility = View.VISIBLE
+                    exhibitMapRipple.setOnClickListener {
+                        exhibitActivity.moveToMapFromExhibit(data)
+                    }
                 }
             }
 

@@ -15,7 +15,7 @@ class UiDataProvider {
 
     fun getHistoryFolders(address1: Int, address2: Int, address3: Int): List<FolderObject> {
         return listOf(
-            FolderObject(R.string.folder_dates, R.drawable.png_folder_dates, address1),
+            FolderObject(R.string.folder_events, R.drawable.png_folder_events, address1),
             FolderObject(R.string.folder_persons, R.drawable.png_folder_persons, address2),
             FolderObject(R.string.folder_places, R.drawable.png_folder_places, address3)
         )

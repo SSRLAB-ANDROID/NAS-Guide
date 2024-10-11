@@ -1,7 +1,7 @@
 package by.ssrlab.data.util
 
 sealed class MainActivityUiState {
-    data object DateFragment : MainActivityUiState()
+    data object EventFragment : MainActivityUiState()
     data object Other : MainActivityUiState()
 }
 
