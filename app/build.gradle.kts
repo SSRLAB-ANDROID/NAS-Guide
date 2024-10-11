@@ -20,6 +20,8 @@ android {
         minSdk = 29
         targetSdk = 34
         versionCode = 1
+        //First release (for tests and publishing)
+        //NASB Guide 1.0.0
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
