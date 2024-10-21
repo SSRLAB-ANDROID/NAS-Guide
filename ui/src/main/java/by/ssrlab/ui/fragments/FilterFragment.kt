@@ -1,60 +1,27 @@
 package by.ssrlab.ui.fragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import by.ssrlab.common_ui.common.ui.base.BaseFragment
-import by.ssrlab.domain.models.ToolbarControlObject
-import by.ssrlab.ui.MainActivity
-import by.ssrlab.ui.R
 import by.ssrlab.ui.databinding.FragmentFiltersBinding
 import by.ssrlab.ui.rv.FiltersAdapter
 import by.ssrlab.ui.vm.FOrgsVM
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
-class FilterFragment : BaseFragment() {
-
-    override val toolbarControlObject = ToolbarControlObject(
-        isBack = false,
-        isLang = true,
-        isSearch = true,
-        isDates = false
-    )
-
-    override lateinit var fragmentViewModel: FOrgsVM
+class FilterFragment : Fragment() {
 
     private lateinit var binding: FragmentFiltersBinding
+    private lateinit var fragmentViewModel: FOrgsVM
     private lateinit var filtersAdapter: FiltersAdapter
 
-    override fun initBinding(container: ViewGroup?): View {
-        binding = DataBindingUtil.inflate(
-            LayoutInflater.from(context),
-            R.layout.fragment_filters,
-            container,
-            false
-        )
-        return binding.root
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentFiltersBinding.inflate(inflater, container, false)
-        fragmentViewModel = ViewModelProvider(requireActivity() as MainActivity)[FOrgsVM::class.java]
-        binding.viewModel = fragmentViewModel
-        binding.lifecycleOwner = viewLifecycleOwner
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         setupFiltersAdapter()
         observeFilters()
-
-        return binding.root
+        fragmentViewModel = TODO()
     }
 
     private fun setupFiltersAdapter() {
@@ -65,22 +32,17 @@ class FilterFragment : BaseFragment() {
                 fragmentViewModel.onFilterSelected(filter, isSelected)
             }
         )
-
-        binding.filtersRecyclerView.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = filtersAdapter
-        }
     }
 
     private fun observeFilters() {
-        lifecycleScope.launchWhenStarted {
+        lifecycleScope.launch {
             fragmentViewModel.availableFilters.collectLatest { filtersMap ->
                 val filtersList = filtersMap.keys.flatten().toList()
                 filtersAdapter.updateFilters(filtersList, fragmentViewModel.selectedFilters.value)
             }
         }
 
-        lifecycleScope.launchWhenStarted {
+        lifecycleScope.launch {
             fragmentViewModel.selectedFilters.collectLatest { selectedFilters ->
                 filtersAdapter.updateFilters(
                     fragmentViewModel.availableFilters.value.keys.flatten(),
