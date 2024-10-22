@@ -19,7 +19,7 @@ class SharedPreferencesUtil(context: Context) {
         EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
     )
 
-    fun getLanguage() = sharedPreferences.getString(LANGUAGE_KEY, "en")
+    fun getLanguage() = sharedPreferences.getString(LANGUAGE_KEY, "be")
     fun setLanguage(language: String) {
         val editor = sharedPreferences.edit()
         editor.putString(LANGUAGE_KEY, language)
