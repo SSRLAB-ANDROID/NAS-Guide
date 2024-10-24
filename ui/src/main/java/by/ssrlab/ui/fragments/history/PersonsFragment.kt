@@ -156,6 +156,6 @@ class PersonsFragment : BaseFragment() {
 
     private fun clearQuery (){
         val toolbarSearchView = searchBarInstance()
-        toolbarSearchView.setQuery(" ", true)
+        toolbarSearchView.setQuery("", true)
     }
 }
