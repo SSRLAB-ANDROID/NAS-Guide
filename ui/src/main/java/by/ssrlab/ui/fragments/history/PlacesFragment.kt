@@ -63,6 +63,7 @@ class PlacesFragment: BaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
 
+        clearQuery()
         hideSearchBar()
     }
 
@@ -174,5 +175,10 @@ class PlacesFragment: BaseFragment() {
     override fun hideSearchBar() {
         val toolbarSearchView = searchBarInstance()
         toolbarSearchView.visibility = View.GONE
+    }
+
+    private fun clearQuery (){
+        val toolbarSearchView = searchBarInstance()
+        toolbarSearchView.setQuery(" ", true)
     }
 }
