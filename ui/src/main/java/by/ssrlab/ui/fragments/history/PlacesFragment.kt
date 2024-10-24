@@ -63,6 +63,7 @@ class PlacesFragment: BaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
 
+        clearQuery()
         hideSearchBar()
     }
 
@@ -166,6 +167,12 @@ class PlacesFragment: BaseFragment() {
         val searchButton: ImageButton = requireActivity().findViewById(R.id.toolbar_search)
         searchButton.visibility = View.GONE
 
+        toolbarSearchView.setOnCloseListener {
+            toolbarSearchView.visibility = View.GONE
+            searchButton.visibility = View.VISIBLE
+            true
+        }
+
         toolbarSearchView.requestFocus()
         val inputManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputManager.showSoftInput(toolbarSearchView.findFocus(), InputMethodManager.SHOW_IMPLICIT)
@@ -174,5 +181,10 @@ class PlacesFragment: BaseFragment() {
     override fun hideSearchBar() {
         val toolbarSearchView = searchBarInstance()
         toolbarSearchView.visibility = View.GONE
+    }
+
+    private fun clearQuery (){
+        val toolbarSearchView = searchBarInstance()
+        toolbarSearchView.setQuery(" ", true)
     }
 }
