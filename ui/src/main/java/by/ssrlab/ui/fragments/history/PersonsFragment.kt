@@ -138,6 +138,12 @@ class PersonsFragment : BaseFragment() {
         val searchButton: ImageButton = requireActivity().findViewById(R.id.toolbar_search)
         searchButton.visibility = View.GONE
 
+        toolbarSearchView.setOnCloseListener {
+            toolbarSearchView.visibility = View.GONE
+            searchButton.visibility = View.VISIBLE
+            true
+        }
+
         toolbarSearchView.requestFocus()
         val inputManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputManager.showSoftInput(toolbarSearchView.findFocus(), InputMethodManager.SHOW_IMPLICIT)
