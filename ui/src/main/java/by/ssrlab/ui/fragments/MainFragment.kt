@@ -8,6 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.ssrlab.common_ui.common.ui.base.BaseFragment
+import by.ssrlab.common_ui.common.util.createSimpleAlertDialog
 import by.ssrlab.data.util.ButtonAction
 import by.ssrlab.domain.models.ToolbarControlObject
 import by.ssrlab.ui.MainActivity
@@ -42,6 +43,9 @@ class MainFragment: BaseFragment() {
 
             setButtonAction(ButtonAction.BackAction, ::onBackPressed)
             setButtonAction(ButtonAction.LanguageAction, ::initLanguageDialog)
+
+            //reinit when functionality is available (and clear the func)
+            setButtonAction(ButtonAction.SearchAction, ::createIsntRealizedDialog)
         }
 
         binding.apply {
@@ -76,5 +80,14 @@ class MainFragment: BaseFragment() {
 
     override fun navigateNext(address: Int) {
         findNavController().navigate(address)
+    }
+
+    private fun createIsntRealizedDialog() {
+        createSimpleAlertDialog(
+            this.getString(by.ssrlab.common_ui.R.string.dialog_dont_available),
+            this.getString(by.ssrlab.common_ui.R.string.dialog_isnt_realized),
+            this.getString(by.ssrlab.common_ui.R.string.dialog_ok),
+            requireActivity()
+        )
     }
 }
