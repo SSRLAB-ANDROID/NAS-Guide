@@ -2,57 +2,114 @@ package by.ssrlab.ui.fragments
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
-import by.ssrlab.ui.databinding.FragmentFiltersBinding
-import by.ssrlab.ui.rv.FiltersAdapter
-import by.ssrlab.ui.vm.FOrgsVM
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
+import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import by.ssrlab.common_ui.common.ui.base.BaseActivity
+import by.ssrlab.common_ui.common.ui.base.BaseFragment
+import by.ssrlab.data.data.common.RepositoryData
+import by.ssrlab.data.util.ButtonAction
+import by.ssrlab.domain.models.ToolbarControlObject
+import by.ssrlab.domain.utils.Resource
+import by.ssrlab.ui.MainActivity
+import by.ssrlab.ui.R
+import by.ssrlab.ui.databinding.FragmentDevelopmentsBinding
+import by.ssrlab.ui.rv.SectionAdapter
+import by.ssrlab.ui.vm.FDevelopmentsVM
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class FilterFragment : Fragment() {
+class FilterFragment: BaseFragment() {
 
-    private lateinit var binding: FragmentFiltersBinding
-    private lateinit var fragmentViewModel: FOrgsVM
-    private lateinit var filtersAdapter: FiltersAdapter
+    private lateinit var binding: FragmentDevelopmentsBinding
+    private lateinit var adapter: SectionAdapter
+
+    override val toolbarControlObject = ToolbarControlObject(
+        isBack = true,
+        isLang = false,
+        isSearch = true,
+        isDates = false
+    )
+
+    override val fragmentViewModel: FDevelopmentsVM by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupFiltersAdapter()
-        observeFilters()
-        fragmentViewModel = TODO()
-    }
-
-    private fun setupFiltersAdapter() {
-        filtersAdapter = FiltersAdapter(
-            filters = fragmentViewModel.availableFilters.value.keys.flatten(),
-            selectedFilters = fragmentViewModel.selectedFilters.value,
-            onFilterSelected = { filter, isSelected ->
-                fragmentViewModel.onFilterSelected(filter, isSelected)
-            }
-        )
-    }
-
-    private fun observeFilters() {
-        lifecycleScope.launch {
-            fragmentViewModel.availableFilters.collectLatest { filtersMap ->
-                val filtersList = filtersMap.keys.flatten().toList()
-                filtersAdapter.updateFilters(filtersList, fragmentViewModel.selectedFilters.value)
-            }
+        fragmentViewModel.setTitle(requireContext().resources.getString(by.ssrlab.domain.R.string.folder_inventions))
+        activityVM.apply {
+            setHeaderImg(by.ssrlab.common_ui.R.drawable.header_inventions)
+            setButtonAction(ButtonAction.BackAction, ::onBackPressed)
         }
 
-        lifecycleScope.launch {
-            fragmentViewModel.selectedFilters.collectLatest { selectedFilters ->
-                filtersAdapter.updateFilters(
-                    fragmentViewModel.availableFilters.value.keys.flatten(),
-                    selectedFilters
-                )
-            }
+        binding.apply {
+            viewModel = this@FilterFragment.fragmentViewModel
+            lifecycleOwner = viewLifecycleOwner
+        }
+
+        initAdapter()
+        observeOnDataChanged()
+        disableButtons()
+    }
+
+    private fun disableButtons() {
+        binding.inventionsFilterRipple.setOnClickListener {
+            (requireActivity() as BaseActivity).createIsntRealizedDialog()
         }
     }
 
-    fun applyFilters(view: View) {
-        fragmentViewModel.applyFilters()
+    override fun observeOnDataChanged() {
+        fragmentViewModel.inventionsData.observe(viewLifecycleOwner, Observer { resource ->
+            when (resource) {
+                is Resource.Loading -> {
+                    adapter.showLoading()
+                }
+                is Resource.Success -> {
+                    adapter.updateData(resource.data)
+                }
+                is Resource.Error -> {
+                    adapter.showError(resource.message)
+                }
+            }
+        })
+    }
+
+    override fun initAdapter() {
+        adapter = SectionAdapter(emptyList()) {
+            navigateNext(it)
+        }
+
+        when (val resource = fragmentViewModel.inventionsData.value) {
+            is Resource.Success -> {
+                val data = resource.data
+                adapter.updateData(data)
+            }
+            is Resource.Error -> {
+                adapter.showError(resource.message)
+            }
+            is Resource.Loading -> {
+                adapter.showLoading()
+            }
+            null -> {}
+        }
+
+        binding.apply {
+            inventionsRv.adapter = adapter
+            inventionsRv.layoutManager = LinearLayoutManager(requireContext())
+        }
+    }
+
+    override fun initBinding(container: ViewGroup?): View {
+        binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_developments, container, false)
+        return binding.root
+    }
+
+    override fun onBackPressed() {
+        findNavController().popBackStack()
+    }
+
+    override fun navigateNext(repositoryData: RepositoryData) {
+        (activity as MainActivity).moveToExhibit(repositoryData)
     }
 }
