@@ -63,7 +63,7 @@ class OrgsFragment : BaseFragment() {
     }
 
     private fun disableButtons() {
-        moveToMap()
+        //moveToMap()
         moveToFilter()
     }
 
@@ -195,6 +195,10 @@ class OrgsFragment : BaseFragment() {
         binding.orgsFilterRipple.setOnClickListener {
             findNavController().navigate(R.id.filterFragment)
         }
+        binding.orgsMapRipple.setOnClickListener {
+            findNavController().navigate(R.id.tryFragment)
+        }
+
     }
 
 }
