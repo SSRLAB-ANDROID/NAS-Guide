@@ -1,5 +1,6 @@
 package by.ssrlab.ui.vm
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import by.ssrlab.common_ui.common.ui.base.vm.BaseFragmentVM
@@ -8,8 +9,6 @@ import by.ssrlab.data.data.remote.DepartmentFilter
 import by.ssrlab.data.data.settings.remote.OrganizationLocale
 import by.ssrlab.domain.repository.network.OrgsRepository
 import by.ssrlab.domain.utils.Resource
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 
 class FOrgsVM(orgsRepository: OrgsRepository) : BaseFragmentVM<OrganizationLocale>(orgsRepository) {
 
@@ -77,11 +76,11 @@ class FOrgsVM(orgsRepository: OrgsRepository) : BaseFragmentVM<OrganizationLocal
     }
 
     //Filter
-    private val _availableFilters = MutableStateFlow<Map<Set<DepartmentFilter>, Int>>(emptyMap())
-    val availableFilters: StateFlow<Map<Set<DepartmentFilter>, Int>> = _availableFilters
+    private val _availableFilters = MutableLiveData<Map<Set<DepartmentFilter>, Int>>(emptyMap())
+    val availableFilters: LiveData<Map<Set<DepartmentFilter>, Int>> = _availableFilters
 
-    private val _selectedFilters = MutableStateFlow<Set<DepartmentFilter>>(emptySet())
-    val selectedFilters: StateFlow<Set<DepartmentFilter>> = _selectedFilters
+    private val _selectedFilters = MutableLiveData<Set<DepartmentFilter>>(emptySet())
+    val selectedFilters: LiveData<Set<DepartmentFilter>> = _selectedFilters
 
     fun setAvailableFilters() {
         val uniqueDepartmentFilters: Set<DepartmentFilter> =
@@ -105,21 +104,23 @@ class FOrgsVM(orgsRepository: OrgsRepository) : BaseFragmentVM<OrganizationLocal
         _availableFilters.value = departmentFilterCounts
     }
 
+    @SuppressLint("NullSafeMutableLiveData")
     fun onFilterSelected(filter: DepartmentFilter, isSelected: Boolean) {
-        val currentFilters = _selectedFilters.value.toMutableSet()
+        val currentFilters = _selectedFilters.value?.toMutableSet()
 
         if (isSelected) {
-            currentFilters.add(filter)
+            currentFilters?.add(filter)
         } else {
-            currentFilters.remove(filter)
+            currentFilters?.remove(filter)
         }
-
-        _selectedFilters.value = currentFilters
+        currentFilters?.let {
+            _selectedFilters.value = currentFilters
+        }
     }
 
     fun selectAllFilters(selectAll: Boolean) {
         _selectedFilters.value = if (selectAll) {
-            _availableFilters.value.keys.flatten().toSet()
+            _availableFilters.value?.keys?.flatten()?.toSet()
         } else {
             emptySet()
         }
@@ -130,7 +131,9 @@ class FOrgsVM(orgsRepository: OrgsRepository) : BaseFragmentVM<OrganizationLocal
             if (_orgsData.value is Resource.Success) {
                 val currentSelectedFilters = _selectedFilters.value
                 (_orgsData.value as Resource.Success<List<OrganizationLocale>>).data
-                    .filter { it.description.departmentFilter in currentSelectedFilters }
+                    .filter { element ->
+                        element.description.departmentFilter.let { currentSelectedFilters?.contains(it) } ?: false
+                    }
             } else {
                 emptyList()
             }
