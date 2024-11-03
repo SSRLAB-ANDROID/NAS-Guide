@@ -19,7 +19,7 @@ import by.ssrlab.ui.R
 import by.ssrlab.ui.databinding.FragmentOrgsBinding
 import by.ssrlab.ui.rv.SectionAdapter
 import by.ssrlab.ui.vm.FOrgsVM
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 class OrgsFragment : BaseFragment() {
 
@@ -33,7 +33,7 @@ class OrgsFragment : BaseFragment() {
         isDates = false
     )
 
-    override val fragmentViewModel: FOrgsVM by viewModel()
+    override val fragmentViewModel: FOrgsVM by activityViewModel<FOrgsVM>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -53,7 +53,6 @@ class OrgsFragment : BaseFragment() {
         initAdapter()
         observeOnDataChanged()
         disableButtons()
-        addAvailableFilterCategories()
     }
 
     override fun onDestroyView() {
@@ -76,6 +75,7 @@ class OrgsFragment : BaseFragment() {
 
                 is Resource.Success -> {
                     adapter.updateData(resource.data)
+                    addAvailableFilterCategories()
                 }
 
                 is Resource.Error -> {
@@ -188,7 +188,7 @@ class OrgsFragment : BaseFragment() {
 
     //Filter
     private fun addAvailableFilterCategories() {
-        fragmentViewModel.setAvailableFilters()
+       fragmentViewModel.setAvailableFilters()
     }
 
     private fun moveToFilter() {
@@ -198,7 +198,5 @@ class OrgsFragment : BaseFragment() {
         binding.orgsMapRipple.setOnClickListener {
             findNavController().navigate(R.id.tryFragment)
         }
-
     }
-
 }
