@@ -113,15 +113,6 @@
             app:popEnterAnim="@anim/nav_pen"
             app:popExitAnim="@anim/nav_pex"/>
 
-        <action
-            android:id="@+id/action_orgFragment_to_tryFragment"
-            app:destination="@id/tryFragment"
-
-            app:enterAnim="@anim/nav_en"
-            app:exitAnim="@anim/nav_ex"
-            app:popEnterAnim="@anim/nav_pen"
-            app:popExitAnim="@anim/nav_pex"/>
-
     </fragment>
 
     <fragment
@@ -159,10 +150,5 @@
         android:id="@+id/filterFragment"
         android:name="by.ssrlab.ui.fragments.FilterFragment"
         android:label="FilterFragment"/>
-
-    <fragment
-        android:id="@+id/tryFragment"
-        android:name="by.ssrlab.ui.fragments.TryFragment"
-        android:label="TryFragment"/>
 
 </navigation>

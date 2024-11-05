@@ -62,7 +62,7 @@ class OrgsFragment : BaseFragment() {
     }
 
     private fun disableButtons() {
-        //moveToMap()
+        moveToMap()
         moveToFilter()
     }
 
@@ -117,6 +117,7 @@ class OrgsFragment : BaseFragment() {
         binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_orgs, container, false)
         return binding.root
     }
+
 
     //Map
     private fun moveToMap(){
@@ -186,6 +187,7 @@ class OrgsFragment : BaseFragment() {
         toolbarSearchView.visibility = View.GONE
     }
 
+
     //Filter
     private fun addAvailableFilterCategories() {
        fragmentViewModel.setAvailableFilters()
@@ -194,9 +196,6 @@ class OrgsFragment : BaseFragment() {
     private fun moveToFilter() {
         binding.orgsFilterRipple.setOnClickListener {
             findNavController().navigate(R.id.filterFragment)
-        }
-        binding.orgsMapRipple.setOnClickListener {
-            findNavController().navigate(R.id.tryFragment)
         }
     }
 }
