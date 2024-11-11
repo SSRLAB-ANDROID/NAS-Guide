@@ -10,7 +10,7 @@ import by.ssrlab.ui.databinding.RvFilterItemBinding
 class FilterAdapter(
     private var entitiesMap: Map<Set<DepartmentFilter>, Int>?,
     private val onFilterSelected: (Set<DepartmentFilter>, Boolean) -> Unit
-) : RecyclerView.Adapter<FilterAdapter.FilterItemHolder>() {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     inner class FilterItemHolder(val binding: RvFilterItemBinding) :
         RecyclerView.ViewHolder(binding.root)
@@ -20,18 +20,14 @@ class FilterAdapter(
         val binding = RvFilterItemBinding.inflate(inflater, parent, false)
         return FilterItemHolder(binding)
     }
-
-    override fun onBindViewHolder(holder: FilterAdapter.FilterItemHolder, position: Int) {
-        holder.binding.apply {
-            entitiesMap?.entries?.toList()?.let { entries ->
-                val (filterSet, count) = entries[position]
-
-                rvSectionTitle.text = "Count: $count"
-                rvSectionCheckbox.isChecked = filterSet.isNotEmpty()
-
-                rvSectionCheckbox.setOnClickListener {
-                    rvSectionCheckbox.isChecked = !rvSectionCheckbox.isChecked
-                    onFilterSelected(filterSet, rvSectionCheckbox.isChecked)
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder) {
+            is FilterItemHolder -> {
+                holder.binding.apply {
+                    entitiesMap?.entries?.toList()?.get(position)?.let { (filterSet, count) ->
+                        rvSectionTitle.text = "Filter: ${filterSet.joinToString(", ") { it.keyName }}"
+                        rvSectionCategories.text = "Count: $count"
+                    }
                 }
             }
         }
