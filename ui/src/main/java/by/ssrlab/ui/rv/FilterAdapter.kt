@@ -4,12 +4,11 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import by.ssrlab.data.data.remote.DepartmentFilter
 import by.ssrlab.ui.databinding.RvFilterItemBinding
 
 class FilterAdapter(
-    private var entitiesMap: Map<Set<DepartmentFilter>, Int>?,
-    private val onFilterSelected: (Set<DepartmentFilter>, Boolean) -> Unit
+    private var entitiesMap: Map<String, Int>?,
+    private val onFilterSelected: (Set<String>, Boolean) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     inner class FilterItemHolder(val binding: RvFilterItemBinding) :
@@ -20,13 +19,20 @@ class FilterAdapter(
         val binding = RvFilterItemBinding.inflate(inflater, parent, false)
         return FilterItemHolder(binding)
     }
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is FilterItemHolder -> {
                 holder.binding.apply {
-                    entitiesMap?.entries?.toList()?.get(position)?.let { (filterSet, count) ->
-                        rvSectionTitle.text = "Filter: ${filterSet.joinToString(", ") { it.keyName }}"
-                        rvSectionCategories.text = "Count: $count"
+                    entitiesMap?.entries?.toList()?.let { entries ->
+                        val (filter, count) = entries[position]
+                        rvSectionCheckbox.text = "$filter ($count)"
+
+                        rvSectionCheckbox.setOnCheckedChangeListener(null)
+                        rvSectionCheckbox.isChecked = false
+                        rvSectionCheckbox.setOnCheckedChangeListener { _, isChecked ->
+//                                onFilterSelected(filter, isChecked)
+                        }
                     }
                 }
             }
@@ -36,7 +42,7 @@ class FilterAdapter(
     override fun getItemCount() = entitiesMap?.size ?: 0
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updateData(items: Map<Set<DepartmentFilter>, Int>) {
+    fun updateData(items: Map<String, Int>) {
         entitiesMap = items
         notifyDataSetChanged()
     }
