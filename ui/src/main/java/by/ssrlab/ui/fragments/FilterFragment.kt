@@ -73,11 +73,12 @@ class FilterFragment : BaseFragment() {
     }
 
     override fun initAdapter() {
-        val adapter = FilterAdapter(emptyMap()) { filterSet, isSelected ->
+        adapter = FilterAdapter(emptyMap()) { filterSet, isSelected ->
             filterSet.forEach { filter ->
                 fragmentViewModel.onFilterSelected(filter, isSelected)
             }
         }
+
         val filters = fragmentViewModel.availableFilters.value
         filters?.let {
             adapter.updateData(filters)
