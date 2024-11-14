@@ -62,6 +62,11 @@ class FilterFragment : BaseFragment() {
     private fun disableButtons() {
         val searchButton: ImageButton = requireActivity().findViewById(R.id.toolbar_search)
         searchButton.visibility = View.GONE
+
+        binding.applyFilterButton.setOnClickListener {
+            fragmentViewModel.applyFilters()
+            findNavController().navigate(R.id.orgFragment)
+        }
     }
 
     override fun observeOnDataChanged() {
@@ -73,10 +78,8 @@ class FilterFragment : BaseFragment() {
     }
 
     override fun initAdapter() {
-        adapter = FilterAdapter(emptyMap()) { filterSet, isSelected ->
-            filterSet.forEach { filter ->
-                fragmentViewModel.onFilterSelected(filter, isSelected)
-            }
+        adapter = FilterAdapter(emptyMap()/*, emptyList()*/) { filter, isSelected ->
+            fragmentViewModel.onFilterSelected(filter, isSelected)
         }
 
         val filters = fragmentViewModel.availableFilters.value
