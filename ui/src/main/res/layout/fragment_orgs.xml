@@ -1,53 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+
     <data>
         <variable
             name="viewModel"
-            type="by.ssrlab.ui.vm.FOrgsVM"/>
+            type="by.ssrlab.ui.vm.FOrgsVM" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
 
-        tools:ignore="ContentDescription"
-
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+
+        android:layout_height="match_parent"
+        tools:ignore="ContentDescription">
 
         <TextView
             android:id="@+id/orgs_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:text="@{viewModel.title}"
-            android:textSize="@dimen/rv_page_title"
-            android:textColor="@color/folders_header"
-            android:textStyle="bold"
-
-            android:gravity="center"
-
             android:layout_marginHorizontal="@dimen/common_margin"
             android:layout_marginTop="@dimen/common_margin"
+            android:gravity="center"
+            android:text="@{viewModel.title}"
 
-            app:layout_constraintTop_toTopOf="parent"
+            android:textColor="@color/folders_header"
+
+            android:textSize="@dimen/rv_page_title"
+            android:textStyle="bold"
+
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/orgs_button_holder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:orientation="horizontal"
-
-            android:layout_marginTop="24dp"
             android:layout_marginHorizontal="@dimen/common_margin"
 
-            app:layout_constraintTop_toBottomOf="@id/orgs_title"
+            android:layout_marginTop="24dp"
+            android:orientation="horizontal"
+
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/orgs_title">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/orgs_filter"
@@ -56,41 +56,41 @@
 
                 android:background="@drawable/background_button_support"
 
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/orgs_map">
+                app:layout_constraintEnd_toStartOf="@id/orgs_map"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
                     android:id="@+id/orgs_filter_ic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
-                    android:src="@drawable/ic_filter"
-
-                    android:layout_marginStart="@dimen/support_button_external_margin"
                     android:layout_marginVertical="@dimen/support_button_internal_margin"
 
-                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginStart="@dimen/support_button_external_margin"
+                    android:src="@drawable/ic_filter"
+
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/orgs_filter_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
+                    android:layout_marginStart="@dimen/support_button_internal_margin"
+                    android:layout_marginEnd="@dimen/support_button_external_margin"
                     android:text="@string/button_support_filter"
+
                     android:textColor="@color/support_button_utils"
                     android:textSize="@dimen/support_button_title"
 
-                    android:layout_marginStart="@dimen/support_button_internal_margin"
-                    android:layout_marginEnd="@dimen/support_button_external_margin"
-
-                    app:layout_constraintStart_toEndOf="@id/orgs_filter_ic"
-                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/orgs_filter_ic"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageButton
                     android:id="@+id/orgs_filter_ripple"
@@ -99,10 +99,10 @@
 
                     android:background="@drawable/ripple_button_support"
 
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -113,41 +113,41 @@
 
                 android:background="@drawable/background_button_support"
 
-                app:layout_constraintStart_toEndOf="@id/orgs_filter"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/orgs_filter"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
                     android:id="@+id/orgs_map_ic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
-                    android:src="@drawable/ic_map"
-
-                    android:layout_marginStart="@dimen/support_button_external_margin"
                     android:layout_marginVertical="@dimen/support_button_internal_margin"
 
-                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginStart="@dimen/support_button_external_margin"
+                    android:src="@drawable/ic_map"
+
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/orgs_map_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
+                    android:layout_marginStart="@dimen/support_button_internal_margin"
+                    android:layout_marginEnd="@dimen/support_button_external_margin"
                     android:text="@string/button_support_map"
+
                     android:textColor="@color/support_button_utils"
                     android:textSize="@dimen/support_button_title"
 
-                    android:layout_marginStart="@dimen/support_button_internal_margin"
-                    android:layout_marginEnd="@dimen/support_button_external_margin"
-
-                    app:layout_constraintStart_toEndOf="@id/orgs_map_ic"
-                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/orgs_map_ic"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageButton
                     android:id="@+id/orgs_map_ripple"
@@ -156,30 +156,50 @@
 
                     android:background="@drawable/ripple_button_support"
 
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/orgs_rv"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
 
-            android:paddingBottom="@dimen/common_rv_padding"
-            android:clipToPadding="false"
-
-            android:layout_marginTop="@dimen/common_rv_top_margin"
-
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="@dimen/common_margin"
             app:layout_constraintTop_toBottomOf="@id/orgs_button_holder"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            tools:ignore="ContentDescription">
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/orgs_rv"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+
+                android:layout_marginTop="@dimen/common_rv_top_margin"
+                android:clipToPadding="false"
+
+                android:paddingBottom="@dimen/common_rv_padding"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/reset_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/common_margin"
+                android:padding="@dimen/filter_rv_padding"
+                android:text="@string/reset_filter"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

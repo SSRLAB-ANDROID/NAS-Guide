@@ -48,4 +48,9 @@
     <string name="volume_off">Гучнасць выключана</string>
     <string name="tool_back">Адмена</string>
 
+    //Filter
+    <string name="filter_title">Фільтры</string>
+    <string name="apply_filter">Прыняць фільтры</string>
+    <string name="reset_filter">Скінуць фільтры</string>
+
 </resources>

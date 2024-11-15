@@ -59,4 +59,9 @@
     //String
     <string name="tool_back">Back</string>
 
+    //Filter
+    <string name="filter_title">Filter</string>
+    <string name="apply_filter">Apply filter</string>
+    <string name="reset_filter">Reset filter</string>
+
 </resources>

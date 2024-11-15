@@ -48,4 +48,9 @@
     <string name="volume_off">Звук выключен</string>
     <string name="tool_back">Отмена</string>
 
+    //Filter
+    <string name="filter_title">Фильтры</string>
+    <string name="apply_filter">Применить фильтры</string>
+    <string name="reset_filter">Сбросить фильтры</string>
+
 </resources>
