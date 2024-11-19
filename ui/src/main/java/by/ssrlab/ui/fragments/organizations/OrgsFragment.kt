@@ -61,6 +61,14 @@ class OrgsFragment : BaseFragment() {
         hideSearchBar()
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        if (fragmentViewModel.isFiltering.value == true) {
+            showSearchResults()
+        }
+    }
+
     private fun disableButtons() {
         moveToMap()
         moveToFilter()
@@ -120,7 +128,7 @@ class OrgsFragment : BaseFragment() {
 
 
     //Map
-    private fun moveToMap(){
+    private fun moveToMap() {
         binding.orgsMapRipple.setOnClickListener {
             (requireActivity() as MainActivity).moveToMap(fragmentViewModel.getDescriptionArray())
         }
@@ -190,7 +198,7 @@ class OrgsFragment : BaseFragment() {
 
     //Filter
     private fun addAvailableFilterCategories() {
-       fragmentViewModel.setAvailableFilters()
+        fragmentViewModel.setAvailableFilters()
     }
 
     private fun moveToFilter() {

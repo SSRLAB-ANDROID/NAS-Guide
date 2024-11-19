@@ -4,11 +4,12 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import by.ssrlab.data.data.remote.DepartmentFilter
 import by.ssrlab.ui.databinding.RvFilterItemBinding
 
 class FilterAdapter(
-    private var entitiesMap: Map<String, Int>?,
-    private val onFilterSelected: (Set<String>, Boolean) -> Unit
+    private var entitiesMap: Map<DepartmentFilter, Int>?,
+    private val onFilterSelected: (DepartmentFilter, Boolean) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     inner class FilterItemHolder(val binding: RvFilterItemBinding) :
@@ -26,12 +27,11 @@ class FilterAdapter(
                 holder.binding.apply {
                     entitiesMap?.entries?.toList()?.let { entries ->
                         val (filter, count) = entries[position]
-                        rvSectionCheckbox.text = "$filter ($count)"
-
+                        rvSectionCheckbox.text = "${filter.keyName} ($count)"
                         rvSectionCheckbox.setOnCheckedChangeListener(null)
                         rvSectionCheckbox.isChecked = false
                         rvSectionCheckbox.setOnCheckedChangeListener { _, isChecked ->
-//                                onFilterSelected(filter, isChecked)
+                            onFilterSelected(filter, isChecked)
                         }
                     }
                 }
@@ -42,7 +42,7 @@ class FilterAdapter(
     override fun getItemCount() = entitiesMap?.size ?: 0
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updateData(items: Map<String, Int>) {
+    fun updateData(items: Map<DepartmentFilter, Int>) {
         entitiesMap = items
         notifyDataSetChanged()
     }

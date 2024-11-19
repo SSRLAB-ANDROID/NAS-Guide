@@ -65,6 +65,7 @@ class FilterFragment : BaseFragment() {
 
         binding.applyFilterButton.setOnClickListener {
             fragmentViewModel.applyFilters()
+            fragmentViewModel.setFiltering(true)
             findNavController().navigate(R.id.orgFragment)
         }
     }

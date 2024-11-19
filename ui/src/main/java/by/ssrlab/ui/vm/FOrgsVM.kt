@@ -76,11 +76,21 @@ class FOrgsVM(orgsRepository: OrgsRepository) : BaseFragmentVM<OrganizationLocal
     }
 
     //Filter
-    private val _availableFilters = MutableLiveData<Map<Set<DepartmentFilter>, Int>>(emptyMap())
-    val availableFilters: LiveData<Map<Set<DepartmentFilter>, Int>> = _availableFilters
+    private val _isFiltering = MutableLiveData(false)
+    val isFiltering: LiveData<Boolean> = _isFiltering
+
+    private val _availableFilters = MutableLiveData<Map<DepartmentFilter, Int>>(emptyMap())
+    val availableFilters: LiveData<Map<DepartmentFilter, Int>> = _availableFilters
+
+    private val _filterList = MutableLiveData<List<DepartmentFilter>>(emptyList())
+    val filterList: LiveData<List<DepartmentFilter>> = _filterList
 
     private val _selectedFilters = MutableLiveData<Set<DepartmentFilter>>(emptySet())
     val selectedFilters: LiveData<Set<DepartmentFilter>> = _selectedFilters
+
+    fun setFiltering(value: Boolean) {
+        _isFiltering.value = value
+    }
 
     fun setAvailableFilters() {
         val uniqueDepartmentFilters: Set<DepartmentFilter> =
@@ -92,13 +102,17 @@ class FOrgsVM(orgsRepository: OrgsRepository) : BaseFragmentVM<OrganizationLocal
                 emptySet()
             }
 
-        val departmentFilterCounts: Map<Set<DepartmentFilter>, Int> =
-            if (_orgsData.value is Resource.Success) {
-                (_orgsData.value as Resource.Success<List<OrganizationLocale>>).data
-                    .groupingBy { uniqueDepartmentFilters }
-                    .eachCount()
-            } else {
-                emptyMap()
+        _filterList.value = uniqueDepartmentFilters.toList()
+
+        val departmentFilterCounts: Map<DepartmentFilter, Int> =
+            uniqueDepartmentFilters.associateWith { filter ->
+                _orgsData.value?.let {
+                    if (it is Resource.Success) {
+                        it.data.count { org -> org.description.departmentFilter == filter }
+                    } else {
+                        0
+                    }
+                } ?: 0
             }
 
         _availableFilters.value = departmentFilterCounts
@@ -118,14 +132,6 @@ class FOrgsVM(orgsRepository: OrgsRepository) : BaseFragmentVM<OrganizationLocal
         }
     }
 
-    fun selectAllFilters(selectAll: Boolean) {
-        _selectedFilters.value = if (selectAll) {
-            _availableFilters.value?.keys?.flatten()?.toSet()
-        } else {
-            emptySet()
-        }
-    }
-
     fun applyFilters(){
         val filterDataByChoices =
             if (_orgsData.value is Resource.Success) {
@@ -139,10 +145,5 @@ class FOrgsVM(orgsRepository: OrgsRepository) : BaseFragmentVM<OrganizationLocal
             }
 
         setFilteredList(filterDataByChoices)
-    }
-
-    fun resetFilters() {
-        _selectedFilters.value = emptySet()
-        applyFilters()
     }
 }
