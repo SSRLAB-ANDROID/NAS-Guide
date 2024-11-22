@@ -153,10 +153,5 @@ class FOrgsVM(orgsRepository: OrgsRepository) : BaseFragmentVM<OrganizationLocal
 
     fun resetFilters() {
         _selectedFilters.value = emptySet()
-
-        if (_orgsData.value is Resource.Success) {
-            val data = (_orgsData.value as Resource.Success<List<OrganizationLocale>>).data
-            setFilteredList(data)
-        }
     }
 }

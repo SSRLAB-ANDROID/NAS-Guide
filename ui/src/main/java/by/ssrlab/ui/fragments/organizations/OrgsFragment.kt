@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.ssrlab.common_ui.common.ui.base.BaseFragment
 import by.ssrlab.data.data.common.RepositoryData
+import by.ssrlab.data.data.settings.remote.OrganizationLocale
 import by.ssrlab.data.util.ButtonAction
 import by.ssrlab.domain.models.ToolbarControlObject
 import by.ssrlab.domain.utils.Resource
@@ -65,8 +66,11 @@ class OrgsFragment : BaseFragment() {
         super.onResume()
 
         if (fragmentViewModel.isFiltering.value == true) {
+            // to show results and reset filter button
             showSearchResults()
             binding.resetFilterButton.visibility = View.VISIBLE
+            // to prepare for next search
+            fragmentViewModel.resetFilters()
         }
     }
 
@@ -207,6 +211,17 @@ class OrgsFragment : BaseFragment() {
         binding.resetFilterButton.setOnClickListener {
             fragmentViewModel.resetFilters()
             fragmentViewModel.setFiltering(false)
+            showAllOrgs()
+            binding.resetFilterButton.visibility = View.GONE
+        }
+    }
+
+    private fun showAllOrgs(){
+        fragmentViewModel.let {
+            if (it.orgsData.value is Resource.Success) {
+                val data = (it.orgsData.value as Resource.Success<List<OrganizationLocale>>).data
+                adapter.updateData(data)
+            }
         }
     }
 
