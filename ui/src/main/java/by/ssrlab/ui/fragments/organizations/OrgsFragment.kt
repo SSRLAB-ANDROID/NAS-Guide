@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -94,6 +95,7 @@ class OrgsFragment : BaseFragment() {
                 is Resource.Success -> {
                     adapter.updateData(resource.data)
                     addAvailableFilterCategories()
+                    fragmentViewModel.setLoaded(true)
                 }
 
                 is Resource.Error -> {
@@ -140,7 +142,16 @@ class OrgsFragment : BaseFragment() {
     //Map
     private fun moveToMap() {
         binding.orgsMapRipple.setOnClickListener {
-            (requireActivity() as MainActivity).moveToMap(fragmentViewModel.getDescriptionArray())
+            if (fragmentViewModel.isLoaded.value == true) {
+                (requireActivity() as MainActivity).moveToMap(fragmentViewModel.getDescriptionArray())
+            } else {
+                val currentContext = requireContext()
+                Toast.makeText(
+                    currentContext,
+                    currentContext.resources.getString(by.ssrlab.common_ui.R.string.wait_for_data_to_load),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 
@@ -206,7 +217,8 @@ class OrgsFragment : BaseFragment() {
         }
 
         toolbarSearchView.requestFocus()
-        val inputManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val inputManager =
+            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputManager.showSoftInput(toolbarSearchView.findFocus(), InputMethodManager.SHOW_IMPLICIT)
     }
 
@@ -214,12 +226,12 @@ class OrgsFragment : BaseFragment() {
         val toolbarSearchView = searchBarInstance()
         toolbarSearchView.visibility = View.GONE
     }
-    
-    private fun clearQuery (){
+
+    private fun clearQuery() {
         val toolbarSearchView = searchBarInstance()
         toolbarSearchView.setQuery("", true)
     }
-    
+
 
     //Filter
     private fun addAvailableFilterCategories() {
@@ -235,7 +247,7 @@ class OrgsFragment : BaseFragment() {
         }
     }
 
-    private fun showAllOrgs(){
+    private fun showAllOrgs() {
         fragmentViewModel.let {
             if (it.orgsData.value is Resource.Success) {
                 val data = (it.orgsData.value as Resource.Success<List<OrganizationLocale>>).data
@@ -246,7 +258,16 @@ class OrgsFragment : BaseFragment() {
 
     private fun moveToFilter() {
         binding.orgsFilterRipple.setOnClickListener {
-            findNavController().navigate(R.id.filterFragment)
+            if (fragmentViewModel.isLoaded.value == true) {
+                findNavController().navigate(R.id.filterFragment)
+            } else {
+                val currentContext = requireContext()
+                Toast.makeText(
+                    currentContext,
+                    currentContext.resources.getString(by.ssrlab.common_ui.R.string.wait_for_data_to_load),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 }

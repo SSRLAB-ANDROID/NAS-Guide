@@ -53,6 +53,13 @@ class FOrgsVM(orgsRepository: OrgsRepository) : BaseFragmentVM<OrganizationLocal
         )
     }
 
+    private val _isLoaded = MutableLiveData(false)
+    val isLoaded: LiveData<Boolean> = _isLoaded
+
+    fun setLoaded(value: Boolean) {
+        _isLoaded.value = value
+    }
+
     init {
         loadData()
     }
