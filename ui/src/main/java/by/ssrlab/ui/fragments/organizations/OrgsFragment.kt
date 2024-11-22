@@ -12,9 +12,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import by.ssrlab.common_ui.common.ui.base.BaseActivity
 import by.ssrlab.common_ui.common.ui.base.BaseFragment
 import by.ssrlab.data.data.common.RepositoryData
+import by.ssrlab.data.data.settings.remote.OrganizationLocale
 import by.ssrlab.data.util.ButtonAction
 import by.ssrlab.domain.models.ToolbarControlObject
 import by.ssrlab.domain.utils.Resource
@@ -23,7 +23,7 @@ import by.ssrlab.ui.R
 import by.ssrlab.ui.databinding.FragmentOrgsBinding
 import by.ssrlab.ui.rv.SectionAdapter
 import by.ssrlab.ui.vm.FOrgsVM
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 class OrgsFragment : BaseFragment() {
 
@@ -37,7 +37,7 @@ class OrgsFragment : BaseFragment() {
         isDates = false
     )
 
-    override val fragmentViewModel: FOrgsVM by viewModel()
+    override val fragmentViewModel: FOrgsVM by activityViewModel<FOrgsVM>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -52,10 +52,6 @@ class OrgsFragment : BaseFragment() {
         binding.apply {
             viewModel = this@OrgsFragment.fragmentViewModel
             lifecycleOwner = viewLifecycleOwner
-
-            orgsMapRipple.setOnClickListener {
-                (requireActivity() as MainActivity).moveToMap(fragmentViewModel.getDescriptionArray())
-            }
         }
 
         initAdapter()
@@ -70,10 +66,22 @@ class OrgsFragment : BaseFragment() {
         hideSearchBar()
     }
 
-    private fun disableButtons() {
-        binding.orgsFilterRipple.setOnClickListener {
-            (requireActivity() as BaseActivity).createIsntRealizedDialog()
+    override fun onResume() {
+        super.onResume()
+
+        if (fragmentViewModel.isFiltering.value == true) {
+            // to show results and reset filter button
+            showSearchResults()
+            binding.resetFilterButton.visibility = View.VISIBLE
+            // to prepare for next search
+            fragmentViewModel.resetFilters()
         }
+    }
+
+    private fun disableButtons() {
+        moveToMap()
+        moveToFilter()
+        resetFilters()
     }
 
     override fun observeOnDataChanged() {
@@ -82,9 +90,12 @@ class OrgsFragment : BaseFragment() {
                 is Resource.Loading -> {
                     adapter.showLoading()
                 }
+
                 is Resource.Success -> {
                     adapter.updateData(resource.data)
+                    addAvailableFilterCategories()
                 }
+
                 is Resource.Error -> {
                     adapter.showError(resource.message)
                 }
@@ -102,12 +113,15 @@ class OrgsFragment : BaseFragment() {
                 val data = resource.data
                 adapter.updateData(data)
             }
+
             is Resource.Error -> {
                 adapter.showError(resource.message)
             }
+
             is Resource.Loading -> {
                 adapter.showLoading()
             }
+
             null -> {}
         }
 
@@ -122,6 +136,16 @@ class OrgsFragment : BaseFragment() {
         return binding.root
     }
 
+
+    //Map
+    private fun moveToMap() {
+        binding.orgsMapRipple.setOnClickListener {
+            (requireActivity() as MainActivity).moveToMap(fragmentViewModel.getDescriptionArray())
+        }
+    }
+
+
+    //Navigation
     override fun onBackPressed() {
         findNavController().popBackStack()
     }
@@ -190,9 +214,39 @@ class OrgsFragment : BaseFragment() {
         val toolbarSearchView = searchBarInstance()
         toolbarSearchView.visibility = View.GONE
     }
-
+    
     private fun clearQuery (){
         val toolbarSearchView = searchBarInstance()
         toolbarSearchView.setQuery("", true)
+    }
+    
+
+    //Filter
+    private fun addAvailableFilterCategories() {
+        fragmentViewModel.setAvailableFilters()
+    }
+
+    private fun resetFilters() {
+        binding.resetFilterButton.setOnClickListener {
+            fragmentViewModel.resetFilters()
+            fragmentViewModel.setFiltering(false)
+            showAllOrgs()
+            binding.resetFilterButton.visibility = View.GONE
+        }
+    }
+
+    private fun showAllOrgs(){
+        fragmentViewModel.let {
+            if (it.orgsData.value is Resource.Success) {
+                val data = (it.orgsData.value as Resource.Success<List<OrganizationLocale>>).data
+                adapter.updateData(data)
+            }
+        }
+    }
+
+    private fun moveToFilter() {
+        binding.orgsFilterRipple.setOnClickListener {
+            findNavController().navigate(R.id.filterFragment)
+        }
     }
 }

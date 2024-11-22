@@ -61,4 +61,9 @@
     <string name="tool_back">Адмена</string>
     <string name="error_occurred">Узнікла памылка</string>
 
+    //Filter
+    <string name="filter_title">Фільтры</string>
+    <string name="apply_filter">Прыняць фільтры</string>
+    <string name="reset_filter">Скінуць фільтры</string>
+
 </resources>

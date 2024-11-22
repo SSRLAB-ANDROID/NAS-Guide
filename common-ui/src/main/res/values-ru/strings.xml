@@ -61,4 +61,9 @@
     <string name="tool_back">Отмена</string>
     <string name="error_occurred">Возникла ошибка</string>
 
+    //Filter
+    <string name="filter_title">Фильтры</string>
+    <string name="apply_filter">Применить фильтры</string>
+    <string name="reset_filter">Сбросить фильтры</string>
+
 </resources>

@@ -66,4 +66,9 @@
     <string name="tool_back">Back</string>
     <string name="error_occurred">Error occurred</string>
 
+    //Filter
+    <string name="filter_title">Filter</string>
+    <string name="apply_filter">Apply filter</string>
+    <string name="reset_filter">Reset filter</string>
+
 </resources>

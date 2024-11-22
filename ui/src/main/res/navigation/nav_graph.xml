@@ -148,7 +148,16 @@
 
     <fragment
         android:id="@+id/filterFragment"
-        android:name="by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.FilterFragment"
-        android:label="FilterFragment"/>
+        android:name="by.ssrlab.ui.fragments.FilterFragment"
+        android:label="FilterFragment">
+        <action
+            android:id="@+id/action_filterFragment_to_orgFragment"
+            app:destination="@id/orgFragment"
+
+            app:enterAnim="@anim/nav_en"
+            app:exitAnim="@anim/nav_ex"
+            app:popEnterAnim="@anim/nav_pen"
+            app:popExitAnim="@anim/nav_pex"/>
+    </fragment>
 
 </navigation>
