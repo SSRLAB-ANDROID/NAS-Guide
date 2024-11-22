@@ -132,18 +132,31 @@ class FOrgsVM(orgsRepository: OrgsRepository) : BaseFragmentVM<OrganizationLocal
         }
     }
 
-    fun applyFilters(){
+    fun applyFilters() {
         val filterDataByChoices =
             if (_orgsData.value is Resource.Success) {
                 val currentSelectedFilters = _selectedFilters.value
                 (_orgsData.value as Resource.Success<List<OrganizationLocale>>).data
                     .filter { element ->
-                        element.description.departmentFilter.let { currentSelectedFilters?.contains(it) } ?: false
+                        element.description.departmentFilter.let {
+                            currentSelectedFilters?.contains(
+                                it
+                            )
+                        } ?: false
                     }
             } else {
                 emptyList()
             }
 
         setFilteredList(filterDataByChoices)
+    }
+
+    fun resetFilters() {
+        _selectedFilters.value = emptySet()
+
+        if (_orgsData.value is Resource.Success) {
+            val data = (_orgsData.value as Resource.Success<List<OrganizationLocale>>).data
+            setFilteredList(data)
+        }
     }
 }

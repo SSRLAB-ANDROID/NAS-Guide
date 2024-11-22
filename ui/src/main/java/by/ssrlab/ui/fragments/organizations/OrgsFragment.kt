@@ -66,12 +66,14 @@ class OrgsFragment : BaseFragment() {
 
         if (fragmentViewModel.isFiltering.value == true) {
             showSearchResults()
+            binding.resetFilterButton.visibility = View.VISIBLE
         }
     }
 
     private fun disableButtons() {
         moveToMap()
         moveToFilter()
+        resetFilters()
     }
 
     override fun observeOnDataChanged() {
@@ -199,6 +201,13 @@ class OrgsFragment : BaseFragment() {
     //Filter
     private fun addAvailableFilterCategories() {
         fragmentViewModel.setAvailableFilters()
+    }
+
+    private fun resetFilters() {
+        binding.resetFilterButton.setOnClickListener {
+            fragmentViewModel.resetFilters()
+            fragmentViewModel.setFiltering(false)
+        }
     }
 
     private fun moveToFilter() {
