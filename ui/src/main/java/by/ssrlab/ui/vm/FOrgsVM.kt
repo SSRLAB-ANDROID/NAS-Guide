@@ -9,6 +9,7 @@ import by.ssrlab.data.data.remote.DepartmentFilter
 import by.ssrlab.data.data.settings.remote.OrganizationLocale
 import by.ssrlab.domain.repository.network.OrgsRepository
 import by.ssrlab.domain.utils.Resource
+import java.util.Locale
 
 class FOrgsVM(orgsRepository: OrgsRepository) : BaseFragmentVM<OrganizationLocale>(orgsRepository) {
 
@@ -66,10 +67,11 @@ class FOrgsVM(orgsRepository: OrgsRepository) : BaseFragmentVM<OrganizationLocal
 
     //Search
     fun filterData(query: String) {
+        val queryLowered = query.lowercase(Locale.getDefault())
         val resource = _orgsData.value
         if (resource is Resource.Success) {
             val filteredList = resource.data.filter {
-                it.name.contains(query, ignoreCase = true)
+                it.name.contains(queryLowered, ignoreCase = true)
             }
             setFilteredList(filteredList)
         }

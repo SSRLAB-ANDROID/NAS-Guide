@@ -1,8 +1,11 @@
 package by.ssrlab.ui.fragments.organizations
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
@@ -59,6 +62,7 @@ class OrgsFragment : BaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
 
+        clearQuery()
         hideSearchBar()
     }
 
@@ -150,7 +154,6 @@ class OrgsFragment : BaseFragment() {
         (activity as MainActivity).moveToExhibit(repositoryData)
     }
 
-
     //Search
     private var toolbarSearchView: SearchView? = null
 
@@ -192,15 +195,31 @@ class OrgsFragment : BaseFragment() {
             }
         })
         toolbarSearchView.visibility = View.VISIBLE
+        toolbarSearchView.isIconified = false
         val searchButton: ImageButton = requireActivity().findViewById(R.id.toolbar_search)
         searchButton.visibility = View.GONE
+
+        toolbarSearchView.setOnCloseListener {
+            toolbarSearchView.visibility = View.GONE
+            searchButton.visibility = View.VISIBLE
+            true
+        }
+
+        toolbarSearchView.requestFocus()
+        val inputManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.showSoftInput(toolbarSearchView.findFocus(), InputMethodManager.SHOW_IMPLICIT)
     }
 
     override fun hideSearchBar() {
         val toolbarSearchView = searchBarInstance()
         toolbarSearchView.visibility = View.GONE
     }
-
+    
+    private fun clearQuery (){
+        val toolbarSearchView = searchBarInstance()
+        toolbarSearchView.setQuery("", true)
+    }
+    
 
     //Filter
     private fun addAvailableFilterCategories() {

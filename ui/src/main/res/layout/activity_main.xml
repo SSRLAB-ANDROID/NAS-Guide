@@ -127,19 +127,21 @@
 
             <androidx.appcompat.widget.SearchView
                 android:id="@+id/toolbar_search_view"
+                style="@style/WhiteSearchViewStyle"
+                                                  
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_search_view"
-                android:iconifiedByDefault="false"
+                android:iconifiedByDefault="true"
+                                                  
                 android:queryHint="Search ..."
                 android:text="@color/primary_text"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/toolbar_back"
-                app:layout_constraintEnd_toEndOf="parent"
-                style="@style/WhiteSearchViewStyle" />
 
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/toolbar_back"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout

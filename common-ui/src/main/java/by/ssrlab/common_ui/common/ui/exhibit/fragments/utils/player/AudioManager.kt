@@ -1,4 +1,4 @@
-package by.ssrlab.common_ui.common.ui.exhibit.fragments.utils
+package by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.player
 
 import android.app.Activity
 import android.content.BroadcastReceiver

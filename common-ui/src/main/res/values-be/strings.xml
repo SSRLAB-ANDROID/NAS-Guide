@@ -4,7 +4,7 @@
     //Main
     <string name="logo_title">Аўдыягід Нацыянальнай акадэміі навук Беларусі</string>
 
-    <string name="page_main_title">Нацыянальная Акадэмія Навук Беларусі</string>
+    <string name="page_main_title">Аўдыягід Нацыянальнай акадэміі навук Беларусі</string>
     <string name="page_history_title">Гісторыя</string>
     <string name="page_places_title">Цікавыя мясціны</string>
     <string name="page_persons_title">Асобы</string>
@@ -38,15 +38,28 @@
     <string name="exhibit_laboratories">Лабараторыі</string>
     <string name="exhibit_achievements">Дасягненні</string>
     <string name="exhibit_contacts">Кантакты</string>
+    <string name="volume_off">Гучнасць выключана</string>
+
+    //Map
     <string name="build_route">Пабудаваць маршрут</string>
     <string name="something_went_wrong">Нешта пайшло ня так :(</string>
+
+    //Location
+    <string name="to_display_the_map">Для адлюстроўкі карткі неабходна падключыць геалакацыю. Падключыць?</string>
+    <string name="yes">Так</string>
+    <string name="no">Не</string>
+    <string name="location_needed">Геалакацыя неабходна</string>
+
+    //Date
     <string name="on_this_day">У гэты дзень</string>
     <string name="today">Сёння</string>
     <string name="date">Дата</string>
     <string name="events">Падзеi</string>
     <string name="choose_date">Абярыце дату</string>
-    <string name="volume_off">Гучнасць выключана</string>
+
+    //String
     <string name="tool_back">Адмена</string>
+    <string name="error_occurred">Узнікла памылка</string>
 
     //Filter
     <string name="filter_title">Фільтры</string>

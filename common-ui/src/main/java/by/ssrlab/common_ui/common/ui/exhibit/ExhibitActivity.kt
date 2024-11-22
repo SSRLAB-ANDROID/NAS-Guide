@@ -10,7 +10,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import by.ssrlab.common_ui.R
 import by.ssrlab.common_ui.common.ui.base.BaseActivity
 import by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.ActivityMainMarginParams
-import by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.AudioManager
+import by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.player.AudioManager
 import by.ssrlab.common_ui.common.vm.AExhibitVM
 import by.ssrlab.common_ui.databinding.ActivityExhibitBinding
 import by.ssrlab.data.util.ExhibitObject
