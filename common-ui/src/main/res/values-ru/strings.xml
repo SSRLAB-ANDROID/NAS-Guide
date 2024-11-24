@@ -40,6 +40,10 @@
     <string name="exhibit_contacts">Контакты</string>
     <string name="volume_off">Звук выключен</string>
 
+    //Buttons
+    <string name="wait_for_data_to_load">Дождитесь загрузки данных</string>
+    <string name="select_at_least_one_filter">Выберите хотя бы один фильтр</string>
+
     //Map
     <string name="build_route">Построить маршрут</string>
     <string name="something_went_wrong">Что-то пошло не так :(</string>

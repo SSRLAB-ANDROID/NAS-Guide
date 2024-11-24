@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -63,11 +64,7 @@ class FilterFragment : BaseFragment() {
         val searchButton: ImageButton = requireActivity().findViewById(R.id.toolbar_search)
         searchButton.visibility = View.GONE
 
-        binding.applyFilterButton.setOnClickListener {
-            fragmentViewModel.applyFilters()
-            fragmentViewModel.setFiltering(true)
-            findNavController().navigate(R.id.orgFragment)
-        }
+        applyFilter()
     }
 
     override fun observeOnDataChanged() {
@@ -106,5 +103,21 @@ class FilterFragment : BaseFragment() {
 
     override fun navigateNext(repositoryData: RepositoryData) {
         (activity as MainActivity).moveToExhibit(repositoryData)
+    }
+
+    private fun applyFilter() {
+        binding.applyFilterButton.setOnClickListener {
+            if (fragmentViewModel.selectedFilters.value?.isEmpty() == false) {
+                fragmentViewModel.applyFilters()
+                fragmentViewModel.setFiltering(true)
+                findNavController().navigate(R.id.orgFragment)
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    requireContext().resources.getString(by.ssrlab.common_ui.R.string.select_at_least_one_filter),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
     }
 }

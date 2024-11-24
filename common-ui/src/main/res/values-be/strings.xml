@@ -40,6 +40,10 @@
     <string name="exhibit_contacts">Кантакты</string>
     <string name="volume_off">Гучнасць выключана</string>
 
+    //Buttons
+    <string name="wait_for_data_to_load">Паспрабуйце яшчэ раз, калi пакажуць дадзеныя</string>
+    <string name="select_at_least_one_filter">Абярыце хаця б адзін фільтр</string>
+
     //Map
     <string name="build_route">Пабудаваць маршрут</string>
     <string name="something_went_wrong">Нешта пайшло ня так :(</string>
