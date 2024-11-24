@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -23,7 +24,7 @@ import by.ssrlab.ui.rv.SectionAdapter
 import by.ssrlab.ui.vm.FPlacesVM
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class PlacesFragment: BaseFragment() {
+class PlacesFragment : BaseFragment() {
 
     private lateinit var binding: FragmentPlacesBinding
     private lateinit var adapter: SectionAdapter
@@ -50,13 +51,10 @@ class PlacesFragment: BaseFragment() {
         binding.apply {
             viewModel = this@PlacesFragment.fragmentViewModel
             lifecycleOwner = viewLifecycleOwner
-
-            placesMapRipple.setOnClickListener {
-                (requireActivity() as MainActivity).moveToMap(fragmentViewModel.getDescriptionArray())
-            }
         }
 
         initAdapter()
+        disableButtons()
         observeOnDataChanged()
     }
 
@@ -73,9 +71,12 @@ class PlacesFragment: BaseFragment() {
                 is Resource.Loading -> {
                     adapter.showLoading()
                 }
+
                 is Resource.Success -> {
                     adapter.updateData(resource.data)
+                    fragmentViewModel.setLoaded(true)
                 }
+
                 is Resource.Error -> {
                     adapter.showError(resource.message)
                 }
@@ -93,12 +94,15 @@ class PlacesFragment: BaseFragment() {
                 val data = resource.data
                 adapter.updateData(data)
             }
+
             is Resource.Error -> {
                 adapter.showError(resource.message)
             }
+
             is Resource.Loading -> {
                 adapter.showLoading()
             }
+
             null -> TODO()
         }
 
@@ -109,7 +113,8 @@ class PlacesFragment: BaseFragment() {
     }
 
     override fun initBinding(container: ViewGroup?): View {
-        binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_places, container, false)
+        binding =
+            DataBindingUtil.inflate(layoutInflater, R.layout.fragment_places, container, false)
         return binding.root
     }
 
@@ -121,6 +126,9 @@ class PlacesFragment: BaseFragment() {
         (activity as MainActivity).moveToExhibit(repositoryData)
     }
 
+    private fun disableButtons() {
+        moveToMap()
+    }
 
     //Search
     private var toolbarSearchView: SearchView? = null
@@ -174,7 +182,8 @@ class PlacesFragment: BaseFragment() {
         }
 
         toolbarSearchView.requestFocus()
-        val inputManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val inputManager =
+            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputManager.showSoftInput(toolbarSearchView.findFocus(), InputMethodManager.SHOW_IMPLICIT)
     }
 
@@ -183,8 +192,25 @@ class PlacesFragment: BaseFragment() {
         toolbarSearchView.visibility = View.GONE
     }
 
-    private fun clearQuery (){
+    private fun clearQuery() {
         val toolbarSearchView = searchBarInstance()
         toolbarSearchView.setQuery("", true)
+    }
+
+
+    //Map
+    private fun moveToMap() {
+        binding.placesMapRipple.setOnClickListener {
+            if (fragmentViewModel.isLoaded.value == true) {
+                (requireActivity() as MainActivity).moveToMap(fragmentViewModel.getDescriptionArray())
+            } else {
+                val currentContext = requireContext()
+                Toast.makeText(
+                    currentContext,
+                    currentContext.resources.getString(by.ssrlab.common_ui.R.string.wait_for_data_to_load),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
     }
 }
