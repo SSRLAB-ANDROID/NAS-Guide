@@ -46,6 +46,7 @@
 
     //Buttons
     <string name="wait_for_data_to_load">Wait for data to load</string>
+    <string name="select_at_least_one_filter">Select at least one filter</string>
 
     //Map
     <string name="mapbox_access_token" translatable="false" tools:ignore="UnusedResources">pk.eyJ1Ijoidm9ka2FrdW4iLCJhIjoiY2x6YWJpZWVsMGtqbzJqczh1MHlyNzA5aSJ9.MvVmZEcQ39LXnDNKpRWshQ</string>
