@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -24,7 +25,7 @@ import by.ssrlab.ui.rv.SectionAdapter
 import by.ssrlab.ui.vm.FDevelopmentsVM
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class DevelopmentsFragment: BaseFragment() {
+class DevelopmentsFragment : BaseFragment() {
 
     private lateinit var binding: FragmentDevelopmentsBinding
     private lateinit var adapter: SectionAdapter
@@ -66,9 +67,7 @@ class DevelopmentsFragment: BaseFragment() {
     }
 
     private fun disableButtons() {
-        binding.inventionsFilterRipple.setOnClickListener {
-            (requireActivity() as BaseActivity).createIsntRealizedDialog()
-        }
+        moveToFilter()
     }
 
     override fun observeOnDataChanged() {
@@ -77,9 +76,12 @@ class DevelopmentsFragment: BaseFragment() {
                 is Resource.Loading -> {
                     adapter.showLoading()
                 }
+
                 is Resource.Success -> {
                     adapter.updateData(resource.data)
+                    fragmentViewModel.setLoaded(true)
                 }
+
                 is Resource.Error -> {
                     adapter.showError(resource.message)
                 }
@@ -97,12 +99,15 @@ class DevelopmentsFragment: BaseFragment() {
                 val data = resource.data
                 adapter.updateData(data)
             }
+
             is Resource.Error -> {
                 adapter.showError(resource.message)
             }
+
             is Resource.Loading -> {
                 adapter.showLoading()
             }
+
             null -> {}
         }
 
@@ -113,7 +118,12 @@ class DevelopmentsFragment: BaseFragment() {
     }
 
     override fun initBinding(container: ViewGroup?): View {
-        binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_developments, container, false)
+        binding = DataBindingUtil.inflate(
+            layoutInflater,
+            R.layout.fragment_developments,
+            container,
+            false
+        )
         return binding.root
     }
 
@@ -178,7 +188,8 @@ class DevelopmentsFragment: BaseFragment() {
         }
 
         toolbarSearchView.requestFocus()
-        val inputManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val inputManager =
+            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputManager.showSoftInput(toolbarSearchView.findFocus(), InputMethodManager.SHOW_IMPLICIT)
     }
 
@@ -187,8 +198,25 @@ class DevelopmentsFragment: BaseFragment() {
         toolbarSearchView.visibility = View.GONE
     }
 
-    private fun clearQuery (){
+    private fun clearQuery() {
         val toolbarSearchView = searchBarInstance()
         toolbarSearchView.setQuery("", true)
+    }
+
+
+    //Filter
+    private fun moveToFilter() {
+        binding.inventionsFilterRipple.setOnClickListener {
+            if (fragmentViewModel.isLoaded.value == true) {
+                (requireActivity() as BaseActivity).createIsntRealizedDialog()
+            } else {
+                val currentContext = requireContext()
+                Toast.makeText(
+                    currentContext,
+                    currentContext.resources.getString(by.ssrlab.common_ui.R.string.wait_for_data_to_load),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
     }
 }
