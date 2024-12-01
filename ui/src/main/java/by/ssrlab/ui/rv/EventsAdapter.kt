@@ -105,8 +105,24 @@ class EventsAdapter(
     }
 
     override fun getItemCount() =
-        if (isLoading || errorMessage != null) 1 else entitiesList?.let { entitiesList!!.size } ?: 0
         if (isLoading || errorMessage != null) 1 else entitiesList.let { entitiesList.size + 1 } ?: 0
+
+
+    private fun findNearestEventDate(dates: List<EventLocale>, date: String): String? {
+        val futureDates = dates.map { it.event.startDate.drop(5) }.filter { it > date }
+        return futureDates.minOrNull()
+    }
+
+    private fun filteredListIsEmpty(items: List<EventLocale>, date: String) {
+        try {
+            entitiesList = items.filter {
+                it.event.startDate.drop(5) ==
+                        findNearestEventDate(items, date)
+            }
+        } catch (e: Throwable) {
+            showError(e.message.toString())
+        }
+    }
 
     @SuppressLint("NotifyDataSetChanged")
     fun updateData(items: List<EventLocale>, date: String) {
