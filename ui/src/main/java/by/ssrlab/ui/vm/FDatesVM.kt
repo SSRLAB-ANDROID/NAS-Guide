@@ -7,6 +7,7 @@ import by.ssrlab.data.data.settings.remote.EventLocale
 import by.ssrlab.domain.repository.network.EventsRepository
 import by.ssrlab.domain.utils.Resource
 
+
 class FDatesVM(eventsRepository: EventsRepository) : BaseFragmentVM<EventLocale>(eventsRepository) {
 
     private val _datesData = MutableLiveData<Resource<List<EventLocale>>>()
@@ -15,7 +16,7 @@ class FDatesVM(eventsRepository: EventsRepository) : BaseFragmentVM<EventLocale>
     val datesObservableBoolean = MutableLiveData(false)
 
     fun updateEvents(events: List<EventLocale>) {
-        _datesData.value = Resource.Success(events)
+        _datesData.value = Resource.Success(events.toList())
     }
 
     init {

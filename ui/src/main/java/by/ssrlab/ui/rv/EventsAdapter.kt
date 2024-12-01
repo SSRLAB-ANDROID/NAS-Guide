@@ -12,8 +12,7 @@ import by.ssrlab.data.data.settings.remote.EventLocale
 import by.ssrlab.domain.utils.fromHtml
 import by.ssrlab.ui.R
 import by.ssrlab.ui.databinding.ErrorItemBinding
-import coil.load
-import coil.transform.RoundedCornersTransformation
+
 
 class EventsAdapter(
     private var entitiesList: List<EventLocale>,
@@ -88,12 +87,12 @@ class EventsAdapter(
                         this.rvEventsDate.text = entitiesList[position - 1].name
                         this.rvEventsBody.text = entitiesList[position - 1].about.fromHtml()
 
-                        this.rvEventsPng.load(entitiesList[position - 1]) {
-                            crossfade(true)
-                            crossfade(500)
-                            placeholder(by.ssrlab.common_ui.R.drawable.coil_placeholder)
-                            transformations(RoundedCornersTransformation(8f))
-                        }
+//                        this.rvEventsPng.load(entitiesList[position - 1]) {
+//                            crossfade(true)
+//                            crossfade(500)
+//                            placeholder(by.ssrlab.common_ui.R.drawable.coil_placeholder)
+//                            transformations(RoundedCornersTransformation(8f))
+//                        }
 
                         this.rvEventsRipple.setOnClickListener {}
                     }
