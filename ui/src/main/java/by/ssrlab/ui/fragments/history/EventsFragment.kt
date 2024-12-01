@@ -104,7 +104,8 @@ class EventsFragment : BaseFragment() {
     override fun initAdapter() {
         adapter = EventsAdapter(
             emptyList(),
-            requireContext().resources.getString(by.ssrlab.common_ui.R.string.on_this_day)
+            requireContext().resources.getString(by.ssrlab.common_ui.R.string.on_this_day),
+            requireContext().resources.getString(by.ssrlab.common_ui.R.string.on_the_next_day)
         )
 
         when (val resource = fragmentViewModel.datesData.value) {

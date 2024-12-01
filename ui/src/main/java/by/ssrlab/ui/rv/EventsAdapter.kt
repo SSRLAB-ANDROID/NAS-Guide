@@ -16,7 +16,8 @@ import by.ssrlab.ui.databinding.ErrorItemBinding
 
 class EventsAdapter(
     private var entitiesList: List<EventLocale>,
-    private val title: String,
+    private var startTitle: String,
+    private val changedTitle: String
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -26,6 +27,7 @@ class EventsAdapter(
         private const val VIEW_TYPE_ERROR = 3
     }
 
+    private var title = startTitle
     private var isLoading = false
     private var errorMessage: String? = null
 
@@ -129,6 +131,13 @@ class EventsAdapter(
         isLoading = false
         errorMessage = null
         entitiesList = items.filter { it.event.startDate.drop(5) == date }
+
+        if (entitiesList.isEmpty()) {
+            filteredListIsEmpty(items, date)
+            title = changedTitle
+        } else {
+            title = startTitle
+        }
         notifyDataSetChanged()
     }
 
