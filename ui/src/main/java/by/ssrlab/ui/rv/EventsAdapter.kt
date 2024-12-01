@@ -106,6 +106,7 @@ class EventsAdapter(
 
     override fun getItemCount() =
         if (isLoading || errorMessage != null) 1 else entitiesList?.let { entitiesList!!.size } ?: 0
+        if (isLoading || errorMessage != null) 1 else entitiesList.let { entitiesList.size + 1 } ?: 0
 
     @SuppressLint("NotifyDataSetChanged")
     fun updateData(items: List<EventLocale>, date: String) {
