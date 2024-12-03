@@ -24,12 +24,18 @@ import by.ssrlab.ui.R
 import by.ssrlab.ui.databinding.FragmentOrgsBinding
 import by.ssrlab.ui.rv.SectionAdapter
 import by.ssrlab.ui.vm.FOrgsVM
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 class OrgsFragment : BaseFragment() {
 
     private lateinit var binding: FragmentOrgsBinding
     private lateinit var adapter: SectionAdapter
+    private val scope = CoroutineScope(Dispatchers.Main + Job())
 
     override val toolbarControlObject = ToolbarControlObject(
         isBack = true,
@@ -82,7 +88,7 @@ class OrgsFragment : BaseFragment() {
     private fun disableButtons() {
         moveToMap()
         moveToFilter()
-        resetFilters()
+        initResetButton()
     }
 
     override fun observeOnDataChanged() {
@@ -159,6 +165,11 @@ class OrgsFragment : BaseFragment() {
     //Navigation
     override fun onBackPressed() {
         findNavController().navigate(R.id.mainFragment)
+        scope.launch {
+            // clean the screen without blinking
+            delay(500)
+            resetFilters()
+        }
     }
 
     override fun navigateNext(repositoryData: RepositoryData) {
@@ -239,12 +250,10 @@ class OrgsFragment : BaseFragment() {
     }
 
     private fun resetFilters() {
-        binding.resetFilterButton.setOnClickListener {
-            fragmentViewModel.resetFilters()
-            fragmentViewModel.setFiltering(false)
-            showAllOrgs()
-            binding.resetFilterButton.visibility = View.GONE
-        }
+        fragmentViewModel.resetFilters()
+        fragmentViewModel.setFiltering(false)
+        showAllOrgs()
+        binding.resetFilterButton.visibility = View.GONE
     }
 
     private fun showAllOrgs() {
@@ -254,6 +263,10 @@ class OrgsFragment : BaseFragment() {
                 adapter.updateData(data)
             }
         }
+    }
+
+    private fun initResetButton() {
+        binding.resetFilterButton.setOnClickListener { resetFilters() }
     }
 
     private fun moveToFilter() {
