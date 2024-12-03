@@ -147,7 +147,7 @@ class OrgsFragment : BaseFragment() {
 
     //Navigation
     override fun onBackPressed() {
-        findNavController().popBackStack()
+        findNavController().navigate(R.id.mainFragment)
     }
 
     override fun navigateNext(repositoryData: RepositoryData) {
