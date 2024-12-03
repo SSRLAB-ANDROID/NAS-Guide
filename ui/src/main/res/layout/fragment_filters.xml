@@ -56,6 +56,7 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/filter_rv_padding"
             android:layout_marginHorizontal="@dimen/common_margin"
+            android:layout_marginBottom="@dimen/filter_rv_button_margin"
             android:text="@string/apply_filter"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
