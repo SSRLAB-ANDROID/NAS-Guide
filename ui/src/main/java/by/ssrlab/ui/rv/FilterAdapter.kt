@@ -9,6 +9,7 @@ import by.ssrlab.ui.databinding.RvFilterItemBinding
 
 class FilterAdapter(
     private var entitiesMap: Map<DepartmentFilter, Int>?,
+    private var selectedFilters: List<DepartmentFilter>,
     private val onFilterSelected: (DepartmentFilter, Boolean) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -29,7 +30,7 @@ class FilterAdapter(
                         val (filter, count) = entries[position]
                         rvSectionCheckbox.text = "${filter.keyName} ($count)"
                         rvSectionCheckbox.setOnCheckedChangeListener(null)
-                        rvSectionCheckbox.isChecked = false
+                        rvSectionCheckbox.isChecked = selectedFilters.contains(filter)
                         rvSectionCheckbox.setOnCheckedChangeListener { _, isChecked ->
                             onFilterSelected(filter, isChecked)
                         }
@@ -42,8 +43,9 @@ class FilterAdapter(
     override fun getItemCount() = entitiesMap?.size ?: 0
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updateData(items: Map<DepartmentFilter, Int>) {
-        entitiesMap = items
+    fun updateData(filters: Map<DepartmentFilter, Int>, selected: List<DepartmentFilter>) {
+        entitiesMap = filters
+        selectedFilters = selected
         notifyDataSetChanged()
     }
 }

@@ -70,19 +70,20 @@ class FilterFragment : BaseFragment() {
     override fun observeOnDataChanged() {
         fragmentViewModel.availableFilters.observe(viewLifecycleOwner, Observer { filters ->
             filters?.let {
-                adapter.updateData(filters)
+                fragmentViewModel.selectedFilters.value?.let { selected -> adapter.updateData(filters, selected.toList()) }
             }
         })
     }
 
     override fun initAdapter() {
-        adapter = FilterAdapter(emptyMap()/*, emptyList()*/) { filter, isSelected ->
+        adapter = FilterAdapter(emptyMap()/*, emptyList()*/, emptyList()) { filter, isSelected ->
             fragmentViewModel.onFilterSelected(filter, isSelected)
         }
 
         val filters = fragmentViewModel.availableFilters.value
+        val selectedFilters = fragmentViewModel.selectedFilters.value?.toList()
         filters?.let {
-            adapter.updateData(filters)
+            selectedFilters?.let { selected -> adapter.updateData(filters, selected) }
         }
 
         binding.apply {

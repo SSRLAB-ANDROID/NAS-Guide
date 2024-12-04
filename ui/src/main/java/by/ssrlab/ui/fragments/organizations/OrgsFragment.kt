@@ -80,8 +80,6 @@ class OrgsFragment : BaseFragment() {
             // to show results and reset filter button
             showSearchResults()
             binding.resetFilterButton.visibility = View.VISIBLE
-            // to prepare for next search
-            fragmentViewModel.resetFilters()
         }
     }
 
