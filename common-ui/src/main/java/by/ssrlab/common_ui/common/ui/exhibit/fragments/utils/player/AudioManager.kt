@@ -10,12 +10,15 @@ import by.ssrlab.common_ui.common.vm.AExhibitVM
 class AudioManager(viewModel: AExhibitVM) {
 
     private lateinit var audioManager: AudioManager
+    var originalVolume = 0
 
     val volumeChangeReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             if (intent.action == "android.media.VOLUME_CHANGED_ACTION") {
 
                 val currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
+                originalVolume = currentVolume
+
                 viewModel.setVolumeAvailability(currentVolume != 0)
             }
         }

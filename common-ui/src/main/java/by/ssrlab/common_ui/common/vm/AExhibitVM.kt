@@ -30,4 +30,6 @@ class AExhibitVM : ViewModel() {
     fun setVolumeAvailability(isVolume: Boolean) {
         _isVolumeOn.value = isVolume
     }
+
+    var originalVolume = 0
 }

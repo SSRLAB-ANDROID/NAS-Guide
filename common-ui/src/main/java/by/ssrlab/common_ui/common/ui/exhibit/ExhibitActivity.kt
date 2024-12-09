@@ -23,7 +23,6 @@ class ExhibitActivity : BaseActivity() {
     private lateinit var binding: ActivityExhibitBinding
     private val activityViewModel: AExhibitVM by viewModel()
     private lateinit var audioManager: AudioManager
-
     @Suppress("DEPRECATION")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,7 +91,7 @@ class ExhibitActivity : BaseActivity() {
 
         binding.toolbarVolume.setOnClickListener {
             if (activityViewModel.isVolumeOn.value!!) {
-                audioManager.controlVolume(0, this)
+                activityViewModel.originalVolume = audioManager.originalVolume
                 Toast.makeText(this, getString(R.string.volume_off), Toast.LENGTH_SHORT).show()
             } else audioManager.controlVolume(7, this)
         }
