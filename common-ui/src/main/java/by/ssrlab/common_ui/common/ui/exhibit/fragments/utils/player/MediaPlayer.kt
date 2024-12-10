@@ -19,6 +19,7 @@ import kotlinx.coroutines.launch
 object MediaPlayer {
 
     private var mediaPlayer: MediaPlayer? = null
+    var originalVolumeFromVM = 0
     private val seekBarFuns = SeekBarFunctions()
 
     private val job = Job()
@@ -222,5 +223,15 @@ object MediaPlayer {
     fun destroyPlayer() {
         mediaPlayer?.release()
         mediaPlayer = null
+    }
+
+    fun setVolumeOff(
+        binding: FragmentExhibitBinding
+    ) {
+        mediaPlayer?.setVolume(0f, 0f)
+    }
+
+    fun setVolumeBack() {
+        mediaPlayer?.setVolume(originalVolumeFromVM.toFloat(), originalVolumeFromVM.toFloat())
     }
 }
