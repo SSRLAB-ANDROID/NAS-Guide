@@ -50,6 +50,8 @@ class ExhibitFragment : Fragment() {
             exhibitActivity = exhibitActivity
         )
 
+        fragmentSettingsManager.setSound(activityViewModel.originalVolume)
+
         lifecycleScope.launch {
             val audio = withContext(Dispatchers.IO) {
                 activityViewModel.repositoryData.value?.audio
