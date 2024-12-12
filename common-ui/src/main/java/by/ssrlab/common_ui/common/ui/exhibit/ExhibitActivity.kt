@@ -1,6 +1,5 @@
 package by.ssrlab.common_ui.common.ui.exhibit
 
-import android.content.IntentFilter
 import android.os.Bundle
 import android.view.ViewTreeObserver
 import android.widget.Toast
@@ -10,7 +9,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import by.ssrlab.common_ui.R
 import by.ssrlab.common_ui.common.ui.base.BaseActivity
 import by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.ActivityMainMarginParams
-import by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.player.AudioManager
+import by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.player.MediaPlayer
 import by.ssrlab.common_ui.common.vm.AExhibitVM
 import by.ssrlab.common_ui.databinding.ActivityExhibitBinding
 import by.ssrlab.data.util.ExhibitObject
@@ -22,7 +21,6 @@ class ExhibitActivity : BaseActivity() {
 
     private lateinit var binding: ActivityExhibitBinding
     private val activityViewModel: AExhibitVM by viewModel()
-    private lateinit var audioManager: AudioManager
 
     @Suppress("DEPRECATION")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +33,6 @@ class ExhibitActivity : BaseActivity() {
                 android.graphics.Color.TRANSPARENT
             )
         )
-        audioManager = AudioManager(activityViewModel)
 
         binding = ActivityExhibitBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -46,23 +43,7 @@ class ExhibitActivity : BaseActivity() {
         }
 
         setUpButtons()
-        setUpVolumeStateListener()
         observeLayoutChange()
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        registerReceiver(
-            audioManager.volumeChangeReceiver,
-            IntentFilter("android.media.VOLUME_CHANGED_ACTION")
-        )
-    }
-
-    override fun onPause() {
-        super.onPause()
-
-        unregisterReceiver(audioManager.volumeChangeReceiver)
     }
 
     private fun getPlaceId(exhibitObject: ExhibitObject): String {
@@ -80,26 +61,31 @@ class ExhibitActivity : BaseActivity() {
     }
 
     private fun setUpVolumeButton() {
-        if (!activityViewModel.isVolumeOn.value!!) binding.toolbarVolume.setImageResource(R.drawable.toolbar_exhibit_ic_volume_off)
-        else binding.toolbarVolume.setImageResource(R.drawable.toolbar_exhibit_ic_volume)
+        updateVolumeIcon(activityViewModel.isVolumeOn.value ?: true)
 
-        activityViewModel.isVolumeOn.observe(this) {
-            if (!activityViewModel.isVolumeOn.value!!) binding.toolbarVolume.setImageResource(
-                R.drawable.toolbar_exhibit_ic_volume_off
-            )
-            else binding.toolbarVolume.setImageResource(R.drawable.toolbar_exhibit_ic_volume)
+        activityViewModel.isVolumeOn.observe(this) { isVolumeOn ->
+            updateVolumeIcon(isVolumeOn)
         }
 
         binding.toolbarVolume.setOnClickListener {
-            if (activityViewModel.isVolumeOn.value!!) {
-                audioManager.controlVolume(0, this)
+            val isVolumeOn = activityViewModel.isVolumeOn.value ?: true
+            if (isVolumeOn) {
+                MediaPlayer.setVolume(0.0f, 0.0f)
                 Toast.makeText(this, getString(R.string.volume_off), Toast.LENGTH_SHORT).show()
-            } else audioManager.controlVolume(7, this)
+            } else {
+                MediaPlayer.setVolume(1.0f, 1.0f)
+            }
+            activityViewModel.setVolumeAvailability(!isVolumeOn)
         }
     }
 
-    private fun setUpVolumeStateListener() {
-        audioManager.setUpVolumeStateListener(activityViewModel, this)
+    private fun updateVolumeIcon(isVolumeOn: Boolean) {
+        val iconRes = if (isVolumeOn) {
+            R.drawable.toolbar_exhibit_ic_volume
+        } else {
+            R.drawable.toolbar_exhibit_ic_volume_off
+        }
+        binding.toolbarVolume.setImageResource(iconRes)
     }
 
     private fun setBackAction() {

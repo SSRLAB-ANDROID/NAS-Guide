@@ -223,4 +223,8 @@ object MediaPlayer {
         mediaPlayer?.release()
         mediaPlayer = null
     }
+
+    fun setVolume(leftVolume: Float, rightVolume: Float) {
+        mediaPlayer?.setVolume(leftVolume, rightVolume)
+    }
 }
