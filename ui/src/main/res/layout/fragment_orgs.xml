@@ -186,7 +186,7 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/filter_rv_padding"
             android:layout_marginHorizontal="@dimen/common_margin"
-            android:layout_marginBottom="@dimen/common_margin"
+            android:layout_marginBottom="@dimen/common_rv_button_margin"
             android:text="@string/reset_filter"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
