@@ -18,8 +18,15 @@ class FDevelopmentsVM(developmentsRepository: DevelopmentsRepository) :
     val title: LiveData<String>
         get() = _title
 
+    private val _isLoaded = MutableLiveData(false)
+    val isLoaded: LiveData<Boolean> = _isLoaded
+
     fun setTitle(value: String) {
         _title.value = value
+    }
+
+    fun setLoaded(value: Boolean) {
+        _isLoaded.value = value
     }
 
     private fun loadData() {
