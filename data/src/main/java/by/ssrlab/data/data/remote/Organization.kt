@@ -25,6 +25,9 @@ data class Organization(
     @SerializedName("department_filter")
     val departmentFilter: DepartmentFilter,
 
+    @SerializedName("department_translations")
+    val translations: List<DepartmentTranslations>,
+
     @SerializedName("images")
     override val image: Image
 ): DescriptionData {
