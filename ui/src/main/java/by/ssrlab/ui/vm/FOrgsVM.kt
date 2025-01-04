@@ -102,10 +102,26 @@ class FOrgsVM(orgsRepository: OrgsRepository) : BaseFragmentVM<OrganizationLocal
     }
 
     fun setAvailableFilters() {
+        val currentLanguageKey = getSelectedLanguage() ?: "en"
+        val languageCode = when (currentLanguageKey) {
+            "en" -> 0
+            "be" -> 1
+            "ru" -> 2
+            else -> 0
+        }
+
         val uniqueDepartmentFilters: Set<DepartmentFilter> =
             if (_orgsData.value is Resource.Success) {
                 (_orgsData.value as Resource.Success<List<OrganizationLocale>>).data
-                    .map { it.description.departmentFilter }
+                    .map { org ->
+                        val localizedFilterName = org.description.translations
+                            .find { it.language.languageKey == currentLanguageKey }
+                            ?.name ?: org.description.departmentFilter.keyName
+
+                        org.description.departmentFilter.copy(
+                            keyName = localizedFilterName
+                        )
+                    }
                     .toSet()
             } else {
                 emptySet()
@@ -117,7 +133,7 @@ class FOrgsVM(orgsRepository: OrgsRepository) : BaseFragmentVM<OrganizationLocal
             uniqueDepartmentFilters.associateWith { filter ->
                 _orgsData.value?.let {
                     if (it is Resource.Success) {
-                        it.data.count { org -> org.description.departmentFilter == filter }
+                        it.data.count { org -> org.description.translations[languageCode].name == filter.keyName }
                     } else {
                         0
                     }
