@@ -64,6 +64,8 @@ open class BaseFragmentVM<T : RepositoryData>(private val baseRepository: BaseRe
         }
     }
 
+    fun getSelectedLanguage() = sharedPreferences.getLanguage()
+
     companion object {
         private const val REQUEST_ERROR_LOG = "request_error_log"
     }

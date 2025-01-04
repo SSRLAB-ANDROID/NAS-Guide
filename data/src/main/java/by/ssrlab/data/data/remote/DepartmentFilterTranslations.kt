@@ -13,6 +13,9 @@ data class DepartmentFilterTranslations(
     @SerializedName("department")
     val departmentFilter: DepartmentFilter,
 
+    @SerializedName("lang")
+    val language: Language,
+
     @SerializedName("name")
     val name: String
 ): Parcelable {
