@@ -9,6 +9,7 @@ import by.ssrlab.data.data.remote.DepartmentFilter
 import by.ssrlab.data.data.settings.remote.OrganizationLocale
 import by.ssrlab.domain.repository.network.OrgsRepository
 import by.ssrlab.domain.utils.Resource
+import by.ssrlab.domain.utils.transformLanguageToInt
 import java.util.Locale
 
 class FOrgsVM(orgsRepository: OrgsRepository) : BaseFragmentVM<OrganizationLocale>(orgsRepository) {
@@ -102,13 +103,7 @@ class FOrgsVM(orgsRepository: OrgsRepository) : BaseFragmentVM<OrganizationLocal
     }
 
     fun setAvailableFilters() {
-        val currentLanguageKey = getSelectedLanguage() ?: "en"
-        val languageCode = when (currentLanguageKey) {
-            "en" -> 0
-            "be" -> 1
-            "ru" -> 2
-            else -> 0
-        }
+        val currentLanguageKey = getSelectedLanguage()
 
         val uniqueDepartmentFilters: Set<DepartmentFilter> =
             if (_orgsData.value is Resource.Success) {
@@ -133,7 +128,7 @@ class FOrgsVM(orgsRepository: OrgsRepository) : BaseFragmentVM<OrganizationLocal
             uniqueDepartmentFilters.associateWith { filter ->
                 _orgsData.value?.let {
                     if (it is Resource.Success) {
-                        it.data.count { org -> org.description.translations[languageCode].name == filter.keyName }
+                        it.data.count { org -> org.description.translations[currentLanguageKey.transformLanguageToInt() - 1].name == filter.keyName }
                     } else {
                         0
                     }
