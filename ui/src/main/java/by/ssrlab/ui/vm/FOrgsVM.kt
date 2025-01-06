@@ -153,17 +153,20 @@ class FOrgsVM(orgsRepository: OrgsRepository) : BaseFragmentVM<OrganizationLocal
     }
 
     fun applyFilters() {
+        val currentLanguageKey = getSelectedLanguage()
+
         val filterDataByChoices =
             if (_orgsData.value is Resource.Success) {
                 val currentSelectedFilters = _selectedFilters.value
-                (_orgsData.value as Resource.Success<List<OrganizationLocale>>).data
-                    .filter { element ->
-                        element.description.departmentFilter.let {
-                            currentSelectedFilters?.contains(
-                                it
-                            )
-                        } ?: false
-                    }
+                (_orgsData.value as Resource.Success<List<OrganizationLocale>>).data.filter { element ->
+                    val localizedFilterName = element.description.translations
+                        .find { it.language.languageKey == currentLanguageKey }
+                        ?.name
+
+                    currentSelectedFilters?.any { selectedFilter ->
+                        selectedFilter.keyName == localizedFilterName
+                    } ?: false
+                }
             } else {
                 emptyList()
             }
