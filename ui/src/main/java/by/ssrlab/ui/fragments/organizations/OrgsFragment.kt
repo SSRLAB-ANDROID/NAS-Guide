@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
 import android.widget.Toast
@@ -50,6 +49,8 @@ class OrgsFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         fragmentViewModel.setTitle(requireContext().resources.getString(by.ssrlab.domain.R.string.folder_organizations))
+        fragmentViewModel.observeLanguageChanges()
+
         activityVM.apply {
             setHeaderImg(by.ssrlab.common_ui.R.drawable.header_organizations)
             setButtonAction(ButtonAction.BackAction, ::onBackPressed)

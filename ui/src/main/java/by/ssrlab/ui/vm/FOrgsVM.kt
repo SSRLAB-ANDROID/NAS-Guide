@@ -3,6 +3,7 @@ package by.ssrlab.ui.vm
 import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import by.ssrlab.common_ui.common.ui.base.vm.BaseFragmentVM
 import by.ssrlab.data.data.common.DescriptionData
 import by.ssrlab.data.data.remote.DepartmentFilter
@@ -10,6 +11,7 @@ import by.ssrlab.data.data.settings.remote.OrganizationLocale
 import by.ssrlab.domain.repository.network.OrgsRepository
 import by.ssrlab.domain.utils.Resource
 import by.ssrlab.domain.utils.transformLanguageToInt
+import kotlinx.coroutines.launch
 import java.util.Locale
 
 class FOrgsVM(orgsRepository: OrgsRepository) : BaseFragmentVM<OrganizationLocale>(orgsRepository) {
@@ -63,6 +65,19 @@ class FOrgsVM(orgsRepository: OrgsRepository) : BaseFragmentVM<OrganizationLocal
 
     init {
         loadData()
+    }
+
+    //Language change
+    private var currentLanguage: String? = "en"
+
+    fun observeLanguageChanges() {
+        viewModelScope.launch {
+            val newLanguage = getSelectedLanguage()
+            if (currentLanguage != newLanguage) {
+                currentLanguage = newLanguage
+                loadData()
+            }
+        }
     }
 
     //Filter and Search
