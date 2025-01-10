@@ -68,6 +68,7 @@
 
     //Filter
     <string name="filter_title">Фильтры</string>
+    <string name="orgs_filter_title">Фильтры по организациям</string>
     <string name="apply_filter">Применить фильтры</string>
     <string name="reset_filter">Сбросить фильтры</string>
 
