@@ -23,6 +23,9 @@ data class Development(
     @SerializedName("department_filter")
     val departmentFilter: DepartmentFilter,
 
+    @SerializedName("department_filter_translations")
+    val translations: List<DepartmentFilterTranslations>,
+
     @SerializedName("images")
     override val image: Image,
 
