@@ -26,6 +26,8 @@ import by.ssrlab.ui.vm.FDevelopmentsVM
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 class DevelopmentsFragment : BaseFragment() {
@@ -144,7 +146,11 @@ class DevelopmentsFragment : BaseFragment() {
 
     //Navigation
     override fun onBackPressed() {
-        findNavController().popBackStack()
+        findNavController().navigate(R.id.mainFragment)
+        scope.launch {
+            delay(500)
+            resetFilters()
+        }
     }
 
     override fun navigateNext(repositoryData: RepositoryData) {
@@ -234,8 +240,7 @@ class DevelopmentsFragment : BaseFragment() {
     private fun showAllDevelopments() {
         fragmentViewModel.let {
             if (it.inventionsData.value is Resource.Success) {
-                val data =
-                    (it.inventionsData.value as Resource.Success<List<DevelopmentLocale>>).data
+                val data = (it.inventionsData.value as Resource.Success<List<DevelopmentLocale>>).data
                 adapter.updateData(data)
             }
         }
@@ -244,7 +249,6 @@ class DevelopmentsFragment : BaseFragment() {
     private fun initResetButton() {
         binding.resetFilterButton.setOnClickListener { resetFilters() }
     }
-
     private fun moveToFilter() {
         binding.inventionsFilterRipple.setOnClickListener {
             if (fragmentViewModel.isLoaded.value == true) {
