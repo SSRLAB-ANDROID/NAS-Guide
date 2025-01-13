@@ -47,6 +47,8 @@ class InventionsFilterFragment : BaseFragment() {
         }
 
         initAdapter()
+        observeOnDataChanged()
+        disableButtons()
     }
 
     override fun onDestroyView() {
@@ -54,6 +56,26 @@ class InventionsFilterFragment : BaseFragment() {
 
         val searchButton: ImageButton = requireActivity().findViewById(R.id.toolbar_search)
         searchButton.visibility = View.VISIBLE
+    }
+
+    private fun disableButtons() {
+        val searchButton: ImageButton = requireActivity().findViewById(R.id.toolbar_search)
+        searchButton.visibility = View.GONE
+
+        applyFilter()
+    }
+
+    override fun observeOnDataChanged() {
+        fragmentViewModel.availableFilters.observe(viewLifecycleOwner, Observer { filters ->
+            filters?.let {
+                fragmentViewModel.selectedFilters.value?.let { selected ->
+                    adapter.updateData(
+                        filters,
+                        selected.toList()
+                    )
+                }
+            }
+        })
     }
 
     override fun initAdapter() {
@@ -90,5 +112,21 @@ class InventionsFilterFragment : BaseFragment() {
 
     override fun navigateNext(repositoryData: RepositoryData) {
         (activity as MainActivity).moveToExhibit(repositoryData)
+    }
+
+    private fun applyFilter() {
+        binding.applyFilterButton.setOnClickListener {
+            if (fragmentViewModel.selectedFilters.value?.isEmpty() == false) {
+                fragmentViewModel.applyFilters()
+                fragmentViewModel.setFiltering(true)
+                findNavController().navigate(R.id.inventionsFragment)
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    requireContext().resources.getString(by.ssrlab.common_ui.R.string.select_at_least_one_filter),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
     }
 }
