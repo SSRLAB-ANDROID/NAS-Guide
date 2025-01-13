@@ -3,12 +3,14 @@ package by.ssrlab.ui.vm
 import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import by.ssrlab.common_ui.common.ui.base.vm.BaseFragmentVM
 import by.ssrlab.data.data.remote.DepartmentFilter
 import by.ssrlab.data.data.settings.remote.DevelopmentLocale
 import by.ssrlab.domain.repository.network.DevelopmentsRepository
 import by.ssrlab.domain.utils.Resource
 import by.ssrlab.domain.utils.transformLanguageToInt
+import kotlinx.coroutines.launch
 import java.util.Locale
 
 class FDevelopmentsVM(developmentsRepository: DevelopmentsRepository) :
@@ -44,6 +46,19 @@ class FDevelopmentsVM(developmentsRepository: DevelopmentsRepository) :
                 _inventionsData.value = Resource.Loading
             }
         )
+    }
+
+    //Language change
+    private var currentLanguage: String? = "en"
+
+    fun observeLanguageChanges() {
+        viewModelScope.launch {
+            val newLanguage = getSelectedLanguage()
+            if (currentLanguage != newLanguage) {
+                currentLanguage = newLanguage
+                loadData()
+            }
+        }
     }
 
     init {

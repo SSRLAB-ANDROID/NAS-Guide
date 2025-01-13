@@ -49,6 +49,8 @@ class DevelopmentsFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         fragmentViewModel.setTitle(requireContext().resources.getString(by.ssrlab.domain.R.string.folder_inventions))
+        fragmentViewModel.observeLanguageChanges()
+
         activityVM.apply {
             setHeaderImg(by.ssrlab.common_ui.R.drawable.header_inventions)
             setButtonAction(ButtonAction.BackAction, ::onBackPressed)
