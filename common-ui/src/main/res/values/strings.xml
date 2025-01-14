@@ -12,18 +12,18 @@
     <string name="button_support_map">Map</string>
 
     //Months
-    <string name="january">of january</string>
-    <string name="february">of february</string>
-    <string name="march">of march</string>
-    <string name="april">of april</string>
-    <string name="may">of may</string>
-    <string name="june">of june</string>
-    <string name="july">of july</string>
-    <string name="august">of august</string>
-    <string name="september">of september</string>
-    <string name="october">of october</string>
-    <string name="november">of november</string>
-    <string name="december">of december</string>
+    <string name="january">January</string>
+    <string name="february">February</string>
+    <string name="march">March</string>
+    <string name="april">April</string>
+    <string name="may">May</string>
+    <string name="june">June</string>
+    <string name="july">July</string>
+    <string name="august">August</string>
+    <string name="september">September</string>
+    <string name="october">October</string>
+    <string name="november">November</string>
+    <string name="december">December</string>
 
     //Dialog helper
     <string name="dialog_ok">Accept</string>
@@ -61,7 +61,7 @@
 
     //Date
     <string name="on_this_day">On this day</string>
-    <string name="on_the_next_day">The events calendar is empty on this day, but here is the nearest date with events</string>
+    <string name="on_the_next_day">Nearest date with events</string>
     <string name="today">Today</string>
     <string name="date">Date</string>
     <string name="events">Events</string>
