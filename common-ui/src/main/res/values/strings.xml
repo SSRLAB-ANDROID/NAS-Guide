@@ -12,18 +12,18 @@
     <string name="button_support_map">Map</string>
 
     //Months
-    <string name="january">of January</string>
-    <string name="february">of February</string>
-    <string name="march">of March</string>
-    <string name="april">of April</string>
-    <string name="may">of May</string>
-    <string name="june">of June</string>
-    <string name="july">of July</string>
-    <string name="august">of August</string>
-    <string name="september">of September</string>
-    <string name="october">of October</string>
-    <string name="november">of November</string>
-    <string name="december">of December</string>
+    <string name="january">January</string>
+    <string name="february">February</string>
+    <string name="march">March</string>
+    <string name="april">April</string>
+    <string name="may">May</string>
+    <string name="june">June</string>
+    <string name="july">July</string>
+    <string name="august">August</string>
+    <string name="september">September</string>
+    <string name="october">October</string>
+    <string name="november">November</string>
+    <string name="december">December</string>
 
     //Dialog helper
     <string name="dialog_ok">Accept</string>
