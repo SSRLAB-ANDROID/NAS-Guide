@@ -73,6 +73,7 @@
 
     //Filter
     <string name="filter_title">Filter</string>
+    <string name="orgs_filter_title">Organization Filter</string>
     <string name="apply_filter">Apply filter</string>
     <string name="reset_filter">Reset filter</string>
 

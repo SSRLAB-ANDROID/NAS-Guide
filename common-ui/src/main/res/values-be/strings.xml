@@ -68,6 +68,7 @@
 
     //Filter
     <string name="filter_title">Фільтры</string>
+    <string name="orgs_filter_title">Фільтры па арганiзацыях</string>
     <string name="apply_filter">Прыняць фільтры</string>
     <string name="reset_filter">Скінуць фільтры</string>
 

@@ -12,9 +12,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import by.ssrlab.common_ui.common.ui.base.BaseActivity
 import by.ssrlab.common_ui.common.ui.base.BaseFragment
 import by.ssrlab.data.data.common.RepositoryData
+import by.ssrlab.data.data.settings.remote.DevelopmentLocale
 import by.ssrlab.data.util.ButtonAction
 import by.ssrlab.domain.models.ToolbarControlObject
 import by.ssrlab.domain.utils.Resource
@@ -23,12 +23,18 @@ import by.ssrlab.ui.R
 import by.ssrlab.ui.databinding.FragmentDevelopmentsBinding
 import by.ssrlab.ui.rv.SectionAdapter
 import by.ssrlab.ui.vm.FDevelopmentsVM
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 class DevelopmentsFragment : BaseFragment() {
 
     private lateinit var binding: FragmentDevelopmentsBinding
     private lateinit var adapter: SectionAdapter
+    private val scope = CoroutineScope(Dispatchers.Main + Job())
 
     override val toolbarControlObject = ToolbarControlObject(
         isBack = true,
@@ -37,12 +43,14 @@ class DevelopmentsFragment : BaseFragment() {
         isDates = false
     )
 
-    override val fragmentViewModel: FDevelopmentsVM by viewModel()
+    override val fragmentViewModel: FDevelopmentsVM by activityViewModel<FDevelopmentsVM>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         fragmentViewModel.setTitle(requireContext().resources.getString(by.ssrlab.domain.R.string.folder_inventions))
+        fragmentViewModel.observeLanguageChanges()
+
         activityVM.apply {
             setHeaderImg(by.ssrlab.common_ui.R.drawable.header_inventions)
             setButtonAction(ButtonAction.BackAction, ::onBackPressed)
@@ -66,8 +74,18 @@ class DevelopmentsFragment : BaseFragment() {
         hideSearchBar()
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        if (fragmentViewModel.isFiltering.value == true) {
+            showSearchResults()
+            binding.resetFilterButton.visibility = View.VISIBLE
+        }
+    }
+
     private fun disableButtons() {
         moveToFilter()
+        initResetButton()
     }
 
     override fun observeOnDataChanged() {
@@ -79,6 +97,7 @@ class DevelopmentsFragment : BaseFragment() {
 
                 is Resource.Success -> {
                     adapter.updateData(resource.data)
+                    addAvailableFilterCategories()
                     fragmentViewModel.setLoaded(true)
                 }
 
@@ -127,14 +146,18 @@ class DevelopmentsFragment : BaseFragment() {
         return binding.root
     }
 
+    //Navigation
     override fun onBackPressed() {
-        findNavController().popBackStack()
+        findNavController().navigate(R.id.mainFragment)
+        scope.launch {
+            delay(500)
+            resetFilters()
+        }
     }
 
     override fun navigateNext(repositoryData: RepositoryData) {
         (activity as MainActivity).moveToExhibit(repositoryData)
     }
-
 
     //Search
     private var toolbarSearchView: SearchView? = null
@@ -205,10 +228,33 @@ class DevelopmentsFragment : BaseFragment() {
 
 
     //Filter
+    private fun addAvailableFilterCategories() {
+        fragmentViewModel.setAvailableFilters()
+    }
+
+    private fun resetFilters() {
+        fragmentViewModel.resetFilters()
+        fragmentViewModel.setFiltering(false)
+        showAllDevelopments()
+        binding.resetFilterButton.visibility = View.GONE
+    }
+
+    private fun showAllDevelopments() {
+        fragmentViewModel.let {
+            if (it.inventionsData.value is Resource.Success) {
+                val data = (it.inventionsData.value as Resource.Success<List<DevelopmentLocale>>).data
+                adapter.updateData(data)
+            }
+        }
+    }
+
+    private fun initResetButton() {
+        binding.resetFilterButton.setOnClickListener { resetFilters() }
+    }
     private fun moveToFilter() {
         binding.inventionsFilterRipple.setOnClickListener {
             if (fragmentViewModel.isLoaded.value == true) {
-                (requireActivity() as BaseActivity).createIsntRealizedDialog()
+                findNavController().navigate(R.id.inventionsFilterFragment)
             } else {
                 val currentContext = requireContext()
                 Toast.makeText(
