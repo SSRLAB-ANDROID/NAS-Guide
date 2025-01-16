@@ -14,7 +14,7 @@ import by.ssrlab.common_ui.common.ui.base.BaseFragment
 import by.ssrlab.data.data.common.RepositoryData
 import by.ssrlab.data.util.ButtonAction
 import by.ssrlab.domain.models.ToolbarControlObject
-import by.ssrlab.ui.MainActivity
+import by.ssrlab.common_ui.common.ui.MainActivity
 import by.ssrlab.ui.R
 import by.ssrlab.ui.databinding.FragmentPersonsBinding
 import by.ssrlab.ui.rv.GridAdapter
@@ -98,7 +98,7 @@ class PersonsFragment : BaseFragment() {
 
     private fun searchBarInstance(): SearchView {
         if (toolbarSearchView == null) {
-            toolbarSearchView = requireActivity().findViewById(R.id.toolbar_search_view)
+            toolbarSearchView = requireActivity().findViewById((by.ssrlab.common_ui.R.id.toolbar_search_view))
         }
         return toolbarSearchView!!
     }
@@ -135,7 +135,7 @@ class PersonsFragment : BaseFragment() {
         })
         toolbarSearchView.visibility = View.VISIBLE
         toolbarSearchView.isIconified = false
-        val searchButton: ImageButton = requireActivity().findViewById(R.id.toolbar_search)
+        val searchButton: ImageButton = requireActivity().findViewById(by.ssrlab.common_ui.R.id.toolbar_search)
         searchButton.visibility = View.GONE
 
         toolbarSearchView.setOnCloseListener {

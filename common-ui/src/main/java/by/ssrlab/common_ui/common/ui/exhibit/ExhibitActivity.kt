@@ -12,7 +12,6 @@ import by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.ActivityMainMarginP
 import by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.player.MediaPlayer
 import by.ssrlab.common_ui.common.vm.AExhibitVM
 import by.ssrlab.common_ui.databinding.ActivityExhibitBinding
-import by.ssrlab.data.util.ExhibitObject
 import coil.load
 import coil.transform.RoundedCornersTransformation
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -44,15 +43,6 @@ class ExhibitActivity : BaseActivity() {
 
         setUpButtons()
         observeLayoutChange()
-    }
-
-    private fun getPlaceId(exhibitObject: ExhibitObject): String {
-        return when (exhibitObject) {
-            ExhibitObject.Development -> TODO()
-            ExhibitObject.Organization -> TODO()
-            ExhibitObject.Person -> TODO()
-            ExhibitObject.Place -> TODO()
-        }
     }
 
     private fun setUpButtons() {
