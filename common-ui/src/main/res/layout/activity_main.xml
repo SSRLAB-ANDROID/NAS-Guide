@@ -18,7 +18,7 @@
         android:layout_height="match_parent"
 
         android:background="@color/white"
-        tools:context="by.ssrlab.ui.MainActivity"
+        tools:context="by.ssrlab.ui.by.ssrlab.common_ui.common.ui.MainActivity"
         tools:ignore="ContentDescription">
 
         <ImageView
