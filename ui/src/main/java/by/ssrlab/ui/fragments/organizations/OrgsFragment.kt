@@ -9,7 +9,6 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.ssrlab.common_ui.common.ui.base.BaseFragment
@@ -18,9 +17,10 @@ import by.ssrlab.data.data.settings.remote.OrganizationLocale
 import by.ssrlab.data.util.ButtonAction
 import by.ssrlab.domain.models.ToolbarControlObject
 import by.ssrlab.domain.utils.Resource
-import by.ssrlab.ui.MainActivity
+import by.ssrlab.common_ui.common.ui.MainActivity
 import by.ssrlab.ui.R
 import by.ssrlab.ui.databinding.FragmentOrgsBinding
+import by.ssrlab.common_ui.common.ui.exhibit.fragments.exhibit.NavigationManager
 import by.ssrlab.ui.rv.SectionAdapter
 import by.ssrlab.ui.vm.FOrgsVM
 import kotlinx.coroutines.CoroutineScope
@@ -91,7 +91,7 @@ class OrgsFragment : BaseFragment() {
     }
 
     override fun observeOnDataChanged() {
-        fragmentViewModel.orgsData.observe(viewLifecycleOwner, Observer { resource ->
+        fragmentViewModel.orgsData.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Loading -> {
                     adapter.showLoading()
@@ -107,13 +107,13 @@ class OrgsFragment : BaseFragment() {
                     adapter.showError(resource.message)
                 }
             }
-        })
+        }
     }
 
     override fun initAdapter() {
-        adapter = SectionAdapter(emptyList()) {
-            navigateNext(it)
-        }
+        adapter = SectionAdapter(
+            emptyList(), NavigationManager
+        ) { NavigationManager.handleNavigate(activity as MainActivity) }
 
         when (val resource = fragmentViewModel.orgsData.value) {
             is Resource.Success -> {
@@ -180,7 +180,7 @@ class OrgsFragment : BaseFragment() {
 
     private fun searchBarInstance(): SearchView {
         if (toolbarSearchView == null) {
-            toolbarSearchView = requireActivity().findViewById(R.id.toolbar_search_view)
+            toolbarSearchView = requireActivity().findViewById(by.ssrlab.common_ui.R.id.toolbar_search_view)
         }
         return toolbarSearchView!!
     }
@@ -217,7 +217,7 @@ class OrgsFragment : BaseFragment() {
         })
         toolbarSearchView.visibility = View.VISIBLE
         toolbarSearchView.isIconified = false
-        val searchButton: ImageButton = requireActivity().findViewById(R.id.toolbar_search)
+        val searchButton: ImageButton = requireActivity().findViewById(by.ssrlab.common_ui.R.id.toolbar_search)
         searchButton.visibility = View.GONE
 
         toolbarSearchView.setOnCloseListener {
