@@ -34,7 +34,6 @@ class ExhibitFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         exhibitActivity = requireActivity() as ExhibitActivity
     }
 
@@ -83,8 +82,8 @@ class ExhibitFragment : Fragment() {
 
     private fun disableButtons() {
         binding.apply {
-            exhibitPreviousRipple.setOnClickListener { (requireActivity() as BaseActivity).createIsntRealizedDialog() }
-            exhibitNextRipple.setOnClickListener { (requireActivity() as BaseActivity).createIsntRealizedDialog() }
+            exhibitPreviousRipple.setOnClickListener { NavigationManager.handlePrevious() }
+            exhibitNextRipple.setOnClickListener { NavigationManager.handleNext() }
             exhibitContactsRipple.setOnClickListener { (requireActivity() as BaseActivity).createIsntRealizedDialog() }
             exhibitLabsRipple.setOnClickListener { (requireActivity() as BaseActivity).createIsntRealizedDialog() }
             exhibitAchievementsRipple.setOnClickListener { (requireActivity() as BaseActivity).createIsntRealizedDialog() }
@@ -105,7 +104,7 @@ class ExhibitFragment : Fragment() {
                 is OrganizationLocale -> setParametersVisibility(ExhibitObject.Organization)
                 is PersonLocale -> setParametersVisibility(ExhibitObject.Person)
                 is PlaceLocale -> setParametersVisibility(ExhibitObject.Place)
-                null -> TODO()
+                null -> {}
             }
         }
     }
@@ -123,7 +122,6 @@ class ExhibitFragment : Fragment() {
                     exhibitMapRipple.setOnClickListener {
                         exhibitActivity.moveToMapFromExhibit(data)
                     }
-
                 }
 
                 ExhibitObject.Person -> {}
