@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.ssrlab.common_ui.common.ui.base.BaseFragment
@@ -14,7 +13,7 @@ import by.ssrlab.data.util.MainActivityUiState
 import by.ssrlab.data.util.ToolbarStateByDates
 import by.ssrlab.domain.models.ToolbarControlObject
 import by.ssrlab.domain.utils.Resource
-import by.ssrlab.ui.MainActivity
+import by.ssrlab.common_ui.common.ui.MainActivity
 import by.ssrlab.ui.databinding.FragmentEventsBinding
 import by.ssrlab.ui.rv.EventsAdapter
 import by.ssrlab.ui.vm.FDatesVM
@@ -74,7 +73,7 @@ class EventsFragment : BaseFragment() {
     }
 
     override fun observeOnDataChanged() {
-        fragmentViewModel.datesData.observe(viewLifecycleOwner, Observer { resource ->
+        fragmentViewModel.datesData.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Loading -> {
                     adapter.showLoading()
@@ -89,7 +88,7 @@ class EventsFragment : BaseFragment() {
                     adapter.showError(resource.message)
                 }
             }
-        })
+        }
     }
 
     private fun observeOnDateChanged() {
