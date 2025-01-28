@@ -1,5 +1,6 @@
 package by.ssrlab.common_ui.common.ui.exhibit
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.ViewTreeObserver
 import android.widget.Toast
@@ -7,6 +8,7 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
 import androidx.constraintlayout.widget.ConstraintLayout
 import by.ssrlab.common_ui.R
+import by.ssrlab.common_ui.common.ui.MainActivity
 import by.ssrlab.common_ui.common.ui.base.BaseActivity
 import by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.ActivityMainMarginParams
 import by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.player.MediaPlayer
@@ -81,6 +83,10 @@ class ExhibitActivity : BaseActivity() {
     private fun setBackAction() {
         binding.toolbarBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+            finish()
         }
     }
 
