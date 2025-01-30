@@ -26,7 +26,7 @@ class MainFragment: BaseFragment() {
     override val toolbarControlObject = ToolbarControlObject(
         isBack = false,
         isLang = true,
-        isSearch = true,
+        isSearch = false,
         isDates = false
     )
 
