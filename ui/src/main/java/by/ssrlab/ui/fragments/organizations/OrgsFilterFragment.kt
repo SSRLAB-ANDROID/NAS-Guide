@@ -1,4 +1,4 @@
-package by.ssrlab.ui.fragments
+package by.ssrlab.ui.fragments.organizations
 
 import android.os.Bundle
 import android.view.View
@@ -13,16 +13,16 @@ import by.ssrlab.common_ui.common.ui.base.BaseFragment
 import by.ssrlab.data.data.common.RepositoryData
 import by.ssrlab.data.util.ButtonAction
 import by.ssrlab.domain.models.ToolbarControlObject
-import by.ssrlab.ui.MainActivity
+import by.ssrlab.common_ui.common.ui.MainActivity
 import by.ssrlab.ui.R
-import by.ssrlab.ui.databinding.FragmentFiltersBinding
+import by.ssrlab.ui.databinding.FragmentOrgsFiltersBinding
 import by.ssrlab.ui.rv.FilterAdapter
 import by.ssrlab.ui.vm.FOrgsVM
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
-class FilterFragment : BaseFragment() {
+class OrgsFilterFragment : BaseFragment() {
 
-    private lateinit var binding: FragmentFiltersBinding
+    private lateinit var binding: FragmentOrgsFiltersBinding
     private lateinit var adapter: FilterAdapter
 
     override val toolbarControlObject = ToolbarControlObject(
@@ -37,14 +37,12 @@ class FilterFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //TODO: add for specific filter title (strings)
-        fragmentViewModel.setTitle(requireContext().resources.getString(by.ssrlab.common_ui.R.string.button_support_filter))
         activityVM.apply {
             setButtonAction(ButtonAction.BackAction, ::onBackPressed)
         }
 
         binding.apply {
-            viewModel = this@FilterFragment.fragmentViewModel
+            viewModel = this@OrgsFilterFragment.fragmentViewModel
             lifecycleOwner = viewLifecycleOwner
         }
 
@@ -56,12 +54,12 @@ class FilterFragment : BaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
 
-        val searchButton: ImageButton = requireActivity().findViewById(R.id.toolbar_search)
+        val searchButton: ImageButton =  requireActivity().findViewById(by.ssrlab.common_ui.R.id.toolbar_search)
         searchButton.visibility = View.VISIBLE
     }
 
     private fun disableButtons() {
-        val searchButton: ImageButton = requireActivity().findViewById(R.id.toolbar_search)
+        val searchButton: ImageButton = requireActivity().findViewById(by.ssrlab.common_ui.R.id.toolbar_search)
         searchButton.visibility = View.GONE
 
         applyFilter()
@@ -70,7 +68,12 @@ class FilterFragment : BaseFragment() {
     override fun observeOnDataChanged() {
         fragmentViewModel.availableFilters.observe(viewLifecycleOwner, Observer { filters ->
             filters?.let {
-                fragmentViewModel.selectedFilters.value?.let { selected -> adapter.updateData(filters, selected.toList()) }
+                fragmentViewModel.selectedFilters.value?.let { selected ->
+                    adapter.updateData(
+                        filters,
+                        selected.toList()
+                    )
+                }
             }
         })
     }
@@ -94,7 +97,12 @@ class FilterFragment : BaseFragment() {
 
     override fun initBinding(container: ViewGroup?): View {
         binding =
-            DataBindingUtil.inflate(layoutInflater, R.layout.fragment_filters, container, false)
+            DataBindingUtil.inflate(
+                layoutInflater,
+                R.layout.fragment_orgs_filters,
+                container,
+                false
+            )
         return binding.root
     }
 

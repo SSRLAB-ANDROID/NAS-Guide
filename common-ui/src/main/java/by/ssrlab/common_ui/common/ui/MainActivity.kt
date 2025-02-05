@@ -1,4 +1,4 @@
-package by.ssrlab.ui
+package by.ssrlab.common_ui.common.ui
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -15,11 +15,13 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.databinding.DataBindingUtil
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
+import by.ssrlab.common_ui.R
 import by.ssrlab.common_ui.common.ui.base.BaseActivity
 import by.ssrlab.common_ui.common.ui.exhibit.ExhibitActivity
 import by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.ActivityMainMarginParams
 import by.ssrlab.common_ui.common.ui.map.MapActivity
 import by.ssrlab.common_ui.common.vm.AMainVM
+import by.ssrlab.common_ui.databinding.ActivityMainBinding
 import by.ssrlab.data.data.common.DescriptionData
 import by.ssrlab.data.data.common.RepositoryData
 import by.ssrlab.data.data.remote.Development
@@ -33,7 +35,6 @@ import by.ssrlab.data.data.settings.remote.PlaceLocale
 import by.ssrlab.data.util.ButtonAction
 import by.ssrlab.data.util.MainActivityUiState
 import by.ssrlab.data.util.ToolbarStateByDates
-import by.ssrlab.ui.databinding.ActivityMainBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : BaseActivity() {

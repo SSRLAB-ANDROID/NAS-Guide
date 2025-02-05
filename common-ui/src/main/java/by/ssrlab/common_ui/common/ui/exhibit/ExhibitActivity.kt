@@ -1,5 +1,6 @@
 package by.ssrlab.common_ui.common.ui.exhibit
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.ViewTreeObserver
 import android.widget.Toast
@@ -7,12 +8,12 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
 import androidx.constraintlayout.widget.ConstraintLayout
 import by.ssrlab.common_ui.R
+import by.ssrlab.common_ui.common.ui.MainActivity
 import by.ssrlab.common_ui.common.ui.base.BaseActivity
 import by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.ActivityMainMarginParams
 import by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.player.MediaPlayer
 import by.ssrlab.common_ui.common.vm.AExhibitVM
 import by.ssrlab.common_ui.databinding.ActivityExhibitBinding
-import by.ssrlab.data.util.ExhibitObject
 import coil.load
 import coil.transform.RoundedCornersTransformation
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -44,15 +45,6 @@ class ExhibitActivity : BaseActivity() {
 
         setUpButtons()
         observeLayoutChange()
-    }
-
-    private fun getPlaceId(exhibitObject: ExhibitObject): String {
-        return when (exhibitObject) {
-            ExhibitObject.Development -> TODO()
-            ExhibitObject.Organization -> TODO()
-            ExhibitObject.Person -> TODO()
-            ExhibitObject.Place -> TODO()
-        }
     }
 
     private fun setUpButtons() {
@@ -91,6 +83,10 @@ class ExhibitActivity : BaseActivity() {
     private fun setBackAction() {
         binding.toolbarBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+            finish()
         }
     }
 

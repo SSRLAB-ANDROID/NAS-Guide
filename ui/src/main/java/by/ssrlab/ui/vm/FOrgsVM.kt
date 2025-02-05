@@ -3,12 +3,15 @@ package by.ssrlab.ui.vm
 import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import by.ssrlab.common_ui.common.ui.base.vm.BaseFragmentVM
 import by.ssrlab.data.data.common.DescriptionData
 import by.ssrlab.data.data.remote.DepartmentFilter
 import by.ssrlab.data.data.settings.remote.OrganizationLocale
 import by.ssrlab.domain.repository.network.OrgsRepository
 import by.ssrlab.domain.utils.Resource
+import by.ssrlab.domain.utils.transformLanguageToInt
+import kotlinx.coroutines.launch
 import java.util.Locale
 
 class FOrgsVM(orgsRepository: OrgsRepository) : BaseFragmentVM<OrganizationLocale>(orgsRepository) {
@@ -64,6 +67,19 @@ class FOrgsVM(orgsRepository: OrgsRepository) : BaseFragmentVM<OrganizationLocal
         loadData()
     }
 
+    //Language change
+    private var currentLanguage: String? = "en"
+
+    fun observeLanguageChanges() {
+        viewModelScope.launch {
+            val newLanguage = getSelectedLanguage()
+            if (currentLanguage != newLanguage) {
+                currentLanguage = newLanguage
+                loadData()
+            }
+        }
+    }
+
     //Filter and Search
     private val _filteredData = MutableLiveData<List<OrganizationLocale>>()
     val filteredDataList: LiveData<List<OrganizationLocale>> get() = _filteredData
@@ -102,10 +118,20 @@ class FOrgsVM(orgsRepository: OrgsRepository) : BaseFragmentVM<OrganizationLocal
     }
 
     fun setAvailableFilters() {
+        val currentLanguageKey = getSelectedLanguage()
+
         val uniqueDepartmentFilters: Set<DepartmentFilter> =
             if (_orgsData.value is Resource.Success) {
                 (_orgsData.value as Resource.Success<List<OrganizationLocale>>).data
-                    .map { it.description.departmentFilter }
+                    .map { org ->
+                        val localizedFilterName = org.description.translations
+                            .find { it.language.languageKey == currentLanguageKey }
+                            ?.name ?: org.description.departmentFilter.keyName
+
+                        org.description.departmentFilter.copy(
+                            keyName = localizedFilterName
+                        )
+                    }
                     .toSet()
             } else {
                 emptySet()
@@ -117,7 +143,7 @@ class FOrgsVM(orgsRepository: OrgsRepository) : BaseFragmentVM<OrganizationLocal
             uniqueDepartmentFilters.associateWith { filter ->
                 _orgsData.value?.let {
                     if (it is Resource.Success) {
-                        it.data.count { org -> org.description.departmentFilter == filter }
+                        it.data.count { org -> org.description.translations[currentLanguageKey.transformLanguageToInt() - 1].name == filter.keyName }
                     } else {
                         0
                     }
@@ -142,17 +168,20 @@ class FOrgsVM(orgsRepository: OrgsRepository) : BaseFragmentVM<OrganizationLocal
     }
 
     fun applyFilters() {
+        val currentLanguageKey = getSelectedLanguage()
+
         val filterDataByChoices =
             if (_orgsData.value is Resource.Success) {
                 val currentSelectedFilters = _selectedFilters.value
-                (_orgsData.value as Resource.Success<List<OrganizationLocale>>).data
-                    .filter { element ->
-                        element.description.departmentFilter.let {
-                            currentSelectedFilters?.contains(
-                                it
-                            )
-                        } ?: false
-                    }
+                (_orgsData.value as Resource.Success<List<OrganizationLocale>>).data.filter { element ->
+                    val localizedFilterName = element.description.translations
+                        .find { it.language.languageKey == currentLanguageKey }
+                        ?.name
+
+                    currentSelectedFilters?.any { selectedFilter ->
+                        selectedFilter.keyName == localizedFilterName
+                    } ?: false
+                }
             } else {
                 emptyList()
             }

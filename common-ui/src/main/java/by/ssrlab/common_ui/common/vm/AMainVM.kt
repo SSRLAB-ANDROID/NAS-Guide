@@ -80,7 +80,7 @@ class AMainVM: ViewModel() {
 
     fun onDateChanged(day: Int, month: Int, context: Context) {
         val calendar = Calendar.getInstance()
-        if (calendar.get(Calendar.DAY_OF_MONTH) == day)
+        if (calendar.get(Calendar.DAY_OF_MONTH) == day && calendar.get(Calendar.MONTH) == month)
             _dateSubtitle.value = context.resources.getString(R.string.today)
         else _dateSubtitle.value = context.resources.getString(R.string.date)
 
