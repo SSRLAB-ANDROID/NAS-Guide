@@ -49,15 +49,7 @@ class ExhibitFragment : Fragment() {
             exhibitActivity = exhibitActivity
         )
 
-        lifecycleScope.launch {
-            val audio = withContext(Dispatchers.IO) {
-                activityViewModel.repositoryData.value?.audio
-            }
-
-            if (audio != null) {
-                fragmentSettingsManager.initMediaPlayerWithString(audio)
-            }
-        }
+        setAudio()
         return binding.root
     }
 
@@ -68,16 +60,34 @@ class ExhibitFragment : Fragment() {
         disableButtons()
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onPause() {
+        super.onPause()
 
         pauseAudio()
+    }
+
+    override fun onResume(){
+        super.onResume()
+
+        setAudio()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
 
         fragmentSettingsManager.destroyPlayer()
+    }
+
+    private fun setAudio(){
+        lifecycleScope.launch {
+            val audio = withContext(Dispatchers.IO) {
+                activityViewModel.repositoryData.value?.audio
+            }
+
+            if (audio != null) {
+                fragmentSettingsManager.initMediaPlayerWithString(audio)
+            }
+        }
     }
 
     private fun disableButtons() {
