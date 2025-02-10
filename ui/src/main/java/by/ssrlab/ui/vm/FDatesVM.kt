@@ -10,6 +10,8 @@ import by.ssrlab.domain.utils.Resource
 
 class FDatesVM(eventsRepository: EventsRepository) : BaseFragmentVM<EventLocale>(eventsRepository) {
 
+    var todayDate: String? = null
+
     private val _datesData = MutableLiveData<Resource<List<EventLocale>>>()
     val datesData: LiveData<Resource<List<EventLocale>>> get() = _datesData
 

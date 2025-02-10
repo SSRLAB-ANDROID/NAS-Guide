@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import by.ssrlab.common_ui.common.ui.MainActivity
 import by.ssrlab.common_ui.common.ui.base.BaseFragment
 import by.ssrlab.data.data.settings.remote.EventLocale
 import by.ssrlab.data.util.ButtonAction
@@ -13,7 +14,6 @@ import by.ssrlab.data.util.MainActivityUiState
 import by.ssrlab.data.util.ToolbarStateByDates
 import by.ssrlab.domain.models.ToolbarControlObject
 import by.ssrlab.domain.utils.Resource
-import by.ssrlab.common_ui.common.ui.MainActivity
 import by.ssrlab.ui.databinding.FragmentEventsBinding
 import by.ssrlab.ui.rv.EventsAdapter
 import by.ssrlab.ui.vm.FDatesVM
@@ -105,7 +105,11 @@ class EventsFragment : BaseFragment() {
             emptyList(),
             requireContext().resources.getString(by.ssrlab.common_ui.R.string.on_this_day),
             requireContext().resources.getString(by.ssrlab.common_ui.R.string.on_the_next_day)
-        )
+        ) { todayDate ->
+            if (fragmentViewModel.todayDate.isNullOrEmpty()) {
+                fragmentViewModel.todayDate = parseMidDate(todayDate)
+            }
+        }
 
         when (val resource = fragmentViewModel.datesData.value) {
             is Resource.Success -> {
@@ -186,6 +190,16 @@ class EventsFragment : BaseFragment() {
         } catch (e: Throwable) {
             Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
             return dateString
+        }
+    }
+
+    private fun parseMidDate(inputDate: String): String {
+        val parts = inputDate.split("-")
+
+        return if (parts.size == 3) {
+            "${parts[2]}-${parts[1]}"
+        } else {
+            "01-01"
         }
     }
 

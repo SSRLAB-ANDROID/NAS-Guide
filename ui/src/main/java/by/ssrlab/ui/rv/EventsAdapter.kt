@@ -17,7 +17,8 @@ import by.ssrlab.ui.databinding.ErrorItemBinding
 class EventsAdapter(
     private var entitiesList: List<EventLocale>,
     private var startTitle: String,
-    private val changedTitle: String
+    private val changedTitle: String,
+    private val onDateSet: (String) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -89,6 +90,8 @@ class EventsAdapter(
                         this.rvEventsDate.text = entitiesList[position - 1].name
                         this.rvEventsBody.text = entitiesList[position - 1].about.fromHtml()
 
+                        onDateSet(entitiesList[position - 1].event.startDate)
+
 //                        this.rvEventsPng.load(entitiesList[position - 1]) {
 //                            crossfade(true)
 //                            crossfade(500)
@@ -107,7 +110,7 @@ class EventsAdapter(
     }
 
     override fun getItemCount() =
-        if (isLoading || errorMessage != null) 1 else entitiesList.let { entitiesList.size + 1 } ?: 0
+        if (isLoading || errorMessage != null) 1 else entitiesList.let { entitiesList.size + 1 }
 
 
     private fun findNearestEventDate(dates: List<EventLocale>, date: String): String? {
