@@ -9,7 +9,7 @@ import by.ssrlab.data.util.ButtonAction
 import by.ssrlab.domain.models.ToolbarControlObject
 import java.util.Calendar
 
-class AMainVM: ViewModel() {
+class AMainVM : ViewModel() {
 
     private val _headerImg = MutableLiveData(0)
     val headerImg: LiveData<Int>
@@ -59,6 +59,8 @@ class AMainVM: ViewModel() {
     private fun emptyAction() {}
 
     //Date section
+    var todayDate: String? = null
+
     private val _currentDate = MutableLiveData("")
     val currentDate: LiveData<String> get() = _currentDate
 
@@ -85,6 +87,11 @@ class AMainVM: ViewModel() {
         else _dateSubtitle.value = context.resources.getString(R.string.date)
 
         _currentDate.value = "$day ${formatMonth(month, context)}"
+
+        if (todayDate.isNullOrEmpty()) {
+            todayDate = setToday()
+        }
+
         updateDateNumeric(day, month)
     }
 
@@ -94,6 +101,18 @@ class AMainVM: ViewModel() {
         if (monthStr.length == 1) monthStr = "0$monthStr"
         if (dayStr.length == 1) dayStr = "0$dayStr"
         _currentDateNumeric.value = "$monthStr-$dayStr"
+    }
+
+    private fun setToday(): String {
+        val fullDate = currentDateNumeric.value.toString()
+        val parts = fullDate.split("-")
+
+        var dayStr = parts[1]
+        var monthStr = (parts[0].toInt() - 1).toString()
+
+        if (monthStr.length == 1) monthStr = "0$monthStr"
+        if (dayStr.length == 1) dayStr = "0$dayStr"
+        return "$monthStr-$dayStr"
     }
 
     private fun formatMonth(month: Int, context: Context): String {

@@ -17,8 +17,7 @@ import by.ssrlab.ui.databinding.ErrorItemBinding
 class EventsAdapter(
     private var entitiesList: List<EventLocale>,
     private var startTitle: String,
-    private val changedTitle: String,
-    private val onDateSet: (String) -> Unit
+    private val changedTitle: String
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -89,8 +88,6 @@ class EventsAdapter(
                     is RvEventsItemBinding -> {
                         this.rvEventsDate.text = entitiesList[position - 1].name
                         this.rvEventsBody.text = entitiesList[position - 1].about.fromHtml()
-
-                        onDateSet(entitiesList[position - 1].event.startDate)
 
 //                        this.rvEventsPng.load(entitiesList[position - 1]) {
 //                            crossfade(true)

@@ -1,5 +1,6 @@
 package by.ssrlab.ui.fragments.history
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -63,6 +64,15 @@ class EventsFragment : BaseFragment() {
         observeOnDateChanged()
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        val today = activityVM.todayDate ?: ""
+        if (today != "") {
+            updateDate(today, requireContext())
+        }
+    }
+
     override fun onStop() {
         super.onStop()
 
@@ -105,11 +115,7 @@ class EventsFragment : BaseFragment() {
             emptyList(),
             requireContext().resources.getString(by.ssrlab.common_ui.R.string.on_this_day),
             requireContext().resources.getString(by.ssrlab.common_ui.R.string.on_the_next_day)
-        ) { todayDate ->
-            if (fragmentViewModel.todayDate.isNullOrEmpty()) {
-                fragmentViewModel.todayDate = parseMidDate(todayDate)
-            }
-        }
+        )
 
         when (val resource = fragmentViewModel.datesData.value) {
             is Resource.Success -> {
@@ -193,13 +199,11 @@ class EventsFragment : BaseFragment() {
         }
     }
 
-    private fun parseMidDate(inputDate: String): String {
+    private fun updateDate(inputDate: String, context: Context) {
         val parts = inputDate.split("-")
 
-        return if (parts.size == 3) {
-            "${parts[2]}-${parts[1]}"
-        } else {
-            "01-01"
+        if (parts.size == 2) {
+            activityVM.onDateChanged(parts[1].toInt(), parts[0].toInt(), context)
         }
     }
 
