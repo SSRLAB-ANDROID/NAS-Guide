@@ -9,7 +9,7 @@ import by.ssrlab.data.util.ButtonAction
 import by.ssrlab.domain.models.ToolbarControlObject
 import java.util.Calendar
 
-class AMainVM : ViewModel() {
+class AMainVM: ViewModel() {
 
     private val _headerImg = MutableLiveData(0)
     val headerImg: LiveData<Int>
@@ -59,7 +59,9 @@ class AMainVM : ViewModel() {
     private fun emptyAction() {}
 
     //Date section
-    var todayDate: String? = null
+
+    private val _todayDate = MutableLiveData("")
+    val todayDate: LiveData<String> get() = _todayDate
 
     private val _currentDate = MutableLiveData("")
     val currentDate: LiveData<String> get() = _currentDate
@@ -88,9 +90,7 @@ class AMainVM : ViewModel() {
 
         _currentDate.value = "$day ${formatMonth(month, context)}"
 
-        if (todayDate.isNullOrEmpty()) {
-            todayDate = setToday()
-        }
+        if (todayDate.value.isNullOrEmpty()) { _todayDate.value = setToday()}
 
         updateDateNumeric(day, month)
     }

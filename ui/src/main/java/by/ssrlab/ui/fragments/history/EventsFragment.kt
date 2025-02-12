@@ -67,9 +67,9 @@ class EventsFragment : BaseFragment() {
     override fun onResume() {
         super.onResume()
 
-        val today = activityVM.todayDate ?: ""
-        if (today != "") {
-            updateDate(today, requireContext())
+        val today = activityVM.todayDate.value
+        if (today != ""){
+            updateDate(today!!, requireContext())
         }
     }
 
