@@ -83,11 +83,6 @@ class DevelopmentsFragment : BaseFragment() {
         }
     }
 
-    private fun disableButtons() {
-        moveToFilter()
-        initResetButton()
-    }
-
     override fun observeOnDataChanged() {
         fragmentViewModel.inventionsData.observe(viewLifecycleOwner) { resource ->
             when (resource) {
@@ -144,6 +139,11 @@ class DevelopmentsFragment : BaseFragment() {
             false
         )
         return binding.root
+    }
+
+    private fun disableButtons() {
+        moveToFilter()
+        initResetButton()
     }
 
     //Navigation
@@ -251,6 +251,7 @@ class DevelopmentsFragment : BaseFragment() {
     private fun initResetButton() {
         binding.resetFilterButton.setOnClickListener { resetFilters() }
     }
+
     private fun moveToFilter() {
         binding.inventionsFilterRipple.setOnClickListener {
             if (fragmentViewModel.isLoaded.value == true) {

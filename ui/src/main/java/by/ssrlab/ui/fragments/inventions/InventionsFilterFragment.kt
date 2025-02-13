@@ -19,6 +19,7 @@ import by.ssrlab.ui.rv.FilterAdapter
 import by.ssrlab.ui.vm.FDevelopmentsVM
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
+
 class InventionsFilterFragment : BaseFragment() {
 
     private lateinit var binding: FragmentInventionFiltersBinding
@@ -55,13 +56,6 @@ class InventionsFilterFragment : BaseFragment() {
 
         val searchButton: ImageButton = requireActivity().findViewById(by.ssrlab.common_ui.R.id.toolbar_search)
         searchButton.visibility = View.VISIBLE
-    }
-
-    private fun disableButtons() {
-        val searchButton: ImageButton = requireActivity().findViewById(by.ssrlab.common_ui.R.id.toolbar_search)
-        searchButton.visibility = View.GONE
-
-        applyFilter()
     }
 
     override fun observeOnDataChanged() {
@@ -111,6 +105,13 @@ class InventionsFilterFragment : BaseFragment() {
 
     override fun navigateNext(repositoryData: RepositoryData) {
         (activity as MainActivity).moveToExhibit(repositoryData)
+    }
+
+    private fun disableButtons() {
+        val searchButton: ImageButton = requireActivity().findViewById(by.ssrlab.common_ui.R.id.toolbar_search)
+        searchButton.visibility = View.GONE
+
+        applyFilter()
     }
 
     private fun applyFilter() {

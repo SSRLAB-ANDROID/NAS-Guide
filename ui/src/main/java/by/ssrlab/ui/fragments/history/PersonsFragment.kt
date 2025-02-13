@@ -21,6 +21,7 @@ import by.ssrlab.ui.rv.GridAdapter
 import by.ssrlab.ui.vm.FPersonsVM
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+
 class PersonsFragment : BaseFragment() {
 
     private lateinit var binding: FragmentPersonsBinding
@@ -135,6 +136,7 @@ class PersonsFragment : BaseFragment() {
         })
         toolbarSearchView.visibility = View.VISIBLE
         toolbarSearchView.isIconified = false
+
         val searchButton: ImageButton = requireActivity().findViewById(by.ssrlab.common_ui.R.id.toolbar_search)
         searchButton.visibility = View.GONE
 

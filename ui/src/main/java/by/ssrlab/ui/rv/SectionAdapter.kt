@@ -14,6 +14,7 @@ import coil.load
 import coil.size.Scale
 import coil.transform.RoundedCornersTransformation
 
+
 class SectionAdapter(
     private var entitiesList: List<RepositoryData>?,
     private val navigationManager: NavigationManager,

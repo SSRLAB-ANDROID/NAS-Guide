@@ -27,6 +27,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
+
 class EventsFragment : BaseFragment() {
 
     private lateinit var binding: FragmentEventsBinding

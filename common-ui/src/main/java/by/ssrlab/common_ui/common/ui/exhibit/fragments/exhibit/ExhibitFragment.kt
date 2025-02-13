@@ -24,6 +24,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
+
 class ExhibitFragment : Fragment() {
 
     private lateinit var binding: FragmentExhibitBinding

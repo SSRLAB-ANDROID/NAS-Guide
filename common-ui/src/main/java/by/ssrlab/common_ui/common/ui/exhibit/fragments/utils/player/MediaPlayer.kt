@@ -97,7 +97,9 @@ object MediaPlayer {
             is PlayerStatus.Ended -> {
                 mediaPlayer?.seekTo(0)
                 mediaPlayer?.pause()
+
                 stopProgressTracking()
+
                 fragmentSettingsManager.makeProgressInvisible()
                 PlayerStatus.Paused
             }
@@ -193,6 +195,7 @@ object MediaPlayer {
             } else {
                 binding.exhibitProgress.progress = mediaPlayer!!.duration
                 binding.exhibitCurrentTime.text = seekBarFuns.convertToTimerMode(duration)
+
                 handlePlayerState(PlayerStatus.Ended, activity as ExhibitActivity, binding)
             }
             binding.exhibitProgress.progress = currentPosition

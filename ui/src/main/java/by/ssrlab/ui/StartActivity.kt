@@ -17,6 +17,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+
 class StartActivity : BaseActivity() {
 
     private lateinit var binding: ActivityStartBinding
