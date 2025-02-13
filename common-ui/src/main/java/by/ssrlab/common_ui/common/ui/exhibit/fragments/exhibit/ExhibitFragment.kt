@@ -63,7 +63,7 @@ class ExhibitFragment : Fragment() {
     override fun onPause() {
         super.onPause()
 
-        pauseAudio()
+        pauseAudio(binding.exhibitPlayRipple)
     }
 
     override fun onResume(){
