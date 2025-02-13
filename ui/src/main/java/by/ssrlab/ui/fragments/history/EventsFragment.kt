@@ -1,11 +1,13 @@
 package by.ssrlab.ui.fragments.history
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import by.ssrlab.common_ui.common.ui.MainActivity
 import by.ssrlab.common_ui.common.ui.base.BaseFragment
 import by.ssrlab.data.data.settings.remote.EventLocale
 import by.ssrlab.data.util.ButtonAction
@@ -13,7 +15,6 @@ import by.ssrlab.data.util.MainActivityUiState
 import by.ssrlab.data.util.ToolbarStateByDates
 import by.ssrlab.domain.models.ToolbarControlObject
 import by.ssrlab.domain.utils.Resource
-import by.ssrlab.common_ui.common.ui.MainActivity
 import by.ssrlab.ui.databinding.FragmentEventsBinding
 import by.ssrlab.ui.rv.EventsAdapter
 import by.ssrlab.ui.vm.FDatesVM
@@ -61,6 +62,15 @@ class EventsFragment : BaseFragment() {
         initAdapter()
         observeOnDataChanged()
         observeOnDateChanged()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val today = activityVM.todayDate.value
+        if (today != ""){
+            updateDate(today!!, requireContext())
+        }
     }
 
     override fun onStop() {
@@ -186,6 +196,14 @@ class EventsFragment : BaseFragment() {
         } catch (e: Throwable) {
             Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
             return dateString
+        }
+    }
+
+    private fun updateDate(inputDate: String, context: Context) {
+        val parts = inputDate.split("-")
+
+        if (parts.size == 2) {
+            activityVM.onDateChanged(parts[1].toInt(), parts[0].toInt(), context)
         }
     }
 
