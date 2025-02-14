@@ -24,6 +24,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
+
 class ExhibitFragment : Fragment() {
 
     private lateinit var binding: FragmentExhibitBinding
@@ -63,7 +64,7 @@ class ExhibitFragment : Fragment() {
     override fun onPause() {
         super.onPause()
 
-        pauseAudio()
+        pauseAudio(binding.exhibitPlayRipple)
     }
 
     override fun onResume(){

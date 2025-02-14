@@ -30,6 +30,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
+
 class OrgsFragment : BaseFragment() {
 
     private lateinit var binding: FragmentOrgsBinding

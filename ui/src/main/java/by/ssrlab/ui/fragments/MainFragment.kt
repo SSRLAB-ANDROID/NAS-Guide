@@ -18,6 +18,7 @@ import by.ssrlab.ui.rv.FolderAdapter
 import by.ssrlab.ui.vm.FMainVM
 import org.koin.android.ext.android.get
 
+
 class MainFragment: BaseFragment() {
 
     private lateinit var binding: FragmentMainBinding

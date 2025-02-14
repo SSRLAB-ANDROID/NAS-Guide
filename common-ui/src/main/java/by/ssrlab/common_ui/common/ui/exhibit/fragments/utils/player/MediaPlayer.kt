@@ -3,8 +3,10 @@ package by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.player
 import android.annotation.SuppressLint
 import android.media.MediaPlayer
 import android.net.Uri
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.core.net.toUri
+import by.ssrlab.common_ui.R
 import by.ssrlab.common_ui.common.ui.base.BaseActivity
 import by.ssrlab.common_ui.common.ui.exhibit.ExhibitActivity
 import by.ssrlab.common_ui.databinding.FragmentExhibitBinding
@@ -95,7 +97,9 @@ object MediaPlayer {
             is PlayerStatus.Ended -> {
                 mediaPlayer?.seekTo(0)
                 mediaPlayer?.pause()
+
                 stopProgressTracking()
+
                 fragmentSettingsManager.makeProgressInvisible()
                 PlayerStatus.Paused
             }
@@ -139,7 +143,7 @@ object MediaPlayer {
         }
     }
 
-    fun pauseAudio() {
+    fun pauseAudio(imageButton: ImageButton) {
         mediaPlayer?.let {
             if (it.isPlaying) {
                 it.pause()
@@ -147,6 +151,7 @@ object MediaPlayer {
             it.stop()
             it.reset()
         }
+        imageButton.setImageResource(R.drawable.ic_play)
     }
 
     private fun setDataSource(
@@ -190,6 +195,7 @@ object MediaPlayer {
             } else {
                 binding.exhibitProgress.progress = mediaPlayer!!.duration
                 binding.exhibitCurrentTime.text = seekBarFuns.convertToTimerMode(duration)
+
                 handlePlayerState(PlayerStatus.Ended, activity as ExhibitActivity, binding)
             }
             binding.exhibitProgress.progress = currentPosition

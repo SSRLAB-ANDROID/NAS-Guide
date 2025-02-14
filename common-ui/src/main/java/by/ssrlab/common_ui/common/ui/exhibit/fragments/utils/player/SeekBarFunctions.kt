@@ -2,6 +2,7 @@ package by.ssrlab.common_ui.common.ui.exhibit.fragments.utils.player
 
 import android.widget.SeekBar
 
+
 class SeekBarFunctions {
 
     fun convertToTimerMode(duration: Int): String {

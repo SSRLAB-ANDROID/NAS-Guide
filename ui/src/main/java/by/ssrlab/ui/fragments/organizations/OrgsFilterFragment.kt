@@ -20,6 +20,7 @@ import by.ssrlab.ui.rv.FilterAdapter
 import by.ssrlab.ui.vm.FOrgsVM
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
+
 class OrgsFilterFragment : BaseFragment() {
 
     private lateinit var binding: FragmentOrgsFiltersBinding

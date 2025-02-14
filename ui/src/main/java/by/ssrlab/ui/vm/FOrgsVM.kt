@@ -14,6 +14,7 @@ import by.ssrlab.domain.utils.transformLanguageToInt
 import kotlinx.coroutines.launch
 import java.util.Locale
 
+
 class FOrgsVM(orgsRepository: OrgsRepository) : BaseFragmentVM<OrganizationLocale>(orgsRepository) {
 
     //Appearance

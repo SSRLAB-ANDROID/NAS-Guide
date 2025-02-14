@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import java.util.Locale
 
+
 class FPersonsVM(personsRepository: PersonsRepository) :
     BaseFragmentVM<PersonLocale>(personsRepository) {
 
@@ -27,7 +28,6 @@ class FPersonsVM(personsRepository: PersonsRepository) :
     }
 
     init {
-
         getData { personList ->
             _state.update { currentState ->
                 currentState.copy(personList = personList.toMutableList())
