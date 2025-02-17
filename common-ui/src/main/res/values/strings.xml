@@ -61,7 +61,7 @@
 
     //Date
     <string name="on_this_day">On this day</string>
-    <string name="on_the_next_day">Nearest date with events</string>
+    <string name="on_the_next_day">Upcoming dates</string>
     <string name="today">Today</string>
     <string name="date">Date</string>
     <string name="events">Events</string>

@@ -19,7 +19,6 @@ import coil.transform.RoundedCornersTransformation
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ExhibitActivity : BaseActivity() {
-
     private lateinit var binding: ActivityExhibitBinding
     private val activityViewModel: AExhibitVM by viewModel()
 
@@ -83,6 +82,7 @@ class ExhibitActivity : BaseActivity() {
     private fun setBackAction() {
         binding.toolbarBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
+
             val intent = Intent(this, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             startActivity(intent)
@@ -97,7 +97,6 @@ class ExhibitActivity : BaseActivity() {
             }
         }
     }
-
 
     private fun observeLayoutChange() {
         binding.root.viewTreeObserver.addOnGlobalLayoutListener(object :

@@ -24,6 +24,7 @@ import by.ssrlab.ui.rv.SectionAdapter
 import by.ssrlab.ui.vm.FPlacesVM
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+
 class PlacesFragment : BaseFragment() {
 
     private lateinit var binding: FragmentPlacesBinding
@@ -103,7 +104,7 @@ class PlacesFragment : BaseFragment() {
                 adapter.showLoading()
             }
 
-            null -> TODO()
+            null -> {}
         }
 
         binding.apply {

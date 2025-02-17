@@ -6,19 +6,19 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import by.ssrlab.common_ui.common.ui.MainActivity
 import by.ssrlab.common_ui.common.ui.base.BaseFragment
 import by.ssrlab.data.data.common.RepositoryData
 import by.ssrlab.data.util.ButtonAction
 import by.ssrlab.domain.models.ToolbarControlObject
-import by.ssrlab.ui.MainActivity
 import by.ssrlab.ui.R
 import by.ssrlab.ui.databinding.FragmentInventionFiltersBinding
 import by.ssrlab.ui.rv.FilterAdapter
 import by.ssrlab.ui.vm.FDevelopmentsVM
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
+
 
 class InventionsFilterFragment : BaseFragment() {
 
@@ -54,19 +54,12 @@ class InventionsFilterFragment : BaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
 
-        val searchButton: ImageButton = requireActivity().findViewById(R.id.toolbar_search)
+        val searchButton: ImageButton = requireActivity().findViewById(by.ssrlab.common_ui.R.id.toolbar_search)
         searchButton.visibility = View.VISIBLE
     }
 
-    private fun disableButtons() {
-        val searchButton: ImageButton = requireActivity().findViewById(R.id.toolbar_search)
-        searchButton.visibility = View.GONE
-
-        applyFilter()
-    }
-
     override fun observeOnDataChanged() {
-        fragmentViewModel.availableFilters.observe(viewLifecycleOwner, Observer { filters ->
+        fragmentViewModel.availableFilters.observe(viewLifecycleOwner) { filters ->
             filters?.let {
                 fragmentViewModel.selectedFilters.value?.let { selected ->
                     adapter.updateData(
@@ -75,7 +68,7 @@ class InventionsFilterFragment : BaseFragment() {
                     )
                 }
             }
-        })
+        }
     }
 
     override fun initAdapter() {
@@ -112,6 +105,13 @@ class InventionsFilterFragment : BaseFragment() {
 
     override fun navigateNext(repositoryData: RepositoryData) {
         (activity as MainActivity).moveToExhibit(repositoryData)
+    }
+
+    private fun disableButtons() {
+        val searchButton: ImageButton = requireActivity().findViewById(by.ssrlab.common_ui.R.id.toolbar_search)
+        searchButton.visibility = View.GONE
+
+        applyFilter()
     }
 
     private fun applyFilter() {

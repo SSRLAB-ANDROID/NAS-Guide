@@ -56,7 +56,7 @@
 
     //Date
     <string name="on_this_day">У гэты дзень</string>
-    <string name="on_the_next_day">Найбліжэйшая дата з падзеямі</string>
+    <string name="on_the_next_day">Бліжэйшыя даты</string>
     <string name="today">Сёння</string>
     <string name="date">Дата</string>
     <string name="events">Падзеi</string>

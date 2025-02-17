@@ -9,6 +9,7 @@ import by.ssrlab.data.data.common.RepositoryData
 import coil.load
 import coil.transform.RoundedCornersTransformation
 
+
 class GridAdapter(
     private var entitiesList: List<RepositoryData>,
     private val navigateAction: (RepositoryData) -> Unit

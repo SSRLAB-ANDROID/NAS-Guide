@@ -107,7 +107,7 @@ class EventsAdapter(
     }
 
     override fun getItemCount() =
-        if (isLoading || errorMessage != null) 1 else entitiesList.let { entitiesList.size + 1 } ?: 0
+        if (isLoading || errorMessage != null) 1 else entitiesList.let { entitiesList.size + 1 }
 
 
     private fun findNearestEventDate(dates: List<EventLocale>, date: String): String? {

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import by.ssrlab.data.data.remote.DepartmentFilter
 import by.ssrlab.ui.databinding.RvFilterItemBinding
 
+
 class FilterAdapter(
     private var entitiesMap: Map<DepartmentFilter, Int>?,
     private var selectedFilters: List<DepartmentFilter>,

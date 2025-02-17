@@ -56,7 +56,7 @@
 
     //Date
     <string name="on_this_day">В этот день</string>
-    <string name="on_the_next_day">Ближайшая дата с событиями</string>
+    <string name="on_the_next_day">Ближайшие даты</string>
     <string name="today">Сегодня</string>
     <string name="date">Дата</string>
     <string name="events">События</string>

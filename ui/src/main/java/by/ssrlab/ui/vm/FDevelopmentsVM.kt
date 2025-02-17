@@ -13,6 +13,7 @@ import by.ssrlab.domain.utils.transformLanguageToInt
 import kotlinx.coroutines.launch
 import java.util.Locale
 
+
 class FDevelopmentsVM(developmentsRepository: DevelopmentsRepository) :
     BaseFragmentVM<DevelopmentLocale>(developmentsRepository) {
 

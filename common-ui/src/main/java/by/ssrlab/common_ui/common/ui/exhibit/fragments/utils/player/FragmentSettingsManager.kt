@@ -41,21 +41,7 @@ class FragmentSettingsManager(
                         }
                     }
                     exhibitPrevious.visibility = View.VISIBLE
-//                    exhibitPreviousRipple.setOnClickListener {
-//                        MediaPlayer.playAudio(
-//                            playerStatus = PlayerStatus.Paused,
-//                            activity = exhibitActivity,
-//                            binding = binding
-//                        )
-//                    }
                     exhibitNext.visibility = View.VISIBLE
-//                    exhibitNextRipple.setOnClickListener {
-//                        MediaPlayer.playAudio(
-//                            playerStatus = PlayerStatus.Paused,
-//                            activity = exhibitActivity,
-//                            binding = binding
-//                        )
-//                    }
                 }
             }
         }

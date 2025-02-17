@@ -5,6 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class DepartmentFilterEntity(
+
     @PrimaryKey
     val pk: Int,
     val keyName: String

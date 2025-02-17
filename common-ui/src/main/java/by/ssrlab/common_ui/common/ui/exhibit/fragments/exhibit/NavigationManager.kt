@@ -3,7 +3,9 @@ package by.ssrlab.common_ui.common.ui.exhibit.fragments.exhibit
 import by.ssrlab.common_ui.common.ui.MainActivity
 import by.ssrlab.data.data.common.RepositoryData
 
+
 object NavigationManager {
+
     lateinit var context: MainActivity
     var entitiesList: List<RepositoryData>? = null
     private var listSize = 1

@@ -16,6 +16,7 @@ import by.ssrlab.ui.rv.FolderAdapter
 import by.ssrlab.ui.vm.FHistoryVM
 import org.koin.android.ext.android.get
 
+
 class HistoryFragment: BaseFragment() {
 
     private lateinit var binding: FragmentHistoryBinding
