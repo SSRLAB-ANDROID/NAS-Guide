@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import by.ssrlab.data.obj.FolderObject
 import by.ssrlab.common_ui.databinding.RvFolderItemBinding
 
+
 class FolderAdapter(
     private val entitiesList: List<FolderObject>,
     private val pngLoadAction: (ImageView, Int) -> Unit,

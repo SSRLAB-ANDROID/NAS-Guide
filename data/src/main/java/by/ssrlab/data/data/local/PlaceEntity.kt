@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class PlaceEntity(
+
     @PrimaryKey
     val pk: Int,
     val keyName: String,

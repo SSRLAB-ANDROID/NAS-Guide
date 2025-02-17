@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import by.ssrlab.domain.repository.ui.UiDataProvider
 import by.ssrlab.ui.R
 
+
 class FHistoryVM(private val uiDataProvider: UiDataProvider): ViewModel() {
 
     @Suppress("UNCHECKED_CAST")

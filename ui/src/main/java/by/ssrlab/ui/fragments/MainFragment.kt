@@ -11,12 +11,13 @@ import by.ssrlab.common_ui.common.ui.base.BaseFragment
 import by.ssrlab.common_ui.common.util.createSimpleAlertDialog
 import by.ssrlab.data.util.ButtonAction
 import by.ssrlab.domain.models.ToolbarControlObject
-import by.ssrlab.ui.MainActivity
+import by.ssrlab.common_ui.common.ui.MainActivity
 import by.ssrlab.ui.R
 import by.ssrlab.ui.databinding.FragmentMainBinding
 import by.ssrlab.ui.rv.FolderAdapter
 import by.ssrlab.ui.vm.FMainVM
 import org.koin.android.ext.android.get
+
 
 class MainFragment: BaseFragment() {
 
@@ -26,7 +27,7 @@ class MainFragment: BaseFragment() {
     override val toolbarControlObject = ToolbarControlObject(
         isBack = false,
         isLang = true,
-        isSearch = true,
+        isSearch = false,
         isDates = false
     )
 

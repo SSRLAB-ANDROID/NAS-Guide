@@ -8,6 +8,7 @@ import android.view.animation.AnimationUtils
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
 import androidx.core.app.ActivityOptionsCompat
+import by.ssrlab.common_ui.common.ui.MainActivity
 import by.ssrlab.common_ui.common.ui.base.BaseActivity
 import by.ssrlab.ui.databinding.ActivityStartBinding
 import kotlinx.coroutines.CoroutineScope
@@ -15,6 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+
 
 class StartActivity : BaseActivity() {
 

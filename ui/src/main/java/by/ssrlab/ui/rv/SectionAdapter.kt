@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import by.ssrlab.common_ui.common.ui.exhibit.fragments.exhibit.NavigationManager
 import by.ssrlab.common_ui.databinding.RvSectionItemBinding
 import by.ssrlab.data.data.common.RepositoryData
 import by.ssrlab.ui.R
@@ -13,9 +14,11 @@ import coil.load
 import coil.size.Scale
 import coil.transform.RoundedCornersTransformation
 
+
 class SectionAdapter(
     private var entitiesList: List<RepositoryData>?,
-    private val navigateAction: (RepositoryData) -> Unit
+    private val navigationManager: NavigationManager,
+    private val navAction: () -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -76,7 +79,9 @@ class SectionAdapter(
                         crossfade(true)
                     }
                     rvSectionRipple.setOnClickListener {
-                        navigateAction(entitiesList!![position])
+                        navigationManager.currentPosition = position
+                        entitiesList?.let { navigationManager.entitiesList = it }
+                        navAction()
                     }
                 }
             }
@@ -93,7 +98,7 @@ class SectionAdapter(
         if (isLoading || errorMessage != null) 1 else entitiesList?.let { entitiesList!!.size } ?: 0
 
 
-    private fun sortItemsByNumber(items: List<RepositoryData>?):List<RepositoryData>?{
+    private fun sortItemsByNumber(items: List<RepositoryData>?): List<RepositoryData>? {
         return items?.sortedBy { item ->
             val numberPart = item.name.substringBefore(".").trim().toIntOrNull() ?: 0
             numberPart

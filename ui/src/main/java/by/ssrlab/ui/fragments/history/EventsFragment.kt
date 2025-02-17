@@ -1,32 +1,38 @@
 package by.ssrlab.ui.fragments.history
 
+import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.pm.ShortcutManagerCompat.ShortcutMatchFlags
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import by.ssrlab.common_ui.common.ui.MainActivity
 import by.ssrlab.common_ui.common.ui.base.BaseFragment
 import by.ssrlab.data.data.settings.remote.EventLocale
 import by.ssrlab.data.util.ButtonAction
 import by.ssrlab.data.util.MainActivityUiState
 import by.ssrlab.data.util.ToolbarStateByDates
 import by.ssrlab.domain.models.ToolbarControlObject
-import by.ssrlab.ui.MainActivity
+import by.ssrlab.domain.utils.Resource
 import by.ssrlab.ui.databinding.FragmentEventsBinding
 import by.ssrlab.ui.rv.EventsAdapter
 import by.ssrlab.ui.vm.FDatesVM
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
+
 class EventsFragment : BaseFragment() {
 
     private lateinit var binding: FragmentEventsBinding
     private lateinit var adapter: EventsAdapter
+    private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
     override val toolbarControlObject = ToolbarControlObject(
         isBack = true,
@@ -59,6 +65,15 @@ class EventsFragment : BaseFragment() {
         observeOnDateChanged()
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        val today = activityVM.todayDate.value
+        if (today != ""){
+            updateDate(today!!, requireContext())
+        }
+    }
+
     override fun onStop() {
         super.onStop()
 
@@ -69,27 +84,56 @@ class EventsFragment : BaseFragment() {
     }
 
     override fun observeOnDataChanged() {
-        fragmentViewModel.apply {
-            datesObservableBoolean.observe(viewLifecycleOwner) {
-                updateEventsList()
-                adapter.updateData(datesData.value!!, activityVM.currentDateNumeric.value!!)
+        fragmentViewModel.datesData.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Loading -> {
+                    adapter.showLoading()
+                }
+
+                is Resource.Success -> {
+                    updateEventsList()
+                    adapter.updateData(resource.data, activityVM.currentDateNumeric.value!!)
+                }
+
+                is Resource.Error -> {
+                    adapter.showError(resource.message)
+                }
             }
         }
     }
 
     private fun observeOnDateChanged() {
         activityVM.currentDateNumeric.observe(viewLifecycleOwner) {
-            if (fragmentViewModel.datesObservableBoolean.value == true) {
-                adapter.updateData(fragmentViewModel.datesData.value!!, it)
+            val dates = fragmentViewModel.datesData.value
+            if ((fragmentViewModel.datesObservableBoolean.value == true) && (dates is Resource.Success)) {
+                adapter.updateData(dates.data, it)
             }
         }
     }
 
     override fun initAdapter() {
         adapter = EventsAdapter(
-            fragmentViewModel.datesData.value!!,
-            requireContext().resources.getString(by.ssrlab.common_ui.R.string.on_this_day)
+            emptyList(),
+            requireContext().resources.getString(by.ssrlab.common_ui.R.string.on_this_day),
+            requireContext().resources.getString(by.ssrlab.common_ui.R.string.on_the_next_day)
         )
+
+        when (val resource = fragmentViewModel.datesData.value) {
+            is Resource.Success -> {
+                val data = resource.data
+                adapter.updateData(data, activityVM.currentDateNumeric.value!!)
+            }
+
+            is Resource.Error -> {
+                adapter.showError(resource.message)
+            }
+
+            is Resource.Loading -> {
+                adapter.showLoading()
+            }
+
+            null -> {}
+        }
 
         binding.apply {
             eventsRv.layoutManager = LinearLayoutManager(requireContext())
@@ -107,21 +151,32 @@ class EventsFragment : BaseFragment() {
     }
 
     private fun updateEventsList() {
-        val updatedEvents = mutableListOf<EventLocale>()
+        try {
+            scope.launch {
+                val updatedEvents = mutableListOf<EventLocale>()
 
-        fragmentViewModel.datesData.value?.let { events ->
-            for (event in events) {
-                val updatedEvent = updateEventName(event)
-                updatedEvents.add(updatedEvent)
+                val dates = fragmentViewModel.datesData.value
+                if (dates is Resource.Success) {
+                    dates.data.let { events ->
+                        for (event in events) {
+                            val updatedEvent = updateEventName(event)
+                            updatedEvents.add(updatedEvent)
+                        }
+                    }
+                    fragmentViewModel.updateEvents(updatedEvents)
+                }
             }
+        } catch (e: Throwable) {
+            Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
         }
-
-        fragmentViewModel.updateEvents(updatedEvents)
     }
 
     private fun updateEventName(event: EventLocale): EventLocale {
-        val formattedName = formatEventName(event.name)
-        return event.copy(name = formattedName)
+        if (event.name.contains("-")) {
+            val formattedName = formatEventName(event.name)
+            return event.copy(name = formattedName)
+        }
+        return event
     }
 
     private fun formatEventName(dateString: String): String {
@@ -142,6 +197,14 @@ class EventsFragment : BaseFragment() {
         } catch (e: Throwable) {
             Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
             return dateString
+        }
+    }
+
+    private fun updateDate(inputDate: String, context: Context) {
+        val parts = inputDate.split("-")
+
+        if (parts.size == 2) {
+            activityVM.onDateChanged(parts[1].toInt(), parts[0].toInt(), context)
         }
     }
 

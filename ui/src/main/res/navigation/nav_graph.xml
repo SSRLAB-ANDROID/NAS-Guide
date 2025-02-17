@@ -89,8 +89,8 @@
         android:label="InventionsFragment">
 
         <action
-            android:id="@+id/action_inventionsFragment_to_filterFragment"
-            app:destination="@id/filterFragment"
+            android:id="@+id/action_inventionsFragment_to_inventionsFilterFragment"
+            app:destination="@id/inventionsFilterFragment"
 
             app:enterAnim="@anim/nav_en"
             app:exitAnim="@anim/nav_ex"
@@ -148,11 +148,25 @@
 
     <fragment
         android:id="@+id/filterFragment"
-        android:name="by.ssrlab.ui.fragments.FilterFragment"
+        android:name="by.ssrlab.ui.fragments.organizations.OrgsFilterFragment"
         android:label="FilterFragment">
         <action
             android:id="@+id/action_filterFragment_to_orgFragment"
             app:destination="@id/orgFragment"
+
+            app:enterAnim="@anim/nav_en"
+            app:exitAnim="@anim/nav_ex"
+            app:popEnterAnim="@anim/nav_pen"
+            app:popExitAnim="@anim/nav_pex"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/inventionsFilterFragment"
+        android:name="by.ssrlab.ui.fragments.inventions.InventionsFilterFragment"
+        android:label="InventionsFilterFragment">
+        <action
+            android:id="@+id/action_filterFragment_to_inventionsFragment"
+            app:destination="@id/inventionsFragment"
 
             app:enterAnim="@anim/nav_en"
             app:exitAnim="@anim/nav_ex"

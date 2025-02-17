@@ -24,6 +24,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
+
 class ExhibitFragment : Fragment() {
 
     private lateinit var binding: FragmentExhibitBinding
@@ -34,7 +35,6 @@ class ExhibitFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         exhibitActivity = requireActivity() as ExhibitActivity
     }
 
@@ -50,15 +50,7 @@ class ExhibitFragment : Fragment() {
             exhibitActivity = exhibitActivity
         )
 
-        lifecycleScope.launch {
-            val audio = withContext(Dispatchers.IO) {
-                activityViewModel.repositoryData.value?.audio
-            }
-
-            if (audio != null) {
-                fragmentSettingsManager.initMediaPlayerWithString(audio)
-            }
-        }
+        setAudio()
         return binding.root
     }
 
@@ -69,10 +61,16 @@ class ExhibitFragment : Fragment() {
         disableButtons()
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onPause() {
+        super.onPause()
 
-        pauseAudio()
+        pauseAudio(binding.exhibitPlayRipple)
+    }
+
+    override fun onResume(){
+        super.onResume()
+
+        setAudio()
     }
 
     override fun onDestroyView() {
@@ -81,10 +79,22 @@ class ExhibitFragment : Fragment() {
         fragmentSettingsManager.destroyPlayer()
     }
 
+    private fun setAudio(){
+        lifecycleScope.launch {
+            val audio = withContext(Dispatchers.IO) {
+                activityViewModel.repositoryData.value?.audio
+            }
+
+            if (audio != null) {
+                fragmentSettingsManager.initMediaPlayerWithString(audio)
+            }
+        }
+    }
+
     private fun disableButtons() {
         binding.apply {
-            exhibitPreviousRipple.setOnClickListener { (requireActivity() as BaseActivity).createIsntRealizedDialog() }
-            exhibitNextRipple.setOnClickListener { (requireActivity() as BaseActivity).createIsntRealizedDialog() }
+            exhibitPreviousRipple.setOnClickListener { NavigationManager.handlePrevious() }
+            exhibitNextRipple.setOnClickListener { NavigationManager.handleNext() }
             exhibitContactsRipple.setOnClickListener { (requireActivity() as BaseActivity).createIsntRealizedDialog() }
             exhibitLabsRipple.setOnClickListener { (requireActivity() as BaseActivity).createIsntRealizedDialog() }
             exhibitAchievementsRipple.setOnClickListener { (requireActivity() as BaseActivity).createIsntRealizedDialog() }
@@ -105,7 +115,7 @@ class ExhibitFragment : Fragment() {
                 is OrganizationLocale -> setParametersVisibility(ExhibitObject.Organization)
                 is PersonLocale -> setParametersVisibility(ExhibitObject.Person)
                 is PlaceLocale -> setParametersVisibility(ExhibitObject.Place)
-                null -> TODO()
+                null -> {}
             }
         }
     }
@@ -123,7 +133,6 @@ class ExhibitFragment : Fragment() {
                     exhibitMapRipple.setOnClickListener {
                         exhibitActivity.moveToMapFromExhibit(data)
                     }
-
                 }
 
                 ExhibitObject.Person -> {}

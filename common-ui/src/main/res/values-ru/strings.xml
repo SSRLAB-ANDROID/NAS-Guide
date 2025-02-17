@@ -56,6 +56,7 @@
 
     //Date
     <string name="on_this_day">В этот день</string>
+    <string name="on_the_next_day">Ближайшие даты</string>
     <string name="today">Сегодня</string>
     <string name="date">Дата</string>
     <string name="events">События</string>
@@ -67,6 +68,7 @@
 
     //Filter
     <string name="filter_title">Фильтры</string>
+    <string name="orgs_filter_title">Фильтры по организациям</string>
     <string name="apply_filter">Применить фильтры</string>
     <string name="reset_filter">Сбросить фильтры</string>
 
